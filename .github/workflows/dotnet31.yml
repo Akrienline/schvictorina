@@ -10,12 +10,15 @@ on:
   pull_request:
     branches: [ master ]
 
+
 jobs:
   build:
-
+    
     runs-on: ubuntu-latest
 
     steps:
+    - name: GitHub Push
+      uses: ad-m/github-push-action@v0.6.0
     - uses: actions/checkout@v2
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
@@ -29,3 +32,15 @@ jobs:
       run: dotnet test --no-build --verbosity normal
     - name: List VM folders
       run: ls -la
+      
+    - name: Commit files
+      run: |
+        git config --local user.email "alekami649@gmail.com"
+        git config --local user.name "alekami649"
+        git commit -m "Project builded!" -a
+        
+    - name: Push Changes
+      uses: alekami649/schvictorina@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
