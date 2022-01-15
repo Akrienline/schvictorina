@@ -1,5 +1,9 @@
 name: .NET
 
+env: 
+   name: dotnet-version
+   value: 3.1.x
+
 on:
   push:
     branches: [ master ]
@@ -16,10 +20,12 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.x
+        dotnet-version: ${{ env.dotnet-version }}
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build 
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: List VM folders
+      run: ls -la
