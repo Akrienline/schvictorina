@@ -9,6 +9,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 using Telegram.Bot.Types;
 using System.Collections.Generic;
 using System.IO;
+using SchVictorina.Utilites;
 
 namespace SchVictorina
 {
@@ -31,51 +32,32 @@ namespace SchVictorina
                     #region questionSolving
                     if (update.CallbackQuery.Data.StartsWith("mathengine-"))
                     {
-                        var request = update.CallbackQuery.Data.Substring(11).Split('.');
-
-                        var rightAnwser = request[0];
-                        var userAnwser = request[1];
-                        if (rightAnwser == userAnwser)
+                        //await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Правильно 👍");
+                        ConvertUtilites.FromCallbackQueryToTrueOrFalse(update.CallbackQuery.Data);
                         {
-                            if (CorrectAnswerCount.ContainsKey(update.CallbackQuery.From.Id))
-                                CorrectAnswerCount[update.CallbackQuery.From.Id] += 1;
-                            else
-                                CorrectAnswerCount[update.CallbackQuery.From.Id] = 1;
-
-                            await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Правильно 👍");
-
-                            if (CorrectAnswerCount[update.CallbackQuery.From.Id] % 5 == 0)
+                            var rightOrFalse = ConvertUtilites.FromCallbackQueryToTrueOrFalse(update.CallbackQuery.Data);
+                            if (rightOrFalse == true)
                             {
-                                await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Молодец, получена очередная пятёрка из правильных ответов!");
-                                await botClient.SendPhotoAsync(update.CallbackQuery.Message.Chat.Id, new Telegram.Bot.Types.InputFiles.InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes("gift.jpg"))));
+                                if (CorrectAnswerCount.ContainsKey(update.CallbackQuery.From.Id))
+                                    CorrectAnswerCount[update.CallbackQuery.From.Id] += 1;
+                                else
+                                    CorrectAnswerCount[update.CallbackQuery.From.Id] = 1;
+                                if (CorrectAnswerCount[update.CallbackQuery.From.Id] % 5 == 0)
+                                {
+                                    await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Молодец, получена очередная пятёрка из правильных ответов!");
+                                    await botClient.SendPhotoAsync(update.CallbackQuery.Message.Chat.Id, new Telegram.Bot.Types.InputFiles.InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes("gift.jpg"))));
+                                }
                             }
-
-                            BaseEngine engine = new MathEngine();
-                            var question = engine.GenerateQuestion();
-                            await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, question.Question, replyMarkup: new InlineKeyboardMarkup(
-                            new[]
+                            else
                             {
-                                InlineKeyboardButton.WithCallbackData(question.AnswerOptions[0].ToString(), "mathengine-" + question.RightAnswer + "." + question.AnswerOptions[0].ToString() + "." + question.Question),
-                                InlineKeyboardButton.WithCallbackData(question.AnswerOptions[1].ToString(), "mathengine-" + question.RightAnswer + "." + question.AnswerOptions[1].ToString() + "." + question.Question),
-                                InlineKeyboardButton.WithCallbackData(question.AnswerOptions[2].ToString(), "mathengine-" + question.RightAnswer + "." + question.AnswerOptions[2].ToString() + "." + question.Question)
-                            }));
-                            //engine.GenerateQuestion().UIQuestion
-                        }
-                        else
-                        {
-                            CorrectAnswerCount[update.CallbackQuery.From.Id] = 0;
+                                CorrectAnswerCount[update.CallbackQuery.From.Id] = 0;
 
-                            await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Неправильно, попрубой это:");
-                            BaseEngine engine = new MathEngine();
-                            var question = engine.GenerateQuestion();
-                            await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, question.Question, replyMarkup: new InlineKeyboardMarkup(
-                            new[]
-                            {
-                                InlineKeyboardButton.WithCallbackData(question.AnswerOptions[0].ToString(), "mathengine-" +question.RightAnswer + "." + question.AnswerOptions[0].ToString() + "." + question.Question),
-                                InlineKeyboardButton.WithCallbackData(question.AnswerOptions[1].ToString(), "mathengine-" +question.RightAnswer + "." + question.AnswerOptions[1].ToString() + "." + question.Question),
-                                InlineKeyboardButton.WithCallbackData(question.AnswerOptions[2].ToString(), "mathengine-" +question.RightAnswer + "." + question.AnswerOptions[2].ToString() + "." + question.Question)
-                            }));
-                        }
+                                await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Неправильно, попрубой это:");
+                                BaseEngine engine = new MathEngine();
+                                var question = engine.GenerateQuestion();
+                                var keyboard2 = question.GetKeyboard(question);
+                                await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, question.Question, replyMarkup: keyboard2);
+                            }
                         //await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, $"Мы получили данный запрос: {request}");
                     }
                     else if (update.CallbackQuery.Data.StartsWith("temperatureengine-"))
@@ -88,18 +70,8 @@ namespace SchVictorina
                     {
                         BaseEngine engine = new MathEngine();
                         var question = engine.GenerateQuestion();
-                        if (question.AnswerOptions != null)
-                            await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, question.Question, replyMarkup: new InlineKeyboardMarkup(
-                            new[]
-                            {
-                                InlineKeyboardButton.WithCallbackData(question.AnswerOptions[0].ToString(), "mathengine-" + question.RightAnswer + "." + question.AnswerOptions[0].ToString()),
-                                InlineKeyboardButton.WithCallbackData(question.AnswerOptions[1].ToString(), "mathengine-" + question.RightAnswer + "." + question.AnswerOptions[1].ToString()),
-                                InlineKeyboardButton.WithCallbackData(question.AnswerOptions[2].ToString(), "mathengine-" + question.RightAnswer + "." + question.AnswerOptions[2].ToString())
-                            }));
-                        else
-                        {
-                            await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, question.Question);
-                        }
+                        var keyboard3 = question.GetKeyboard(question);
+                        await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, question.Question, replyMarkup: keyboard3);
 
                     }
                     else if (update.CallbackQuery.Data == "temperature")

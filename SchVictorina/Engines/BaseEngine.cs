@@ -1,6 +1,8 @@
 ﻿using System;
+using Telegram.Bot.Types.ReplyMarkups;
 using System.Collections.Generic;
 using System.Text;
+using SchVictorina.Utilites;
 
 namespace SchVictorina
 {
@@ -10,6 +12,10 @@ namespace SchVictorina
         //public string IVQuestion { get; set; }
         public object RightAnswer { get; set; }
         public object[] AnswerOptions { get; set; }
+        public InlineKeyboardMarkup GetKeyboard(TaskInfo question)
+        {
+            return ConvertUtilites.FromAnswerOptionsToKeyboardMarkup(question);
+        } 
     }
     public abstract class BaseEngine
     {
