@@ -1,9 +1,5 @@
 name: .NET
 
-env: 
-   name: dotnet-version
-   value: 3.1.x
-
 on:
   push:
     branches: [ master ]
@@ -12,18 +8,22 @@ on:
 
 
 jobs:
-  build:
-    
+  preparing:
     runs-on: ubuntu-latest
-
     steps:
-    - name: GitHub Push
+    - name: GitHub Push Install
       uses: ad-m/github-push-action@v0.6.0
+    - name: Git Clone
     - uses: actions/checkout@v2
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: ${{ env.dotnet-version }}
+        dotnet-version: 3.1.x
+
+  build:
+    runs-on: ubuntu-latest
+    needs: preparing
+    steps:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
