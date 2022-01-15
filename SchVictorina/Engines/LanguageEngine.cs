@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Victorina;
 
-namespace Victorina.Engines
+namespace SchVictorina.Engines
 {
     public class LanguageEngine : BaseEngine
     {
