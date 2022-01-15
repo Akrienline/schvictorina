@@ -1,8 +1,10 @@
-﻿using System;
+﻿using SchVictorina.Utilites;
+using System;
 using System.Linq;
 
 namespace SchVictorina.Engines
 {
+    [Engine("math", "Математика")]
     public class MathEngine : BaseEngine
     {
         private static Random random = new Random();

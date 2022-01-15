@@ -7,6 +7,7 @@ using System.Globalization;
 
 namespace SchVictorina.Engines
 {
+    [Engine("temperature", "Температура")]
     internal class TemperatureEngine : BaseEngine
     {
         private static double? GetActualTemperature(int stationId)

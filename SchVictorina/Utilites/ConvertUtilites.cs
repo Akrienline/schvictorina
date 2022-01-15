@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Linq;
+using SchVictorina.Engines;
 using Telegram.Bot.Types.ReplyMarkups;
+using Telegram.Bot.Types;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,6 +10,21 @@ namespace SchVictorina.Utilites
 {
     internal static class ConvertUtilites
     {
+        public static string GetTextEngineByQuery(string query)
+        {
+            var querySplit = query.Split('-');
+            return querySplit[0];
+        }
+
+        public static ChatId GetChatId(this Update update)
+        {
+            if (update.Type == Telegram.Bot.Types.Enums.UpdateType.CallbackQuery)
+                return update.CallbackQuery.Message.Chat.Id;
+            else if (update.Type == Telegram.Bot.Types.Enums.UpdateType.Message)
+                return update.Message.Chat.Id;
+            else 
+                return null;
+        }
         public static string FindSubstring(this string text, string from, string to)
         {
             var startIndex = text.IndexOf(from);
@@ -15,33 +33,33 @@ namespace SchVictorina.Utilites
             var result = text.Substring(startIndex, endIndex - startIndex);
             return result;
         }
-        public static InlineKeyboardMarkup FromAnswerOptionsToKeyboardMarkup(TaskInfo question)
+        public static InlineKeyboardMarkup FromAnswerOptionsToKeyboardMarkup(TaskInfo question, BaseEngine baseEngine)
         {
-            if (question.AnswerOptions != null)
+            var apiName = ((EngineAttribute)baseEngine.GetType().GetCustomAttributes(typeof(EngineAttribute), true)[0]).ApiName;
+
+            return new[]
             {
-                var allButtons = new List<List<InlineKeyboardButton>>();
-                var buttonsRow1 = new List<InlineKeyboardButton>();
-                var buttonsRow2 = new List<InlineKeyboardButton>();
-                var logoutButton = InlineKeyboardButton.WithCallbackData("Выйти", "logout");
-                buttonsRow1.Add(logoutButton);
-                foreach (var option in question.AnswerOptions)
+                question.AnswerOptions != null && question.AnswerOptions.Any()
+                    ? question.AnswerOptions.Select(option =>
+                    {
+                        return InlineKeyboardButton.WithCallbackData(option.ToString(), $"{apiName}-{question.RightAnswer}.{option}");
+                    })
+                    : null,
+                new []
                 {
-                    buttonsRow2.Add(InlineKeyboardButton.WithCallbackData(option.ToString(), question.RightAnswer + "." + option.ToString()));
+                    InlineKeyboardButton.WithCallbackData("Выйти", $"{apiName}-mainmenu"),
+                    InlineKeyboardButton.WithCallbackData("Пропустить", $"{apiName}-skip")
                 }
-                IEnumerable<InlineKeyboardButton> row1 = buttonsRow1;
-                IEnumerable<InlineKeyboardButton> row2 = buttonsRow2;
-                IEnumerable<IEnumerable<InlineKeyboardButton>> allRows = new[] { row1, row2 };
-                return new InlineKeyboardMarkup(allRows);
-            }
-            else
-            {
-                var logoutButton = InlineKeyboardButton.WithCallbackData("Выйти", "logout");
-                return new InlineKeyboardMarkup(logoutButton);
-            }
+            }.Where(x => x != null).ToArray();
+        }
+        public static string RemoveEngineAlias(string query)
+        {
+            var preParsedQueryA = query.Split('-');
+            return query.Substring(preParsedQueryA[1].Length);
         }
         public static bool FromCallbackQueryToTrueOrFalse(string query)
         {
-            var parsedQuery = query.Split('.');
+            var parsedQuery = query.Substring(query.IndexOf('-') + 1).Split('.');
             var rightAnswer = parsedQuery[0];
             var userAnswer = parsedQuery[1];
             if (rightAnswer == userAnswer)

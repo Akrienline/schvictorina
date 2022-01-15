@@ -10,6 +10,7 @@ using Telegram.Bot.Types;
 using System.Collections.Generic;
 using System.IO;
 using SchVictorina.Utilites;
+using Telegram.Bot.Types.Enums;
 
 namespace SchVictorina
 {
@@ -25,79 +26,69 @@ namespace SchVictorina
                 throw new NotImplementedException();
             }
 
+            private Task GenerateQuestionAndSend(ITelegramBotClient botClient, Update update, string engineApiName)
+            {
+                engineApiName = engineApiName.Split('-')[0];
+                var engineType = BaseEngine.AllEngineTypes.First(x => x.Key.ApiName == engineApiName).Value;
+                var engine = (BaseEngine)Activator.CreateInstance(engineType);
+                var question = engine.GenerateQuestion();
+                var keyboard = ConvertUtilites.FromAnswerOptionsToKeyboardMarkup(question, engine);
+                return botClient.SendTextMessageAsync(update.GetChatId(), question.Question, replyMarkup: keyboard);
+            }
+            private Task GenerateMenuAndSend(ITelegramBotClient botClient, Update update)
+            {
+                return botClient.SendTextMessageAsync(update.GetChatId(), "Выбери тему задания:",
+                        replyMarkup: new InlineKeyboardMarkup(
+                            BaseEngine.AllEngineTypes.Select(x => InlineKeyboardButton.WithCallbackData(x.Key.UIName, x.Key.ApiName))
+                            )
+                        );
+            }
+
             public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
             {
-                if (update.Type == Telegram.Bot.Types.Enums.UpdateType.CallbackQuery)
+                if (update.Type == UpdateType.CallbackQuery)
                 {
-                    #region questionSolving
-                    if (update.CallbackQuery.Data.StartsWith("mathengine-"))
+                    if (BaseEngine.AllEngineTypes.Select(x => x.Key.ApiName).Contains(update.CallbackQuery.Data)) //selected engine
                     {
-                        //await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Правильно 👍");
-                        ConvertUtilites.FromCallbackQueryToTrueOrFalse(update.CallbackQuery.Data);
+                        await GenerateQuestionAndSend(botClient, update, update.CallbackQuery.Data);
+                    }
+                    else if (BaseEngine.AllEngineTypes.Any(x => update.CallbackQuery.Data.StartsWith(x.Key.ApiName + "-"))) //got answer
+                    {
+                        if (update.CallbackQuery.Data.EndsWith("mainmenu"))
                         {
-                            var rightOrFalse = ConvertUtilites.FromCallbackQueryToTrueOrFalse(update.CallbackQuery.Data);
-                            if (rightOrFalse == true)
-                            {
-                                if (CorrectAnswerCount.ContainsKey(update.CallbackQuery.From.Id))
-                                    CorrectAnswerCount[update.CallbackQuery.From.Id] += 1;
-                                else
-                                    CorrectAnswerCount[update.CallbackQuery.From.Id] = 1;
-                                if (CorrectAnswerCount[update.CallbackQuery.From.Id] % 5 == 0)
-                                {
-                                    await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Молодец, получена очередная пятёрка из правильных ответов!");
-                                    await botClient.SendPhotoAsync(update.CallbackQuery.Message.Chat.Id, new Telegram.Bot.Types.InputFiles.InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes("gift.jpg"))));
-                                }
-                            }
+                            await GenerateMenuAndSend(botClient, update);
+                        }
+                        else if (update.CallbackQuery.Data.EndsWith("skip"))
+                        {
+                            await GenerateQuestionAndSend(botClient, update, update.CallbackQuery.Data);
+                        }
+                        else
+                        {
+                            var result = ConvertUtilites.FromCallbackQueryToTrueOrFalse(update.CallbackQuery.Data);
+                            if (result)
+                                await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Правильно👍");
                             else
-                            {
-                                CorrectAnswerCount[update.CallbackQuery.From.Id] = 0;
+                                await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Неправильно, попробуй это:");
 
-                                await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Неправильно, попрубой это:");
-                                BaseEngine engine = new MathEngine();
-                                var question = engine.GenerateQuestion();
-                                var keyboard2 = question.GetKeyboard(question);
-                                await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, question.Question, replyMarkup: keyboard2);
-                            }
-                        //await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, $"Мы получили данный запрос: {request}");
-                    }
-                    else if (update.CallbackQuery.Data.StartsWith("temperatureengine-"))
-                    {
-
-                    }
-                    #endregion
-                    #region newQuestion
-                    else if (update.CallbackQuery.Data == "math")
-                    {
-                        BaseEngine engine = new MathEngine();
-                        var question = engine.GenerateQuestion();
-                        var keyboard3 = question.GetKeyboard(question);
-                        await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, question.Question, replyMarkup: keyboard3);
-
-                    }
-                    else if (update.CallbackQuery.Data == "temperature")
-                    {
-                        await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Данная тема задания в разработке😥");
+                            await GenerateQuestionAndSend(botClient, update, update.CallbackQuery.Data);
+                        }
                     }
                     else
                         await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, $"Ошибка, мы не смогли распознать сообщение: \"{update.CallbackQuery.Data}\" 🤕");
                 }
-                else if (update.Type == Telegram.Bot.Types.Enums.UpdateType.Message)
+                else if (update.Type == UpdateType.Message)
                 {
-                    await botClient.SendTextMessageAsync(update.Message.Chat.Id, "Выбери тему задания:",
-                        replyMarkup: new InlineKeyboardMarkup(
-                            new[]
-                            {
-                                InlineKeyboardButton.WithCallbackData("Математика", "math"),
-                                InlineKeyboardButton.WithCallbackData("Температура", "temperature")
-                            }));
+                    await GenerateMenuAndSend(botClient, update);
                 }
-                #endregion 
             }
 
         }
 
         static async Task Main(string[] args)
         {
+            //var translator = new GoogleTranslateFreeApi.GoogleTranslator();
+            //var r = await translator.TranslateAsync("Привет", GoogleTranslateFreeApi.Language.Russian, GoogleTranslateFreeApi.Language.English);
+
             TelegramBotClient client = new TelegramBotClient("5037954922:AAEOOG51TDnR6nK9Zb9EZAhn0RZWgbQ1eS8");
             //var a = client.TestApiAsync().Result;
             //client.OnMessage += async (object sender, MessageEventArgs messageEventArgs) =>
