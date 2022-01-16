@@ -9,7 +9,7 @@ using SchVictorina.Utilites;
 
 namespace SchVictorina.Engines
 {
-    [Engine("language", "Угадай язык")]
+    //[Engine("language", "Угадай язык")]
     public class LanguageEngine : BaseEngine
     {
         static Random random = new Random();
