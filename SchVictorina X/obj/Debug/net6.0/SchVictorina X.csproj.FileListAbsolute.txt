@@ -1,0 +1,5 @@
+C:\Users\kimsite\source\repos\SchVictorina\SchVictorina X\obj\Debug\net6.0\SchVictorina X.csproj.AssemblyReference.cache
+C:\Users\kimsite\source\repos\SchVictorina\SchVictorina X\obj\Debug\net6.0\SchVictorina X.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\kimsite\source\repos\SchVictorina\SchVictorina X\obj\Debug\net6.0\SchVictorina X.AssemblyInfoInputs.cache
+C:\Users\kimsite\source\repos\SchVictorina\SchVictorina X\obj\Debug\net6.0\SchVictorina X.AssemblyInfo.cs
+C:\Users\kimsite\source\repos\SchVictorina\SchVictorina X\obj\Debug\net6.0\SchVictorina X.csproj.CoreCompileInputs.cache

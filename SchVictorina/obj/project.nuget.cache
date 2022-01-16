@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "CFKSqgyW7q4+X/LrzD4LgPxMxIX0sCmAKrofWFdmdeVi2OzoAxBR2kzMWxYeSvVZcYrzjioljqEopBYbyC311g==",
+  "dgSpecHash": "3QI6SlYOldZ8fVIoTjj01nHHVsg9zbyJ28BowB4R31zWnmWzW/Dfh8Fp3D2AQWBOc2zy6aX1Ae9j75/NZxZdrA==",
   "success": true,
   "projectFilePath": "C:\\Users\\kimsite\\source\\repos\\SchVictorina\\SchVictorina\\SchVictorina.csproj",
   "expectedPackageFiles": [
@@ -81,7 +81,9 @@
     "C:\\Users\\kimsite\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\kimsite\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\kimsite\\.nuget\\packages\\telegram.bot\\17.0.0\\telegram.bot.17.0.0.nupkg.sha512",
-    "C:\\Users\\kimsite\\.nuget\\packages\\telegram.bot.extensions.polling\\1.0.2\\telegram.bot.extensions.polling.1.0.2.nupkg.sha512"
+    "C:\\Users\\kimsite\\.nuget\\packages\\telegram.bot.extensions.polling\\1.0.2\\telegram.bot.extensions.polling.1.0.2.nupkg.sha512",
+    "C:\\Users\\kimsite\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.22\\microsoft.netcore.app.host.win-x64.3.1.22.nupkg.sha512",
+    "C:\\Users\\kimsite\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.10\\microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512"
   ],
   "logs": []
 }

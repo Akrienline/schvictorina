@@ -30,7 +30,7 @@ namespace SchVictorina.Utilites
             var startIndex = text.IndexOf(from);
             var endIndex = text.IndexOf(to, startIndex);
             startIndex += from.Length;
-            var result = text.Substring(startIndex, endIndex - startIndex);
+            var result = text[startIndex..endIndex];
             return result;
         }
         public static InlineKeyboardMarkup FromAnswerOptionsToKeyboardMarkup(TaskInfo question, BaseEngine baseEngine)
@@ -55,11 +55,11 @@ namespace SchVictorina.Utilites
         public static string RemoveEngineAlias(string query)
         {
             var preParsedQueryA = query.Split('-');
-            return query.Substring(preParsedQueryA[1].Length);
+            return query[preParsedQueryA[1].Length..];
         }
         public static bool FromCallbackQueryToTrueOrFalse(string query)
         {
-            var parsedQuery = query.Substring(query.IndexOf('-') + 1).Split('.');
+            var parsedQuery = query[(query.IndexOf('-') + 1)..].Split('.');
             var rightAnswer = parsedQuery[0];
             var userAnswer = parsedQuery[1];
             if (rightAnswer == userAnswer)

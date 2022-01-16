@@ -1,5 +1,4 @@
-﻿using SchVictorina.Utilites;
-using System;
+﻿using System;
 using System.Linq;
 
 namespace SchVictorina.Engines
@@ -7,7 +6,7 @@ namespace SchVictorina.Engines
     [Engine("math", "Математика")]
     public class MathEngine : BaseEngine
     {
-        private static Random random = new Random();
+        private static readonly Random random = new Random();
         public int MaxAnswerValue = 100;
 
         public override TaskInfo GenerateQuestion()

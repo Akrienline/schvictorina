@@ -14,10 +14,8 @@ using Telegram.Bot.Types.Enums;
 
 namespace SchVictorina
 {
-
-    class Program
+    public static class Program
     {
-        static Dictionary<long, int> CorrectAnswerCount = new Dictionary<long, int>();
 
         class MainUpdateHandler : IUpdateHandler
         {
@@ -46,6 +44,7 @@ namespace SchVictorina
 
             public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
             {
+                
                 if (update.Type == UpdateType.CallbackQuery)
                 {
                     if (BaseEngine.AllEngineTypes.Select(x => x.Key.ApiName).Contains(update.CallbackQuery.Data)) //selected engine
@@ -66,7 +65,10 @@ namespace SchVictorina
                         {
                             var result = ConvertUtilites.FromCallbackQueryToTrueOrFalse(update.CallbackQuery.Data);
                             if (result)
+                            {
                                 await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Правильно👍");
+
+                            }
                             else
                                 await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Неправильно, попробуй это:");
 
@@ -84,7 +86,7 @@ namespace SchVictorina
 
         }
 
-        static async Task Main(string[] args)
+        public static async Task Main()
         {
             //var translator = new GoogleTranslateFreeApi.GoogleTranslator();
             //var r = await translator.TranslateAsync("Привет", GoogleTranslateFreeApi.Language.Russian, GoogleTranslateFreeApi.Language.English);
@@ -131,19 +133,19 @@ namespace SchVictorina
         }
 
 
-        private static void WriteLine(string str, ConsoleColor? color)
-        {
-            if (!color.HasValue)
-            {
-                Console.WriteLine(str);
-            }
-            else
-            {
-                var defaultColor = Console.ForegroundColor;
-                Console.ForegroundColor = color.Value;
-                Console.WriteLine(str);
-                Console.ForegroundColor = defaultColor;
-            }
-        }
+        //private static void WriteLine(string str, ConsoleColor? color)
+        //{
+        //    if (!color.HasValue)
+        //    {
+        //        Console.WriteLine(str);
+        //    }
+        //    else
+        //    {
+        //        var defaultColor = Console.ForegroundColor;
+        //        Console.ForegroundColor = color.Value;
+        //        Console.WriteLine(str);
+        //        Console.ForegroundColor = defaultColor;
+        //    }
+        //}
     }
 }

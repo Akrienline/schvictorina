@@ -9,7 +9,8 @@ C:\Users\kimsite\source\repos\SchVictorina\SchVictorina\bin\Debug\netcoreapp3.1\
 C:\Users\kimsite\source\repos\SchVictorina\SchVictorina\bin\Debug\netcoreapp3.1\System.Threading.Channels.dll
 C:\Users\kimsite\source\repos\SchVictorina\SchVictorina\bin\Debug\netcoreapp3.1\Telegram.Bot.dll
 C:\Users\kimsite\source\repos\SchVictorina\SchVictorina\bin\Debug\netcoreapp3.1\Telegram.Bot.Extensions.Polling.dll
-C:\Users\kimsite\source\repos\SchVictorina\SchVictorina\obj\Debug\netcoreapp3.1\SchVictorina.csprojAssemblyReference.cache
+C:\Users\kimsite\source\repos\SchVictorina\SchVictorina\obj\Debug\netcoreapp3.1\SchVictorina.csproj.AssemblyReference.cache
+C:\Users\kimsite\source\repos\SchVictorina\SchVictorina\obj\Debug\netcoreapp3.1\SchVictorina.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\kimsite\source\repos\SchVictorina\SchVictorina\obj\Debug\netcoreapp3.1\SchVictorina.AssemblyInfoInputs.cache
 C:\Users\kimsite\source\repos\SchVictorina\SchVictorina\obj\Debug\netcoreapp3.1\SchVictorina.AssemblyInfo.cs
 C:\Users\kimsite\source\repos\SchVictorina\SchVictorina\obj\Debug\netcoreapp3.1\SchVictorina.csproj.CoreCompileInputs.cache

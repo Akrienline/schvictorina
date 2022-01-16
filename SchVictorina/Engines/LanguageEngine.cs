@@ -10,7 +10,7 @@ using SchVictorina.Utilites;
 namespace SchVictorina.Engines
 {
     //[Engine("language", "Угадай язык")]
-    public class LanguageEngine : BaseEngine
+    public class LanguageEngine// : BaseEngine
     {
         static Random random = new Random();
         public static string RandomText()
@@ -71,7 +71,7 @@ namespace SchVictorina.Engines
             return result.MergedTranslation;
 
         }
-        public override TaskInfo GenerateQuestion()
+        public static TaskInfo GenerateQuestion()
         {
             var randomText = RandomText();
             var randomLang = RandomLang();

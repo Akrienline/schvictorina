@@ -15,8 +15,18 @@ namespace SchVictorina.Utilites
                 1 => '+',
                 2 => '-',
                 3 => '*',
-                _ => ':'
+                4 => ':',
+                _ => ' '
             };
+
+            //switch (randomInt)
+            //{
+            //    case 1: return '+';
+            //    case 2: return '-';
+            //    case 3: return '*';
+            //    case 4: return ':';
+            //    default: return ' ' ;
+            //};
         }
         public static char GetOperator(string example)
         {
@@ -55,11 +65,11 @@ namespace SchVictorina.Utilites
             else
                 return int1 / int2;
         }
-        public static object[] GetAnswerOptions(int rightAnswer)
+        public static object[] GetAnswerOptions(int rightAnswer, int tolerance)
         {
             var random = new Random();
-            var random2 = random.Next(maxValue: 6);
-            var random3 = random.Next(maxValue: 6);
+            var random2 = random.Next(maxValue: tolerance + 1);
+            var random3 = random.Next(maxValue: tolerance - 1);
             var randomO2 = GetRandomOperator();
             var randomO3 = GetRandomOperator();
             if (random2 == 0)
@@ -70,5 +80,19 @@ namespace SchVictorina.Utilites
             var answer3 = AnswerByExample(random3, randomO3, random2);
             return new object[] { answer1, rightAnswer, answer3 };
         }
+        public static object[] GetAnswerOptionsWithShifts(int rightAnswer, int shift)
+        {
+            return new object[] { rightAnswer - shift, rightAnswer, rightAnswer + shift };
+        }
     }
 }
+
+
+// x, x-1, x+1
+// x-2, x-1, x
+// x, x+1, x+2
+
+// (x-s+y), (x+y), (x+s+y)
+// x = rightAnswer
+// s = shift
+// y = random { -shift, 0, +shift }

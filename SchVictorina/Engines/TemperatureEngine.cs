@@ -21,18 +21,11 @@ namespace SchVictorina.Engines
         public override TaskInfo GenerateQuestion()
         {
             var nskTemperature = GetActualTemperature(29637); //Температура в Новосибирске
-            var iskTemperature = GetActualTemperature(29730); //Температура в Искитиме
-            var tlmTemperature = GetActualTemperature(29630); //Температура около Толмачёво
             return new TaskInfo
             {
                 Question = "Какая погода сейчас в новосибирске (в центре)?",
                 //IVQuestion = $"{nskTemperature}{iskTemperature}{tlmTemperature}",
-                AnswerOptions = new object[]
-                {
-                    tlmTemperature.ToString(),
-                    iskTemperature.ToString(),
-                    nskTemperature.ToString()
-                },
+                AnswerOptions = MathUtilites.GetAnswerOptions(Convert.ToInt32(nskTemperature), 5),
                 RightAnswer = nskTemperature.ToString()
             };
         }
