@@ -40,7 +40,10 @@ namespace SchVictorina_WebAPI.Engines
             XmlReaderSettings settings = new();
             settings.IgnoreWhitespace = true;
             settings.Async = true;
+            XmlSerializer serializer = new
+            XmlSerializer(typeof(BaseButton[]));
             var reader = XmlReader.Create(fs, settings);
+            return (BaseButton[])serializer.Deserialize(fs);
         }
         //public static BaseButton[] Deserialize(XmlReader xmlReader)
         //{

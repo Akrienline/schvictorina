@@ -78,12 +78,20 @@ namespace SchVictorina_WebAPI
 
         public static async Task Main()
         {
-            TelegramBotClient botClient = new("5037954922:AAEOOG51TDnR6nK9Zb9EZAhn0RZWgbQ1eS8");
 
-            var reciever = new DefaultUpdateReceiver(botClient);
-            await reciever.ReceiveAsync(new TelegramHandlers.MainUpdateHandler());
-            Console.ReadKey();
+            TelegramBotClient botClient = new("5037954922:AAEOOG51TDnR6nK9Zb9EZAhn0RZWgbQ1eS8"); //5037954922:AAEOOG51TDnR6nK9Zb9EZAhn0RZWgbQ1eS8
+            if (botClient.TestApiAsync().Result == false)
+            {
+                Console.WriteLine("Telegram bot's token is invalid!");
+                Console.ReadKey();
+            }
+            else
+            {
+                var reciever = new DefaultUpdateReceiver(botClient);
+                await reciever.ReceiveAsync(new TelegramHandlers.MainUpdateHandler());
 
+                Console.ReadKey();
+            }
             //while (true)
             //{
             //    var task = engine.GenerateQuestion();
