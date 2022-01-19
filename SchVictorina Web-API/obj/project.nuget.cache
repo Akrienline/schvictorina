@@ -1,19 +1,19 @@
 {
   "version": 2,
-  "dgSpecHash": "fY9ihk85xbXKtZyYKD2JYo519WZA739b69howuYToIUcdd4saX739Mj7mzGSdUE10kO88iTQ0EIbuzcJCvyFUg==",
+  "dgSpecHash": "V4s83mqn10G8sxGX324Vn9Iuj45802EqvHOwL7mDJPJKIaZqSboD7sbrGxecfPeEgf4nIYUL5Ci28o2mQXcxgw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\kimsite\\source\\repos\\SchVictorina\\SchVictorina Web-API\\SchVictorina WebAPI.csproj",
+  "projectFilePath": "C:\\Users\\aleka\\source\\repos\\schvictorina\\SchVictorina Web-API\\SchVictorina WebAPI.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\kimsite\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
-    "C:\\Users\\kimsite\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
-    "C:\\Users\\kimsite\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512",
-    "C:\\Users\\kimsite\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
-    "C:\\Users\\kimsite\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
-    "C:\\Users\\kimsite\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
-    "C:\\Users\\kimsite\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512",
-    "C:\\Users\\kimsite\\.nuget\\packages\\system.threading.channels\\6.0.0\\system.threading.channels.6.0.0.nupkg.sha512",
-    "C:\\Users\\kimsite\\.nuget\\packages\\telegram.bot\\17.0.0\\telegram.bot.17.0.0.nupkg.sha512",
-    "C:\\Users\\kimsite\\.nuget\\packages\\telegram.bot.extensions.polling\\1.0.2\\telegram.bot.extensions.polling.1.0.2.nupkg.sha512"
+    "C:\\Users\\aleka\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\aleka\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\aleka\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512",
+    "C:\\Users\\aleka\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "C:\\Users\\aleka\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "C:\\Users\\aleka\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "C:\\Users\\aleka\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512",
+    "C:\\Users\\aleka\\.nuget\\packages\\system.threading.channels\\6.0.0\\system.threading.channels.6.0.0.nupkg.sha512",
+    "C:\\Users\\aleka\\.nuget\\packages\\telegram.bot\\17.0.0\\telegram.bot.17.0.0.nupkg.sha512",
+    "C:\\Users\\aleka\\.nuget\\packages\\telegram.bot.extensions.polling\\1.0.2\\telegram.bot.extensions.polling.1.0.2.nupkg.sha512"
   ],
   "logs": []
 }
