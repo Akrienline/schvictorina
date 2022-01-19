@@ -29,5 +29,11 @@
                                 .Where(x => x.IsSubclassOf(typeof(BaseEngine)))
                                 .ToDictionary(x => ((EngineAttribute)x.GetCustomAttributes(typeof(EngineAttribute), true)[0]),
                                                 x => x);
+
+    }
+    public abstract class Parameter
+    {
+        string Name;
+        object? Value;
     }
 }

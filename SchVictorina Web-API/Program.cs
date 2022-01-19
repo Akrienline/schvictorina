@@ -1,16 +1,6 @@
-﻿using System;
+﻿using SchVictorina_WebAPI.Utilites;
 using Telegram.Bot;
 using Telegram.Bot.Extensions.Polling;
-using System.Linq;
-using SchVictorina_WebAPI.Engines;
-using System.Threading;
-using System.Threading.Tasks;
-using Telegram.Bot.Types.ReplyMarkups;
-using Telegram.Bot.Types;
-using System.Collections.Generic;
-using System.IO;
-using SchVictorina_WebAPI.Utilites;
-using Telegram.Bot.Types.Enums;
 
 namespace SchVictorina_WebAPI
 {
@@ -88,30 +78,11 @@ namespace SchVictorina_WebAPI
 
         public static async Task Main()
         {
-            //var translator = new GoogleTranslateFreeApi.GoogleTranslator();
-            //var r = await translator.TranslateAsync("Привет", GoogleTranslateFreeApi.Language.Russian, GoogleTranslateFreeApi.Language.English);
-
             TelegramBotClient botClient = new("5037954922:AAEOOG51TDnR6nK9Zb9EZAhn0RZWgbQ1eS8");
-            //var a = client.TestApiAsync().Result;
-            //client.OnMessage += async (object sender, MessageEventArgs messageEventArgs) =>
-            //{
-            //    var message = messageEventArgs.Message;
-            //    if (message == null)
-            //        return;
-            //    await client.SendTextMessageAsync(message.Chat.Id, message.Text + " обхрюкано");
-            //};
+
             var reciever = new DefaultUpdateReceiver(botClient);
             await reciever.ReceiveAsync(new TelegramHandlers.MainUpdateHandler());
             Console.ReadKey();
-            //return;
-            //Func<ITelegramBotClient, Telegram.Bot.Types.Update, CancellationToken>
-            //var updateHandler = new DefaultUpdateHandler(Func<, Telegram.Bot.Types.Update, CancellationToken>);
-            //updateHandler
-            //var reciver = new DefaultUpdateReceiver(client);
-            //await reciver.ReceiveAsync(updateHandler)
-            //BaseEngine engine = new TemperatureEngine
-            //{
-            //};
 
             //while (true)
             //{
