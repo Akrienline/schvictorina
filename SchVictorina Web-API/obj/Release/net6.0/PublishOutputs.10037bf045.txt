@@ -1,0 +1,14 @@
+C:\Users\aleka\source\repos\schvictorina\SchVictorina Web-API\obj\Release\net6.0\PubTmp\Out\SchVictorina.WebAPI.exe
+C:\Users\aleka\source\repos\schvictorina\SchVictorina Web-API\obj\Release\net6.0\PubTmp\Out\appsettings.Development.json
+C:\Users\aleka\source\repos\schvictorina\SchVictorina Web-API\obj\Release\net6.0\PubTmp\Out\appsettings.json
+C:\Users\aleka\source\repos\schvictorina\SchVictorina Web-API\obj\Release\net6.0\PubTmp\Out\SchVictorina.WebAPI.dll
+C:\Users\aleka\source\repos\schvictorina\SchVictorina Web-API\obj\Release\net6.0\PubTmp\Out\SchVictorina.WebAPI.deps.json
+C:\Users\aleka\source\repos\schvictorina\SchVictorina Web-API\obj\Release\net6.0\PubTmp\Out\SchVictorina.WebAPI.runtimeconfig.json
+C:\Users\aleka\source\repos\schvictorina\SchVictorina Web-API\obj\Release\net6.0\PubTmp\Out\SchVictorina.WebAPI.pdb
+C:\Users\aleka\source\repos\schvictorina\SchVictorina Web-API\obj\Release\net6.0\PubTmp\Out\Microsoft.OpenApi.dll
+C:\Users\aleka\source\repos\schvictorina\SchVictorina Web-API\obj\Release\net6.0\PubTmp\Out\Newtonsoft.Json.dll
+C:\Users\aleka\source\repos\schvictorina\SchVictorina Web-API\obj\Release\net6.0\PubTmp\Out\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\aleka\source\repos\schvictorina\SchVictorina Web-API\obj\Release\net6.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\aleka\source\repos\schvictorina\SchVictorina Web-API\obj\Release\net6.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\aleka\source\repos\schvictorina\SchVictorina Web-API\obj\Release\net6.0\PubTmp\Out\Telegram.Bot.dll
+C:\Users\aleka\source\repos\schvictorina\SchVictorina Web-API\obj\Release\net6.0\PubTmp\Out\Telegram.Bot.Extensions.Polling.dll

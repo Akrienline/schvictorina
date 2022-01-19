@@ -1,4 +1,4 @@
-﻿namespace SchVictorina_WebAPI.Utilites
+﻿namespace SchVictorina.WebAPI.Utilites
 {
     public class MathUtilites
     {

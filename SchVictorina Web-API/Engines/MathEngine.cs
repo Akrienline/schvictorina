@@ -1,8 +1,8 @@
-﻿using SchVictorina_WebAPI.Utilites;
+﻿using SchVictorina.WebAPI.Utilites;
 using System;
 using System.Linq;
 
-namespace SchVictorina_WebAPI.Engines
+namespace SchVictorina.WebAPI.Engines
 {
     [Engine("math", "Математика")]
     public class MathEngine : BaseEngine

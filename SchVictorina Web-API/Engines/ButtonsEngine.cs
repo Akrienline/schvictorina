@@ -1,13 +1,15 @@
-﻿using SchVictorina_WebAPI;
+﻿using SchVictorina.WebAPI;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+using Telegram.Bot.Types.ReplyMarkups;
 
-namespace SchVictorina_WebAPI.Engines
+namespace SchVictorina.WebAPI.Engines
 {
     public class BaseButton
     {
         public string Text = "";
+        public string CallbackData = "";
     }
     public sealed class GroupButton : BaseButton
     {
@@ -45,6 +47,18 @@ namespace SchVictorina_WebAPI.Engines
             var reader = XmlReader.Create(fs, settings);
             return (BaseButton[])serializer.Deserialize(fs);
         }
+        //public static Task<InlineKeyboardMarkup> GetInlineKeyboard(BaseButton[] buttons)
+        //{
+            
+        //}
+        //public static Task<InlineKeyboardMarkup> GetInlineKeyboard(string filename)
+        //{
+        //    return GetInlineKeyboard(Deserialize(filename));
+        //}
+        //public static Task<InlineKeyboardButton> GetInlineButton(BaseButton button)
+        //{
+            
+        //}
         //public static BaseButton[] Deserialize(XmlReader xmlReader)
         //{
 

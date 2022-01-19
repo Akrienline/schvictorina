@@ -1,4 +1,4 @@
-﻿namespace SchVictorina_WebAPI
+﻿namespace SchVictorina.WebAPI
 {
     public class TaskInfo
     {
@@ -33,7 +33,7 @@
     }
     public abstract class Parameter
     {
-        string Name;
-        object? Value;
+        string Name = "";
+        object? Value = "";
     }
 }

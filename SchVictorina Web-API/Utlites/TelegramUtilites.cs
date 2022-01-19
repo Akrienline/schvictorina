@@ -1,12 +1,12 @@
 ﻿using System;
-using SchVictorina_WebAPI;
+using SchVictorina.WebAPI;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using Telegram.Bot.Extensions.Polling;
 using Telegram.Bot.Types.Enums;
 
-namespace SchVictorina_WebAPI.Utilites
+namespace SchVictorina.WebAPI.Utilites
 {
     public static class TelegramUtilites
     {

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "V4s83mqn10G8sxGX324Vn9Iuj45802EqvHOwL7mDJPJKIaZqSboD7sbrGxecfPeEgf4nIYUL5Ci28o2mQXcxgw==",
+  "dgSpecHash": "N5sbR3cai0pgAYWRyuucX9d71ShC6vTdA+roLNEvIwSIqzRf9C6FzzEwzRge87ibjnYhZpUiD1fn2O6+Cge9/w==",
   "success": true,
-  "projectFilePath": "C:\\Users\\aleka\\source\\repos\\schvictorina\\SchVictorina Web-API\\SchVictorina WebAPI.csproj",
+  "projectFilePath": "C:\\Users\\aleka\\source\\repos\\schvictorina\\SchVictorina Web-API\\SchVictorina.WebAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\aleka\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
     "C:\\Users\\aleka\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",

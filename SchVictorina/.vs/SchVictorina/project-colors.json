@@ -13,9 +13,14 @@
     },
     "2e790a15-e3df-42f4-a19d-0158db335e5a": {
       "ProjectGuid": "2e790a15-e3df-42f4-a19d-0158db335e5a",
-      "DisplayName": "SchVictorina WebAPI",
+      "DisplayName": "SchVictorina.WebAPI",
       "ColorIndex": 1
+    },
+    "d9b5ec28-9f9b-4eb4-9f6a-92dced3445c3": {
+      "ProjectGuid": "d9b5ec28-9f9b-4eb4-9f6a-92dced3445c3",
+      "DisplayName": "WebApplication1",
+      "ColorIndex": 2
     }
   },
-  "NextColorIndex": 2
+  "NextColorIndex": 3
 }
