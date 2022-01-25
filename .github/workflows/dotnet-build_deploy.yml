@@ -1,0 +1,28 @@
+name: Deployment
+
+on
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+        
+    - name: Publish to deploy
+      run:  dotnet publish SchVictorina.WebAPI.6.0|SchVictorina -p:PublishDir=.\publish --no-restore --version-suffix 6.0
+      
+    - name: ftp-action
+      uses: sebastianpopp/ftp-action@v2.0.0
+      with:
+        host: ${{ secrets.FTP_SERVER }}
+        user: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        localDir: "publish"
+        remoteDir: "bot"
+
