@@ -1,7 +1,7 @@
-name: .NET
+name: .NET - Publish & Deploy
 
 on:
-   realise
+   release
 
 jobs:
   build:
@@ -22,7 +22,8 @@ jobs:
       run: dotnet test --no-build --verbosity normal
     - name: ftp-action
       uses: sebastianpopp/ftp-action@v2.0.0
-      host: ${{ secrets.FTP_SERVER }}
+      with:
+        host: ${{ secrets.FTP_SERVER }}
         user: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         localDir: "publish"
