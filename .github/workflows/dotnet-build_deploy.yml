@@ -1,10 +1,7 @@
 name: .NET
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+   realise
 
 jobs:
   build:
@@ -16,10 +13,18 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
+        dotnet-version: 6.0.x
+        
+    - name: Test to deploy
+      run: dotnet test --verbosity normal
+
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: ftp-action
+      uses: sebastianpopp/ftp-action@v2.0.0
+      host: ${{ secrets.FTP_SERVER }}
+        user: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        localDir: "publish"
+        remoteDir: "bot"
+
