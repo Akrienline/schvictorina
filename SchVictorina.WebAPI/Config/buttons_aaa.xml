@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<buttons priority="10">
+	<group label="Клик 1">
+		<group label="Клик 1.1">
+			<group label="Клик 1.1.1" classid="SchVictorina.WebAPI.Engines.MathEngine">
+				<group label="Клик 1.1.1.1"></group>
+				<group label="Клик 1.1.1.2">
+					<engine label="1 класс">
+						<parameter id="Operators">+-</parameter>
+						<parameter id="MinAnswerValue">0</parameter>
+						<parameter id="MaxAnswerValue">20</parameter>
+					</engine>
+					<engine label="4 класс" from="2022-01-24" to="2022-01-25 18:40">
+						<parameter id="Operators">+-*/</parameter>
+						<parameter id="MinAnswerValue">100</parameter>
+						<parameter id="MaxAnswerValue">500</parameter>
+					</engine>
+				</group>
+			</group>
+		</group>
+		<group label="Клик 1.2">
+			<engine label="1 класс" classid="SchVictorina.WebAPI.Engines.MathEngine">
+				<parameter id="Operators">+-</parameter>
+				<parameter id="MinAnswerValue">0</parameter>
+				<parameter id="MaxAnswerValue">20</parameter>
+			</engine>
+			<engine label="4 класс" from="2022-01-24" to="2022-01-25 18:40" classid="SchVictorina.WebAPI.Engines.MathEngine">
+				<parameter id="Operators">+-*/</parameter>
+				<parameter id="MinAnswerValue">100</parameter>
+				<parameter id="MaxAnswerValue">500</parameter>
+			</engine>
+		</group>
+		<engine label="1 класс" classid="SchVictorina.WebAPI.Engines.MathEngine">
+			<parameter id="Operators">+-</parameter>
+			<parameter id="MinAnswerValue">0</parameter>
+			<parameter id="MaxAnswerValue">20</parameter>
+		</engine>
+		<engine label="4 класс" from="2022-01-24" to="2022-01-25 18:40" classid="SchVictorina.WebAPI.Engines.MathEngine">
+			<parameter id="Operators">+-*/</parameter>
+			<parameter id="MinAnswerValue">100</parameter>
+			<parameter id="MaxAnswerValue">500</parameter>
+		</engine>
+	</group>
+	<engine label="1 класс" classid="SchVictorina.WebAPI.Engines.MathEngine">
+		<parameter id="Operators">+-</parameter>
+		<parameter id="MinAnswerValue">0</parameter>
+		<parameter id="MaxAnswerValue">20</parameter>
+	</engine>
+	<engine label="4 класс" from="2022-01-24" to="2022-01-25 18:40" classid="SchVictorina.WebAPI.Engines.MathEngine">
+		<parameter id="Operators">+-*/</parameter>
+		<parameter id="MinAnswerValue">100</parameter>
+		<parameter id="MaxAnswerValue">500</parameter>
+	</engine>
+</buttons>

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "3Bjy8vqSur5lIieCodipG0VTpvrKFhTW/vv+IaVMhzJbaT9uw720CypWMH9Ux2TDLCEGwO/s9JM8gG1K4H1brw==",
+  "dgSpecHash": "haizkxy5UMYIV5v6uQwtK2xdiSLaE6pkB2XFz4H+7RKo1v8vGa7xJSLTbZoPhVrtuZs3YotfE8559RoxoQEc5Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\aleka\\source\\repos\\schvictorina\\SchVictorina\\SchVictorina.csproj",
+  "projectFilePath": "C:\\projects\\schvictorina\\src\\alekami649\\schvictorina\\SchVictorina\\SchVictorina.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\aleka\\.nuget\\packages\\googletranslatefreeapi\\1.1.1\\googletranslatefreeapi.1.1.1.nupkg.sha512",
     "C:\\Users\\aleka\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
@@ -81,11 +81,7 @@
     "C:\\Users\\aleka\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\aleka\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\aleka\\.nuget\\packages\\telegram.bot\\17.0.0\\telegram.bot.17.0.0.nupkg.sha512",
-    "C:\\Users\\aleka\\.nuget\\packages\\telegram.bot.extensions.polling\\1.0.2\\telegram.bot.extensions.polling.1.0.2.nupkg.sha512",
-    "C:\\Users\\aleka\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.22\\microsoft.netcore.app.host.win-x64.3.1.22.nupkg.sha512",
-    "C:\\Users\\aleka\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.10\\microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512",
-    "C:\\Users\\aleka\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.1.0\\microsoft.windowsdesktop.app.ref.3.1.0.nupkg.sha512",
-    "C:\\Users\\aleka\\.nuget\\packages\\microsoft.netcore.app.ref\\3.1.0\\microsoft.netcore.app.ref.3.1.0.nupkg.sha512"
+    "C:\\Users\\aleka\\.nuget\\packages\\telegram.bot.extensions.polling\\1.0.2\\telegram.bot.extensions.polling.1.0.2.nupkg.sha512"
   ],
   "logs": []
 }

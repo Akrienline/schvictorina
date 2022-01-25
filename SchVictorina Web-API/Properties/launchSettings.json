@@ -33,7 +33,7 @@
     },
     "IIS": {
       "commandName": "IIS",
-      "workingDirectory": "C:\\SchVictorina\\publish",
+      "workingDirectory": "C:\\projects\\schvictorina\\src\\alekami649\\schvictorina\\SchVictorina Web-API",
       "launchBrowser": true
     }
   }

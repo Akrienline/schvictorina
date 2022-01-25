@@ -88,7 +88,7 @@ namespace SchVictorina.WebAPI
             else
             {
                 Console.WriteLine("Telegram bot loading is successfully");
-                var reciever = new DefaultUpdateReceiver(botClient);
+                DefaultUpdateReceiver reciever = new(botClient);
                 await reciever.ReceiveAsync(new TelegramHandlers.MainUpdateHandler());
                 Console.ReadKey();
             }

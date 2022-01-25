@@ -1,8 +1,8 @@
 {
   "Version": 1,
-  "Hash": "QxZi4EZ2W27IaXQ9/JdS/APUc05+wgNZODShjv4q3SM=",
-  "Source": "SchVictorina.WebAPI",
-  "BasePath": "_content/SchVictorina.WebAPI",
+  "Hash": "WqaeMBG3lKSoJh7vbjIQjueUdWPRCn6hixKeLkAulTM=",
+  "Source": "SchVictorina.WebAPI.6.0",
+  "BasePath": "_content/SchVictorina.WebAPI.6.0",
   "Mode": "Default",
   "ManifestType": "Publish",
   "ReferencedProjectsConfiguration": [],

@@ -1,0 +1,152 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml.Serialization;
+
+namespace SchVictorina.WebAPI.Utilites
+{
+    public static class Config
+    {
+        private static ButtonRoot _buttonRoot;
+        private static Dictionary<string, BaseButton> _allButtons;
+
+        public static BaseButton GetButton(string id)
+        {
+            return AllButtons.ContainsKey(id) ? AllButtons[id] : null;
+        }
+
+        public static Dictionary<string, BaseButton> AllButtons
+        {
+            get
+            {
+                if (_allButtons == null)
+                {
+                    _allButtons = RootButton.Descendant.ToDictionary(x => x.ID, x => x);
+                }
+                return _allButtons;
+            }
+        }
+
+        public static ButtonRoot RootButton
+        {
+            get
+            {
+                if (_buttonRoot == null)
+                {
+                    _buttonRoot = new ButtonRoot
+                    {
+                        Children = Directory.GetFiles("Config", "buttons_*.xml")
+                                        .Select(xmlPath => File.ReadAllText(xmlPath).FromXml<ButtonRoot>())
+                                        .OrderBy(root => root.Priority)
+                                        .Where(root =>
+                                        {
+                                            root.ClassID = root.ClassID;
+                                            return true;
+                                        })
+                                        .SelectMany(root => root.Children)
+                                        .ToArray()
+                    };
+
+                    foreach (var button in _buttonRoot.Children)
+                        button.Parent = _buttonRoot;
+
+                    foreach (var pair in AllButtons)
+                    {
+                        if (pair.Value is GroupButton groupButton)
+                        {
+                            if (groupButton.Children != null)
+                            {
+                                foreach (var button in groupButton.Children)
+                                    button.Parent = groupButton;
+                            }
+                        }
+                    }
+                }
+                return _buttonRoot;
+            }
+        }
+    }
+
+    public abstract class BaseButton
+    {
+        [XmlAttribute("label")]
+        public string Label { get; set; }
+
+        [XmlIgnore]
+        internal readonly string ID = Guid.NewGuid().ToString("N");
+        [XmlIgnore]
+        internal GroupButton Parent { get; set; }
+    }
+    public interface IEnginableButton
+    {
+        string ClassID { get; set; }
+    }
+
+    public class GroupButton : BaseButton, IEnginableButton
+    {
+        [XmlElement("group", typeof(GroupButton))]
+        [XmlElement("engine", typeof(EngineButton))]
+        public BaseButton[] Children { get; set; }
+
+        internal IEnumerable<BaseButton> Descendant
+        {
+            get
+            {
+                if (Children == null)
+                    yield break;
+                foreach (var button in Children)
+                {
+                    yield return button;
+                    if (button is GroupButton groupButton)
+                    {
+                        foreach (var child in groupButton.Descendant)
+                            yield return child;
+                    }
+                }
+            }
+        }
+
+        private string _classID;
+        [XmlAttribute("classid")]
+        public string ClassID
+        {
+            get { return _classID; }
+            set
+            {
+                _classID = value;
+                if (string.IsNullOrEmpty(_classID))
+                    return;
+                if (Children == null)
+                    return;
+                foreach (var child in Children.OfType<IEnginableButton>()
+                                              .Where(x => !string.IsNullOrEmpty(x.ClassID)))
+                {
+                    child.ClassID = value;
+                }
+            }
+        }
+    }
+
+    [XmlRoot("buttons")]
+    public sealed class ButtonRoot: GroupButton
+    {
+        [XmlAttribute("priority")]
+        public int Priority { get; set; }
+    }
+    public sealed class EngineButton: BaseButton, IEnginableButton
+    {
+        [XmlAttribute("classid")]
+        public string ClassID { get; set; }
+        [XmlElement("parameter")]
+        public EngineParameter[] Parameters { get; set; }
+    }
+
+    public sealed class EngineParameter
+    {
+        [XmlAttribute("id")]
+        public string ID { get; set; }
+        [XmlText]
+        public string Value { get; set; }
+    }
+}
