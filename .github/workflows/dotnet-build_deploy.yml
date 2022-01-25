@@ -1,7 +1,6 @@
-name: .NET - Publish & Deploy
+name: .NET
 
-on:
-   release
+on
 
 jobs:
   build:
@@ -15,11 +14,9 @@ jobs:
       with:
         dotnet-version: 6.0.x
         
-    - name: Test to deploy
-      run: dotnet test --verbosity normal
-
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+    - name: Publish to deploy
+      run:  dotnet publish SchVictorina.WebAPI.6.0|SchVictorina -p:PublishDir=.\publish --no-restore --version-suffix 6.0
+      
     - name: ftp-action
       uses: sebastianpopp/ftp-action@v2.0.0
       with:
