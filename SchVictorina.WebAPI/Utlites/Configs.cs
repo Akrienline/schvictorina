@@ -120,7 +120,7 @@ namespace SchVictorina.WebAPI.Utilites
                 if (Children == null)
                     return;
                 foreach (var child in Children.OfType<IEnginableButton>()
-                                              .Where(x => !string.IsNullOrEmpty(x.ClassID)))
+                                              .Where(x => string.IsNullOrEmpty(x.ClassID)))
                 {
                     child.ClassID = value;
                 }
@@ -140,6 +140,35 @@ namespace SchVictorina.WebAPI.Utilites
         public string ClassID { get; set; }
         [XmlElement("parameter")]
         public EngineParameter[] Parameters { get; set; }
+
+        private BaseEngine _engine;
+        internal BaseEngine Engine
+        {
+            get
+            {
+                if (_engine == null)
+                {
+                    var engineType = Type.GetType(ClassID);
+                    if (engineType == null)
+                        return null;
+                    _engine = (BaseEngine)Activator.CreateInstance(engineType);
+                    if (Parameters != null)
+                    {
+                        foreach (var parameter in Parameters)
+                        {
+                            var property = engineType.GetProperty(parameter.ID);
+                            if (property != null)
+                            {
+                                var value = parameter.Value.ParseTo(property.PropertyType);
+                                if (value != null)
+                                    property.SetValue(_engine, value);
+                            }
+                        }
+                    }
+                }
+                return _engine;
+            }
+        }
     }
 
     public sealed class EngineParameter

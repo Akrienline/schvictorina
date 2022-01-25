@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
@@ -22,6 +23,13 @@ namespace SchVictorina.WebAPI.Utilites
             var serializer = new XmlSerializer(typeof(T));
             serializer.Serialize(memoryStream, obj);
             return Encoding.UTF8.GetString(memoryStream.ToArray());
+        }
+    }
+    public static class ConvertUtilities
+    {
+        public static object ParseTo(this string str, Type toType)
+        {
+            return Convert.ChangeType(str, toType, CultureInfo.InvariantCulture);
         }
     }
 }

@@ -8,7 +8,9 @@ namespace SchVictorina.WebAPI.Engines
     public class MathEngine : BaseEngine
     {
         private static readonly Random random = new Random();
-        public int MaxAnswerValue = 100;
+        public int MinAnswerValue { get; set; } = 0;
+        public int MaxAnswerValue { get; set; } = 100;
+        public string Operators { get; set; } = "+-*/";
 
         public override TaskInfo GenerateQuestion()
         {

@@ -28,10 +28,12 @@ namespace SchVictorina.WebAPI.Controllers
 
         static TelegramBotController()
         {
-            botClient = new TelegramBotClient("5226603528:AAFEtSHgTcOm3-5r3-EHW4ubcg0bfGdyIcI");
 #if DEBUG
+            botClient = new TelegramBotClient("5226603528:AAFEtSHgTcOm3-5r3-EHW4ubcg0bfGdyIcI");
             updateReceiver = new DefaultUpdateReceiver(botClient);
             updateReceiver.ReceiveAsync(new TelegramHandlers.MainUpdateHandler());
+#else
+            botClient = new TelegramBotClient("5226603528:AAFEtSHgTcOm3-5r3-EHW4ubcg0bfGdyIcI");
 #endif
         }
 
