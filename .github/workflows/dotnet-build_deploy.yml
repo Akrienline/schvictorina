@@ -1,6 +1,6 @@
 name: Deployment
 
-on: [release]
+on: [push]
 
 jobs:
   build:
@@ -16,6 +16,8 @@ jobs:
         
     - name: Check dotnet
       run: dotnet --info
+    - name: Check directory
+      run: ls -la
     - name: Publish to deploy
       run:  dotnet publish SchVictorina.WebAPI.csproj -p:PublishDir=publish --no-restore --version-suffix 6.0
     - name: Change directory (x2)
