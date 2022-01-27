@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<buttons priority="1" classid="SchVictorina.WebAPI.Engines.EnglishEngine">
+    <group label="Английсикий язык">
+        <engine label="Правильно ли?">
+            <parameter id="no">no</parameter>
+        </engine>
+    </group>
+</buttons>

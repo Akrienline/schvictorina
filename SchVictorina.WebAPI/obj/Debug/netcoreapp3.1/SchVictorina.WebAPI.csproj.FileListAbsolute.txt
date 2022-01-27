@@ -27,3 +27,4 @@ C:\projects\schvictorina\src\alekami649\schvictorina\SchVictorina.WebAPI\bin\Deb
 C:\projects\schvictorina\src\alekami649\schvictorina\SchVictorina.WebAPI\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
 C:\projects\schvictorina\src\alekami649\schvictorina\SchVictorina.WebAPI\bin\Debug\netcoreapp3.1\Config\buttons_math.xml
 C:\projects\schvictorina\src\alekami649\schvictorina\SchVictorina.WebAPI\obj\Debug\netcoreapp3.1\SchVictorina.WebAPI.csproj.AssemblyReference.cache
+C:\projects\schvictorina\src\alekami649\schvictorina\SchVictorina.WebAPI\bin\Debug\netcoreapp3.1\Config\buttons_english.xml

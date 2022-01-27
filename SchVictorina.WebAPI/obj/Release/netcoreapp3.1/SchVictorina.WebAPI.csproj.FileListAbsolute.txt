@@ -26,3 +26,5 @@ C:\projects\schvictorina\src\alekami649\schvictorina\SchVictorina.WebAPI\obj\Rel
 C:\projects\schvictorina\src\alekami649\schvictorina\SchVictorina.WebAPI\bin\Release\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
 C:\projects\schvictorina\src\alekami649\schvictorina\SchVictorina.WebAPI\bin\Release\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\projects\schvictorina\src\alekami649\schvictorina\SchVictorina.WebAPI\bin\Release\netcoreapp3.1\Newtonsoft.Json.Bson.dll
+C:\projects\schvictorina\src\alekami649\schvictorina\SchVictorina.WebAPI\bin\Release\netcoreapp3.1\Config\buttons_english.xml
+C:\projects\schvictorina\src\alekami649\schvictorina\SchVictorina.WebAPI\bin\Release\netcoreapp3.1\Config\buttons_math.xml

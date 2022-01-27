@@ -1,20 +1,20 @@
 ﻿using SchVictorina.WebAPI.Utilites;
 using System;
+using SchVictorina.WebAPI.Utilites;
 using System.Linq;
 
 namespace SchVictorina.WebAPI.Engines
 {
-    [Engine("math", "Математика")]
     public class MathEngine : BaseEngine
     {
         private static readonly Random random = new Random();
         public int MinAnswerValue { get; set; } = 0;
         public int MaxAnswerValue { get; set; } = 100;
-        public string Operators { get; set; } = "+-*/";
+        public string Operators { get; set; }= "+-*/";
 
         public override TaskInfo GenerateQuestion()
         {
-            var @operator = GenerateEnum<Operator>();
+            var @operator = MathUtilites.GetEnumByOperator(MathUtilites.GetRandomOperator(Operators).ToString());
 
             var maxAnswerValue2 = @operator switch
             {
@@ -78,10 +78,11 @@ namespace SchVictorina.WebAPI.Engines
 
         public enum Operator
         {
-            Add,
-            Subtract,
-            Multiply,
-            Divide
+            Unknown = 0,
+            Add = 1,
+            Subtract = 2,
+            Multiply = 3,
+            Divide = 4
         }
     }
 }

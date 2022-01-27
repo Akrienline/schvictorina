@@ -89,6 +89,11 @@ namespace SchVictorina.WebAPI.Utilites
         {
             if (update.Type == UpdateType.Message)
             {
+                if (update.Message.Chat.Type == ChatType.Group || update.Message.Chat.Type == ChatType.Channel || update.Message.Chat.Type == ChatType.Supergroup)
+                {
+                    if (update.Message.Text != "/theme")
+                        return;
+                }
                 await TelegramUtilites.GenerateButtonsAndSend(botClient, update, Config.RootButton);
             }
             else if (update.Type == UpdateType.CallbackQuery)

@@ -1,21 +1,37 @@
 ﻿using System;
+using static SchVictorina.WebAPI.Engines.MathEngine;
 
 namespace SchVictorina.WebAPI.Utilites
 {
     public class MathUtilites
     {
-        public static char GetRandomOperator()
+        public static char GetRandomOperator(string? operators = null)
         {
             var randomizer = new Random();
-            var randomInt = randomizer.Next(1, 5);
-            return randomInt switch
+            if (operators != null)
             {
-                1 => '+',
-                2 => '-',
-                3 => '*',
-                4 => ':',
-                _ => ' ',
-            };
+                var randomInt = randomizer.Next(1, operators.Length + 1);
+                return randomInt switch
+                {
+                    1 => '+',
+                    2 => '-',
+                    3 => '*',
+                    4 => ':',
+                    _ => ' ',
+                };
+            }
+            else
+            {
+                var randomInt = randomizer.Next(1, 5);
+                return randomInt switch
+                {
+                    1 => '+',
+                    2 => '-',
+                    3 => '*',
+                    4 => ':',
+                    _ => ' ',
+                };
+            }
         }
         public static char GetOperator(string example)
         {
@@ -27,6 +43,28 @@ namespace SchVictorina.WebAPI.Utilites
                 return '*';
             else
                 return ':';
+        }
+        public static Operator GetEnumByOperator(string @operator)
+        {
+            return @operator switch
+            {
+                "+" => Operator.Add,
+                "-" => Operator.Subtract,
+                "*" => Operator.Multiply,
+                "/" => Operator.Divide,
+                _ => Operator.Unknown
+            };
+        }
+        public static Operator GetOperatorEnum(char @operator)
+        {
+            return @operator switch
+            {
+                '+' => Operator.Add,
+                '-' => Operator.Subtract,
+                '*' => Operator.Multiply,
+                '/' => Operator.Divide,
+                _ => Operator.Unknown
+            };
         }
         public static char InvertOperator(char @operator)
         {
