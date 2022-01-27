@@ -14,9 +14,10 @@ jobs:
       with:
         dotnet-version: 6.0.x
         
-    
+    - name: Check dotnet
+      run: dotnet --info
     - name: Publish to deploy
-      run:  dotnet publish SchVictorina.WebAPI.6.0|SchVictorina -p:PublishDir=publish --no-restore --version-suffix 6.0
+      run:  dotnet publish SchVictorina.WebAPI.csproj -p:PublishDir=publish --no-restore --version-suffix 6.0
     - name: Change directory (x2)
       run: cd bin/Release/netcoreapp3.1 
     - name: ftp-action
