@@ -25,6 +25,6 @@ jobs:
         host: ${{ secrets.FTP_SERVER }}
         user: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        localDir: "publish"
+        localDir: "/home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/publish"
         remoteDir: "bot"
 
