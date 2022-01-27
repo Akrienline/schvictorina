@@ -16,7 +16,7 @@ jobs:
     - name: Check directory
       run: ls -la
     - name: Publish to deploy
-      run:  dotnet publish ~/SchVictorina.WebAPI/SchVictorina.WebAPI.csproj -p:PublishDir=publish --no-restore
+      run:  dotnet publish SchVictorina.WebAPI/SchVictorina.WebAPI.csproj -p:PublishDir=publish --no-restore
     - name: Change directory (x2)
       run: cd bin/Release/netcoreapp3.1 
     - name: ftp-action
