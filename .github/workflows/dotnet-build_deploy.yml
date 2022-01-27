@@ -17,8 +17,8 @@ jobs:
       run: ls -la
     - name: Publish to deploy
       run:  dotnet publish SchVictorina.WebAPI/SchVictorina.WebAPI.csproj -p:PublishDir=publish -c Release
-    - name: Change directory (x2)
-      run: cd bin/Release/netcoreapp3.1 
+    - name: Change directory
+      run: cd /home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/publish/ 
     - name: ftp-action
       uses: sebastianpopp/ftp-action@v2.0.0
       with:
