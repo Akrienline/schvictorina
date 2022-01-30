@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SchVictorina.WebAPI.Utlites
+namespace SchVictorina.WebAPI.Utilites
 {
     public static class ArrayUtilites
     {
