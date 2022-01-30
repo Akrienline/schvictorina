@@ -6,7 +6,7 @@ using System.Text;
 using System.Xml.Serialization;
 using System.Collections.Generic;
 
-namespace SchVictorina.WebAPI.Utilites
+namespace SchVictorina.WebAPI.Utilities
 {
     public static class XmlUtilities
     {

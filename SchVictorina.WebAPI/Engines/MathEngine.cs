@@ -1,6 +1,6 @@
-﻿using SchVictorina.WebAPI.Utilites;
+﻿using SchVictorina.WebAPI.Utilities;
 using System;
-using SchVictorina.WebAPI.Utilites;
+using SchVictorina.WebAPI.Utilities;
 using System.Linq;
 
 namespace SchVictorina.WebAPI.Engines

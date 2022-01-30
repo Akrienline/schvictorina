@@ -4,15 +4,15 @@ using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace SchVictorina.WebAPI.Utilites
+namespace SchVictorina.WebAPI.Utilities
 {
-    public static class Config
+    public static class ButtonConfig
     {
         private static ButtonRoot _buttonRoot;
         private static Dictionary<string, BaseButton> _allButtons;
         private static FileSystemWatcher _watcher;
 
-        static Config()
+        static ButtonConfig()
         {
             _watcher = new FileSystemWatcher("Config", "*.xml");
             _watcher.EnableRaisingEvents = true;
@@ -157,6 +157,14 @@ namespace SchVictorina.WebAPI.Utilites
     }
     public sealed class EngineButton: BaseButton, IEnginableButton
     {
+        public sealed class EngineParameter
+        {
+            [XmlAttribute("id")]
+            public string ID { get; set; }
+            [XmlText]
+            public string Value { get; set; }
+        }
+
         [XmlAttribute("classid")]
         public string ClassID { get; set; }
         [XmlElement("parameter")]
@@ -190,13 +198,5 @@ namespace SchVictorina.WebAPI.Utilites
                 return _engine;
             }
         }
-    }
-
-    public sealed class EngineParameter
-    {
-        [XmlAttribute("id")]
-        public string ID { get; set; }
-        [XmlText]
-        public string Value { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using SchVictorina.WebAPI.Utilites;
+﻿using SchVictorina.WebAPI.Utilities;
 using System;
 
 namespace SchVictorina.WebAPI.Engines
@@ -42,13 +42,16 @@ namespace SchVictorina.WebAPI.Engines
         public override TaskInfo GenerateQuestion()
         {
             var trueOrFalse = RandomTrueOrFalse();
-            string[] sentences = {"I have to go to the university.",
-                                  "There is the house where my family lives.",
-                                  "They didn’t go to school last year.",
-                                  "Go and buy some bread, please.",
-                                  "Let the children play with our dog.",
-                                  "What a lovely day it is." };
-            var randomSentence = ArrayUtilites.RandomMemberFromArray(sentences).ToString();
+            var sentences = new []
+            {
+                "I have to go to the university.",
+                "There is the house where my family lives.",
+                "They didn’t go to school last year.",
+                "Go and buy some bread, please.",
+                "Let the children play with our dog.",
+                "What a lovely day it is."
+            };
+            var randomSentence = sentences.GetRandomValue();
             var breakedSentence = BreakSentenceIfNeeded(randomSentence, trueOrFalse);
             no = "";
             return new TaskInfo
