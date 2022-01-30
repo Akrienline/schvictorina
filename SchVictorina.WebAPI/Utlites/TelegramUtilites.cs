@@ -15,19 +15,39 @@ namespace SchVictorina.WebAPI.Utilites
 {
     public static class TelegramUtilites
     {
+        [XmlRoot]
         public class GlobalSettings
         {
             [XmlElement]
-            public string token;
+            public TelegramBotSettings TelegramBot;
+            public DiscordBotSettings DiscordBot;
+        }
+        public class DiscordBotSettings
+        {
             [XmlElement]
-            public Webhook webhook;
+            public string Token;
+        }
+        public class TelegramBotSettings
+        {
+            [XmlElement]
+            public string Token;
+            [XmlElement]
+            public Webhook Webhook;
+            [XmlIgnore]
+            public IEnumerable<BotCommand> Commands;
         }
         public class Webhook
         {
             [XmlElement]
-            public bool enabled;
+            public bool IsEnabled;
             [XmlElement]
-            public string url;
+            public string Url;
+        }
+        public static GlobalSettings GetGlobalSettings()
+        {
+            var XmlSerializer = new XmlSerializer(typeof(GlobalSettings));
+            var fileStream = new FileStream(path: Path.GetFullPath("config/global_config.xml"), mode: FileMode.Open, access: FileAccess.Read);
+            return (GlobalSettings)XmlSerializer.Deserialize(fileStream);
         }
         public static IEnumerable<IEnumerable<InlineKeyboardButton>> GenerateInlineKeyboardButtons(TaskInfo question, BaseEngine baseEngine, EngineButton button)
         {
