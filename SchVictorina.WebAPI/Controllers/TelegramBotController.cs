@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using Telegram.Bot.Types.Enums;
 using System.Linq;
 using Telegram.Bot.Types.ReplyMarkups;
+using Telegram.Bot.Types.InputFiles;
+using System.IO;
 
 namespace SchVictorina.WebAPI.Controllers
 {
@@ -83,10 +85,24 @@ namespace SchVictorina.WebAPI.Controllers
                     );
         }
 
+        public static UserConfig.User.UserInfo GetUserInfo(User user)
+        {
+            return new UserConfig.User.UserInfo
+            {
+                Source = UserSourceType.Telegram,
+                UserId = user.Id,
+                UserName = user.Username,
+                FirstName = user.FirstName,
+                LastName = user.LastName
+            };
+        }
+
         public static class TelegramHandlers
         {
             public static async Task ProcessEvent(ITelegramBotClient botClient, Update update)
             {
+                var userInfo = GetUserInfo(update.GetUser());
+
                 if (update.Type == UpdateType.Message)
                 {
                     if (update.Message.Chat.Type == ChatType.Group || update.Message.Chat.Type == ChatType.Channel || update.Message.Chat.Type == ChatType.Supergroup)
@@ -117,16 +133,45 @@ namespace SchVictorina.WebAPI.Controllers
                             {
                                 if (callbackValues.Length == 2 && callbackValues[1] == "skip")
                                 {
-                                    //add statistics
+                                    UserConfig.Instance.Log(userInfo, UserConfig.EventType.SkipQuestion);
                                 }
                                 else if (callbackValues.Length == 4 && callbackValues[1] == "answer")
                                 {
-                                    var message = callbackValues[2] == callbackValues[3]
+                                    var isRight = callbackValues[2] == callbackValues[3];
+
+                                    if (isRight)
+                                        UserConfig.Instance.Log(userInfo, UserConfig.EventType.RightAnswer);
+                                    else
+                                        UserConfig.Instance.Log(userInfo, UserConfig.EventType.WrongAnswer);
+
+                                    if (isRight)
+                                    {
+                                        var user = UserConfig.Instance.GetUser(userInfo);
+                                        if (user.Statistics.RightInSequence % 20 == 0)
+                                        {
+                                            await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Уже 20 правильных ответов подряд, держи парочку подарков:", cancellationToken: CancellationToken.None);
+                                            await botClient.SendPhotoAsync(TelegramUtilites.GetChatId(update), new InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes("gift_sequence_20.jpg"))));
+                                        }
+                                        else if (user.Statistics.RightInSequence % 5 == 0)
+                                        {
+                                            await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Пять правильных ответов подряд, держи подарок:", cancellationToken: CancellationToken.None);
+                                            await botClient.SendPhotoAsync(TelegramUtilites.GetChatId(update), new InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes("gift_sequence_5.jpg"))));
+                                        }
+
+                                        if (user.Statistics.RightAnswers % 100 == 0)
+                                        {
+                                            await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Сто правльных ответов, молодец:", cancellationToken: CancellationToken.None);
+                                            await botClient.SendPhotoAsync(TelegramUtilites.GetChatId(update), new InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes("gift_rights_100.jpg"))));
+                                        }
+                                    }
+                                    
+                                    var message = isRight
                                                     ? "Правильно 👍"
                                                     : $"Неправильно 👎{Environment.NewLine}Верный ответ: {callbackValues[2]}";
                                     await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, message, cancellationToken: CancellationToken.None);
                                 }
 
+                                UserConfig.Instance.Log(userInfo, UserConfig.EventType.SendQuestion);
                                 var question = engineButton.Engine.GenerateQuestion() ?? new TaskInfo();
                                 var keyboard = new InlineKeyboardMarkup(GenerateInlineKeyboardButtons(question, engineButton.Engine, engineButton));
                                 await botClient.SendTextMessageAsync(update.GetChatId(), question.Question ?? "нет вопроса!", replyMarkup: keyboard);

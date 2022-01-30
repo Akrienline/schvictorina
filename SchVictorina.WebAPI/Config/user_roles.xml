@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<userroles>
+	<role type="Admin">
+		<user name="@alekami649" source="Telegram" />
+		<user name="@kimsite" source="Telegram" />
+	</role>
+</userroles>

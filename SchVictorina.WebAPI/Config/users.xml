@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<users xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <user>
+    <info source="Telegram" userid="0" username="@kesha" firstname="AAA" lastname="BBB" />
+    <statistics lastVisitDate="2020-01-01T00:00:00" rightInSequence="0" totalQuestions="0" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
+  </user>
+  <user>
+    <info source="Telegram" userid="1118251133" username="kimsite" firstname="Boris" />
+    <statistics lastVisitDate="2022-01-30T22:29:19.3028761+07:00" rightInSequence="26" totalQuestions="31" rightAnswers="100" wrongAnswers="0" skipQuestions="0" />
+  </user>
+</users>
