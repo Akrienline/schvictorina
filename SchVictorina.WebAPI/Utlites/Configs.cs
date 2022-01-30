@@ -10,6 +10,19 @@ namespace SchVictorina.WebAPI.Utilites
     {
         private static ButtonRoot _buttonRoot;
         private static Dictionary<string, BaseButton> _allButtons;
+        private static FileSystemWatcher _watcher;
+
+        static Config()
+        {
+            _watcher = new FileSystemWatcher("Config", "*.xml");
+            _watcher.EnableRaisingEvents = true;
+            _watcher.IncludeSubdirectories = true;
+            _watcher.NotifyFilter = NotifyFilters.LastWrite;
+            _watcher.Changed += delegate { _buttonRoot = null; };
+            _watcher.Created += delegate { _buttonRoot = null; };
+            _watcher.Deleted += delegate { _buttonRoot = null; };
+            _watcher.Renamed += delegate { _buttonRoot = null; };
+        }
 
         public static BaseButton GetButton(string id)
         {
@@ -36,8 +49,16 @@ namespace SchVictorina.WebAPI.Utilites
                 {
                     _buttonRoot = new ButtonRoot
                     {
-                        Children = Directory.GetFiles("Config", "buttons_*.xml")
-                                        .Select(xmlPath => File.ReadAllText(xmlPath).FromXml<ButtonRoot>())
+                        Children = Directory.GetFiles("Config", "buttons_*.xml", SearchOption.AllDirectories)
+                                        .Select(xmlPath =>
+                                        {
+                                            try
+                                            {
+                                                return File.ReadAllText(xmlPath).FromXml<ButtonRoot>();
+                                            }
+                                            catch { return null; }
+                                        })
+                                        .Where(x => x != null)
                                         .OrderBy(root => root.Priority)
                                         .Where(root =>
                                         {

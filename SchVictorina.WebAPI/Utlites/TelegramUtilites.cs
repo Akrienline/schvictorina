@@ -9,11 +9,26 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace SchVictorina.WebAPI.Utilites
 {
     public static class TelegramUtilites
     {
+        public class GlobalSettings
+        {
+            [XmlElement]
+            public string token;
+            [XmlElement]
+            public Webhook webhook;
+        }
+        public class Webhook
+        {
+            [XmlElement]
+            public bool enabled;
+            [XmlElement]
+            public string url;
+        }
         public static IEnumerable<IEnumerable<InlineKeyboardButton>> GenerateInlineKeyboardButtons(TaskInfo question, BaseEngine baseEngine, EngineButton button)
         {
             if (question.AnswerOptions != null && question.AnswerOptions.Any())

@@ -19,7 +19,10 @@ namespace SchVictorina.WebAPI.Controllers
     {
         static TelegramBotClient botClient;
         static DefaultUpdateReceiver updateReceiver;
-
+        internal string GetReleaseToken()
+        {
+            
+        }
 
         public TelegramBotController(ILogger<TelegramBotController> logger)
         {

@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\projects\\schvictorina\\src\\alekami649\\schvictorina\\SchVictorina\\SchVictorina.csproj": {}
+    "C:\\Users\\kimsite\\Source\\Repos\\alekami649\\schvictorina\\SchVictorina\\SchVictorina.csproj": {}
   },
   "projects": {
-    "C:\\projects\\schvictorina\\src\\alekami649\\schvictorina\\SchVictorina\\SchVictorina.csproj": {
+    "C:\\Users\\kimsite\\Source\\Repos\\alekami649\\schvictorina\\SchVictorina\\SchVictorina.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\projects\\schvictorina\\src\\alekami649\\schvictorina\\SchVictorina\\SchVictorina.csproj",
+        "projectUniqueName": "C:\\Users\\kimsite\\Source\\Repos\\alekami649\\schvictorina\\SchVictorina\\SchVictorina.csproj",
         "projectName": "SchVictorina",
-        "projectPath": "C:\\projects\\schvictorina\\src\\alekami649\\schvictorina\\SchVictorina\\SchVictorina.csproj",
-        "packagesPath": "C:\\Users\\aleka\\.nuget\\packages\\",
-        "outputPath": "C:\\projects\\schvictorina\\src\\alekami649\\schvictorina\\SchVictorina\\obj\\",
+        "projectPath": "C:\\Users\\kimsite\\Source\\Repos\\alekami649\\schvictorina\\SchVictorina\\SchVictorina.csproj",
+        "packagesPath": "C:\\Users\\kimsite\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\kimsite\\Source\\Repos\\alekami649\\schvictorina\\SchVictorina\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\aleka\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\kimsite\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -67,6 +63,16 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[3.1.10, 3.1.10]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[3.1.22, 3.1.22]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"

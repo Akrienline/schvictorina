@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <buttons priority="1" classid="SchVictorina.WebAPI.Engines.MathEngine">
-	<group label="Математика">
+	<group label="Математика22">
 		<engine label="1 класс">
 			<parameter id="Operators">+-</parameter>
 			<parameter id="MinAnswerValue">0</parameter>

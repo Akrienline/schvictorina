@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<globalsettings>
+	<telegrambot>
+		<token>5226603528:AAFEtSHgTcOm3-5r3-EHW4ubcg0bfGdyIcI</token>
+		<webhook>
+			<enabled>true</enabled>
+			<url>https://api.schvictorina.gq/bot/telegrambot/post</url>
+		</webhook>
+	</telegrambot>
+</globalsettings>
