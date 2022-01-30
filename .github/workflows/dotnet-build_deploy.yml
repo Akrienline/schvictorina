@@ -19,6 +19,8 @@ jobs:
       run:  dotnet publish SchVictorina.WebAPI/SchVictorina.WebAPI.csproj -p:PublishDir=publish -c Release
     - name: Change directory
       run: cd /home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/
+    - name: Remove settings.xml
+      run: rm settings.xml
     - name: ftp-action
       uses: sebastianpopp/ftp-action@v2.0.0
       with:
