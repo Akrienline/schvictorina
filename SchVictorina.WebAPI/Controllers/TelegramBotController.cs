@@ -21,7 +21,7 @@ namespace SchVictorina.WebAPI.Controllers
         static DefaultUpdateReceiver updateReceiver;
         internal string GetReleaseToken()
         {
-            
+            return TelegramUtilites.GetGlobalSettings().TelegramBot.Token;
         }
 
         public TelegramBotController(ILogger<TelegramBotController> logger)
