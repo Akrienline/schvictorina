@@ -110,8 +110,6 @@ namespace SchVictorina.WebAPI.Utilities
         {
             get
             {
-                if (Parent != null && !Parent.IsValid)
-                    return false;
                 if (!string.IsNullOrEmpty(FromDate))
                 {
                     if (!DateTime.TryParse(FromDate, out DateTime fromDate) || fromDate > DateTime.Now)
@@ -123,6 +121,13 @@ namespace SchVictorina.WebAPI.Utilities
                         return false;
                 }
                 return true;
+            }
+        }
+        public bool IsValidWithAscender
+        {
+            get
+            {
+                return IsValid && (Parent == null || Parent.IsValidWithAscender);
             }
         }
     }
@@ -182,7 +187,6 @@ namespace SchVictorina.WebAPI.Utilities
             {
                 if (Children != null && !Children.Any(x => x.IsValid))
                     return false;
-
                 return base.IsValid;
             }
         }
@@ -243,10 +247,8 @@ namespace SchVictorina.WebAPI.Utilities
         {
             get
             {
-
                 if (string.IsNullOrEmpty(ClassID) || Type.GetType(ClassID) == null)
                     return false;
-
                 return base.IsValid;
             }
         }
