@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
@@ -112,12 +113,12 @@ namespace SchVictorina.WebAPI.Utilities
             {
                 if (!string.IsNullOrEmpty(FromDate))
                 {
-                    if (!DateTime.TryParse(FromDate, out DateTime fromDate) || fromDate > DateTime.Now)
+                    if (!DateTime.TryParse(FromDate, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fromDate) || fromDate > DateTime.Now)
                         return false;
                 }
                 if (!string.IsNullOrEmpty(ToDate))
                 {
-                    if (!DateTime.TryParse(ToDate, out DateTime toDate) || toDate < DateTime.Now)
+                    if (!DateTime.TryParse(ToDate, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime toDate) || toDate < DateTime.Now)
                         return false;
                 }
                 return true;

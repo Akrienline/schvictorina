@@ -7,7 +7,7 @@
 			<parameter id="MaxAnswerValue">20</parameter>
 			<parameter id="AllowNegative">false</parameter>
 		</engine>
-		<engine label="4 класс" from="2022-01-24" to="2022-01-25 18:40">
+		<engine label="4 класс" from="2022-01-24" to="2025-02-25">
 			<parameter id="Operators">+-*/</parameter>
 			<parameter id="MinAnswerValue">100</parameter>
 			<parameter id="MaxAnswerValue">500</parameter>
