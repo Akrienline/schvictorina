@@ -1,7 +1,11 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\SchVictorina.WebAPI",
+    "\\SchVictorina.WebAPI\\Config",
+    "\\SchVictorina.WebAPI\\Controllers",
+    "\\SchVictorina.WebAPI\\Engines"
   ],
-  "SelectedNode": "\\SchVictorina.sln",
+  "SelectedNode": "\\SchVictorina.WebAPI\\Config\\ButtonConfig.cs",
   "PreviewInSolutionExplorer": false
 }

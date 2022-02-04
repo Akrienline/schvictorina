@@ -329,11 +329,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\kimsite\\Source\\Repos\\alekami649\\schvictorina\\SchVictorina.WebAPI\\SchVictorina.WebAPI.csproj",
+      "projectUniqueName": "C:\\Users\\kimsite\\source\\repos\\alekami649\\schvictorina\\SchVictorina.WebAPI\\SchVictorina.WebAPI.csproj",
       "projectName": "SchVictorina.WebAPI",
-      "projectPath": "C:\\Users\\kimsite\\Source\\Repos\\alekami649\\schvictorina\\SchVictorina.WebAPI\\SchVictorina.WebAPI.csproj",
+      "projectPath": "C:\\Users\\kimsite\\source\\repos\\alekami649\\schvictorina\\SchVictorina.WebAPI\\SchVictorina.WebAPI.csproj",
       "packagesPath": "C:\\Users\\kimsite\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\kimsite\\Source\\Repos\\alekami649\\schvictorina\\SchVictorina.WebAPI\\obj\\",
+      "outputPath": "C:\\Users\\kimsite\\source\\repos\\alekami649\\schvictorina\\SchVictorina.WebAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\kimsite\\AppData\\Roaming\\NuGet\\NuGet.Config",

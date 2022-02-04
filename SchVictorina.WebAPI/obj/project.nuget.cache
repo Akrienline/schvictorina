@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "VE0aRXmvsLGpD1aWbIyWsb03PNSdHq6SXGAZQnOj8QjrsnQLbSX4dfDO8i2BgxICV1DWwm5Beq1BIA1We0DloA==",
+  "dgSpecHash": "/Qq2IqjlsWJFPds64HGmBF5e0XFnrP0OZs6IUmfOOJGPMhHbhFKCU4dz1bm3jqEFiXxKLiXc7J4CaF8UHPIFzQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\kimsite\\Source\\Repos\\alekami649\\schvictorina\\SchVictorina.WebAPI\\SchVictorina.WebAPI.csproj",
+  "projectFilePath": "C:\\Users\\kimsite\\source\\repos\\alekami649\\schvictorina\\SchVictorina.WebAPI\\SchVictorina.WebAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\kimsite\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\3.1.22\\microsoft.aspnetcore.jsonpatch.3.1.22.nupkg.sha512",
     "C:\\Users\\kimsite\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\3.1.22\\microsoft.aspnetcore.mvc.newtonsoftjson.3.1.22.nupkg.sha512",
