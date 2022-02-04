@@ -98,6 +98,33 @@ namespace SchVictorina.WebAPI.Utilities
         internal readonly string ID = Guid.NewGuid().ToString("N");
         [XmlIgnore]
         internal GroupButton Parent { get; set; }
+
+        [XmlAttribute("from")]
+        public string FromDate { get; set; }
+
+        [XmlAttribute("to")]
+        public string ToDate { get; set; }
+
+        [XmlIgnore]
+        public virtual bool IsValid
+        {
+            get
+            {
+                if (Parent != null && !Parent.IsValid)
+                    return false;
+                if (!string.IsNullOrEmpty(FromDate))
+                {
+                    if (!DateTime.TryParse(FromDate, out DateTime fromDate) || fromDate > DateTime.Now)
+                        return false;
+                }
+                if (!string.IsNullOrEmpty(ToDate))
+                {
+                    if (!DateTime.TryParse(ToDate, out DateTime toDate) || toDate < DateTime.Now)
+                        return false;
+                }
+                return true;
+            }
+        }
     }
     public interface IEnginableButton
     {
@@ -145,6 +172,18 @@ namespace SchVictorina.WebAPI.Utilities
                 {
                     child.ClassID = value;
                 }
+            }
+        }
+
+        [XmlIgnore]
+        public override bool IsValid
+        {
+            get
+            {
+                if (Children != null && !Children.Any(x => x.IsValid))
+                    return false;
+
+                return base.IsValid;
             }
         }
     }
@@ -196,6 +235,19 @@ namespace SchVictorina.WebAPI.Utilities
                     }
                 }
                 return _engine;
+            }
+        }
+
+        [XmlIgnore]
+        public override bool IsValid
+        {
+            get
+            {
+
+                if (string.IsNullOrEmpty(ClassID) || Type.GetType(ClassID) == null)
+                    return false;
+
+                return base.IsValid;
             }
         }
     }

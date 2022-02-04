@@ -72,7 +72,7 @@ namespace SchVictorina.WebAPI.Controllers
             var uiButtons = new List<InlineKeyboardButton>();
             if (groupButton.Children != null)
             {
-                foreach (var child in groupButton.Children)
+                foreach (var child in groupButton.Children.Where(child => child.IsValid))
                     uiButtons.Add(InlineKeyboardButton.WithCallbackData(child.Label, child.ID));
             }
             if (groupButton.Parent != null)
@@ -119,7 +119,7 @@ namespace SchVictorina.WebAPI.Controllers
                     {
                         var buttonId = callbackValues.FirstOrDefault();
                         var button = ButtonConfig.GetButton(buttonId);
-                        if (button == null)
+                        if (button == null || !button.IsValid)
                         {
                             await GenerateButtonsAndSend(botClient, update, ButtonConfig.RootButton);
                         }
