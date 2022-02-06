@@ -23,13 +23,22 @@ jobs:
       run: rm /home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/publish/Config/settings.xml
     - name: Remove users.xml
       run: rm /home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/publish/Config/users.xml
-    - name: Stop application pool
+    - name: Delete web.config from FTP
       uses: StephanThierry/ftp-delete-action@v1
       with:
         host: ${{ secrets.FTP_DOMAIN }}
         user: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         remoteFiles: "web.config"
+        workingDir: "/www.schvictorina.somee.com/bot"
+        ignoreSSL: "1"
+    - name: Delete DLL from FTP
+      uses: StephanThierry/ftp-delete-action@v1
+      with:
+        host: ${{ secrets.FTP_DOMAIN }}
+        user: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        remoteFiles: "SchVictorina.WebAPI.dll"
         workingDir: "/www.schvictorina.somee.com/bot"
         ignoreSSL: "1"
     - name: Upload program files and start application pool
