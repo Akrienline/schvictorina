@@ -32,6 +32,10 @@ jobs:
         remoteFiles: "web.config"
         workingDir: "/www.schvictorina.somee.com/bot"
         ignoreSSL: "1"
+    - name: Wait for 10s
+      uses: juliangruber/sleep-action@v1
+      with:
+        time: 10s
     - name: Delete DLL from FTP
       uses: StephanThierry/ftp-delete-action@v1
       with:
