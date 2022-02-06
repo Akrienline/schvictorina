@@ -27,7 +27,7 @@ jobs:
         host: ${{ secrets.FTP_SERVER }}
         user: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        localDir: "/home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/mock"
+        localDir: "/home/runner/work/schvictorina/schvictorina/mock"
         remoteDir: "bot"
     - name: Upload program files and start application pool
       uses: sebastianpopp/ftp-action@v2.0.0
