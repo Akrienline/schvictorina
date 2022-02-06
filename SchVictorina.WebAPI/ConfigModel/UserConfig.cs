@@ -55,25 +55,29 @@ namespace SchVictorina.WebAPI.Utilities
 
         public User GetUser(User.UserInfo userInfo)
         {
-            return Users.FirstOrDefault(x => x.Info.UserId == userInfo.UserId);
+            User user;
+            lock (Users)
+            {
+                user = Users.FirstOrDefault(x => x.Info.UserId == userInfo.UserId);
+
+                if (user == null)
+                {
+                    user = new User { Info = userInfo, Statistics = new User.StatisticsInfo() };
+                    Users.Add(user);
+                }
+                else
+                {
+                    user.Info.UserName = userInfo.UserName;
+                    user.Info.FirstName = userInfo.FirstName;
+                    user.Info.LastName = userInfo.LastName;
+                }
+            }
+            return user;
         }
 
-        public void Log(User.UserInfo userInfo, EventType eventType)
+        public void Log(User user, EventType eventType)
         {
             hasChanges = true;
-
-            var user = Users.FirstOrDefault(x => x.Info.UserId == userInfo.UserId);
-            if (user == null)
-            {
-                user = new User { Info = userInfo, Statistics = new User.StatisticsInfo() };
-                Users.Add(user);
-            }
-            else
-            {
-                user.Info.UserName = userInfo.UserName;
-                user.Info.FirstName = userInfo.FirstName;
-                user.Info.LastName = userInfo.LastName;
-            }
 
             user.Statistics.LastVisitDate = DateTime.Now;
 
@@ -94,6 +98,7 @@ namespace SchVictorina.WebAPI.Utilities
 
         public enum EventType
         {
+            Request,
             SendQuestion,
             SkipQuestion,
             RightAnswer,

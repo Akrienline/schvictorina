@@ -15,14 +15,14 @@ namespace SchVictorina.WebAPI.Utilities
 
         static ButtonConfig()
         {
-            _watcher = new FileSystemWatcher("Config", "*.xml");
+            _watcher = new FileSystemWatcher("Config", "buttons_*.xml");
             _watcher.EnableRaisingEvents = true;
             _watcher.IncludeSubdirectories = true;
             _watcher.NotifyFilter = NotifyFilters.LastWrite;
-            _watcher.Changed += delegate { _buttonRoot = null; };
-            _watcher.Created += delegate { _buttonRoot = null; };
-            _watcher.Deleted += delegate { _buttonRoot = null; };
-            _watcher.Renamed += delegate { _buttonRoot = null; };
+            _watcher.Changed += delegate { ClearCache(); };
+            _watcher.Created += delegate { ClearCache(); };
+            _watcher.Deleted += delegate { ClearCache(); };
+            _watcher.Renamed += delegate { ClearCache(); };
         }
 
         public static BaseButton GetButton(string id)
@@ -87,6 +87,12 @@ namespace SchVictorina.WebAPI.Utilities
                 }
                 return _buttonRoot;
             }
+        }
+
+        private static void ClearCache()
+        {
+            _buttonRoot = null;
+            _allButtons = null;
         }
     }
 
