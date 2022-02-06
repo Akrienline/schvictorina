@@ -17,18 +17,12 @@ jobs:
       run: ls -la
     - name: Publish to deploy
       run:  dotnet publish SchVictorina.WebAPI/SchVictorina.WebAPI.csproj -p:PublishDir=publish -c Release
+    - name: Set correct web.config
+      run:  mv /home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/publish/web_deploy.config /home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/publish/web.config
     - name: Remove settings.xml
       run: rm /home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/publish/Config/settings.xml
     - name: Remove users.xml
       run: rm /home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/publish/Config/users.xml
-    - name: Stop application pool
-      uses: sebastianpopp/ftp-action@v2.0.0
-      with:
-        host: ${{ secrets.FTP_SERVER }}
-        user: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        localDir: "/home/runner/work/schvictorina/schvictorina/mock"
-        remoteDir: "bot"
     - name: Upload program files and start application pool
       uses: sebastianpopp/ftp-action@v2.0.0
       with:
@@ -37,4 +31,3 @@ jobs:
         password: ${{ secrets.FTP_PASSWORD }}
         localDir: "/home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/publish"
         remoteDir: "bot"
-
