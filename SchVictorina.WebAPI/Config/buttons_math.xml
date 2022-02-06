@@ -25,5 +25,32 @@
 			<parameter id="MaxAnswerValue">500</parameter>
 			<parameter id="AllowNegative">true</parameter>
 		</engine>
+		<split />
+		<group label="Огромные числа">
+			<engine label="Только с плюсом">
+				<parameter id="Operators">+</parameter>
+				<parameter id="MinAnswerValue">100500</parameter>
+				<parameter id="MaxAnswerValue">10005000</parameter>
+				<parameter id="AllowNegative">false</parameter>
+			</engine>
+			<engine label="Только с минусом">
+				<parameter id="Operators">-</parameter>
+				<parameter id="MinAnswerValue">100500</parameter>
+				<parameter id="MaxAnswerValue">10005000</parameter>
+				<parameter id="AllowNegative">false</parameter>
+			</engine>
+			<engine label="Только с умножением">
+				<parameter id="Operators">*</parameter>
+				<parameter id="MinAnswerValue">100500</parameter>
+				<parameter id="MaxAnswerValue">10005000</parameter>
+				<parameter id="AllowNegative">false</parameter>
+			</engine>
+			<engine>
+				<parameter id="Operators">/</parameter>
+				<parameter id="MinAnswerValue">100500</parameter>
+				<parameter id="MaxAnswerValue">10005000</parameter>
+				<parameter id="AllowNegative">false</parameter>
+			</engine>
+		</group>
 	</group>
 </buttons>
