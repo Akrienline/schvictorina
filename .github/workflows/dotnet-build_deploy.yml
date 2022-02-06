@@ -26,11 +26,11 @@ jobs:
     - name: Stop application pool
       uses: StephanThierry/ftp-delete-action@v1
       with:
-        host: ${{ secrets.FTP_SERVER }}
+        host: ${{ secrets.FTP_DOMAIN }}
         user: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         remoteFiles: "web.config"
-        workingDir: "/bot"
+        workingDir: "/www.schvictorina.somee.com/bot"
         ignoreSSL: "1"
     - name: Upload program files and start application pool
       uses: sebastianpopp/ftp-action@v2.0.0
