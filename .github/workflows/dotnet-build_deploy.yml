@@ -31,6 +31,14 @@ jobs:
         remoteDir: "bot"
     - name: Remove mock/web.config
       run: echo "" >> /home/runner/work/schvictorina/schvictorina/mock/web.config
+    - name: Delete web.config on server
+      uses: sebastianpopp/ftp-action@v2.0.0
+      with:
+        host: ${{ secrets.FTP_SERVER }}
+        user: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        localDir: "/home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/publish"
+        remoteDir: "bot"
     - name: Upload program files and start application pool
       uses: sebastianpopp/ftp-action@v2.0.0
       with:
