@@ -122,15 +122,32 @@ namespace SchVictorina.WebAPI.Controllers
 
         private static Task GenerateButtonsAndSend(ITelegramBotClient botClient, Update update, GroupButton groupButton)
         {
-            var uiButtons = new List<InlineKeyboardButton>();
+            var uiButtons = new List<InlineKeyboardButton[]>();
             if (groupButton.Children != null)
             {
+                var uiLineButtons = new List<InlineKeyboardButton>();
                 foreach (var child in groupButton.Children.Where(child => child.IsValidWithAscender))
-                    uiButtons.Add(InlineKeyboardButton.WithCallbackData(child.Label, child.ID));
+                {
+                    if (child is SplitButton)
+                    {
+                        if (uiLineButtons.Any())
+                        {
+                            uiButtons.Add(uiLineButtons.ToArray());
+                            uiLineButtons.Clear();
+                        }
+                    }
+                    else
+                    {
+                        uiLineButtons.Add(InlineKeyboardButton.WithCallbackData(child.Label, child.ID));
+                    }
+                }
+                if (uiLineButtons.Any())
+                    uiButtons.Add(uiLineButtons.ToArray());
             }
+
             if (groupButton.Parent != null)
             {
-                uiButtons.Add(InlineKeyboardButton.WithCallbackData("Наверх!", groupButton.Parent.ID));
+                uiButtons.Add(new[] { InlineKeyboardButton.WithCallbackData("Наверх!", groupButton.Parent.ID) });
             }
 
             return botClient.SendText(update, "Выбери тему задания:", new InlineKeyboardMarkup(uiButtons));

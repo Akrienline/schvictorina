@@ -147,6 +147,7 @@ namespace SchVictorina.WebAPI.Utilities
     {
         [XmlElement("group", typeof(GroupButton))]
         [XmlElement("engine", typeof(EngineButton))]
+        [XmlElement("split", typeof(SplitButton))]
         public BaseButton[] Children { get; set; }
 
         internal IEnumerable<BaseButton> Descendant
@@ -259,5 +260,9 @@ namespace SchVictorina.WebAPI.Utilities
                 return base.IsValid;
             }
         }
+    }
+
+    public sealed class SplitButton : BaseButton
+    {
     }
 }
