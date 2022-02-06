@@ -324,24 +324,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\aleka\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\kimsite\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\aleka\\source\\repos\\schvictorina\\SchVictorina.WebAPI\\SchVictorina.WebAPI.csproj",
+      "projectUniqueName": "C:\\Users\\kimsite\\source\\repos\\alekami649\\schvictorina\\SchVictorina.WebAPI\\SchVictorina.WebAPI.csproj",
       "projectName": "SchVictorina.WebAPI",
-      "projectPath": "C:\\Users\\aleka\\source\\repos\\schvictorina\\SchVictorina.WebAPI\\SchVictorina.WebAPI.csproj",
-      "packagesPath": "C:\\Users\\aleka\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\aleka\\source\\repos\\schvictorina\\SchVictorina.WebAPI\\obj\\",
+      "projectPath": "C:\\Users\\kimsite\\source\\repos\\alekami649\\schvictorina\\SchVictorina.WebAPI\\SchVictorina.WebAPI.csproj",
+      "packagesPath": "C:\\Users\\kimsite\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\kimsite\\source\\repos\\alekami649\\schvictorina\\SchVictorina.WebAPI\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\aleka\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\kimsite\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -390,6 +385,16 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[3.1.10, 3.1.10]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[3.1.22, 3.1.22]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
