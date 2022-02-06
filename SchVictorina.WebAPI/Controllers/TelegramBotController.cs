@@ -110,6 +110,7 @@ namespace SchVictorina.WebAPI.Controllers
                         var button = ButtonConfig.GetButton(buttonId);
                         if (button == null || !button.IsValidWithAscender)
                         {
+                            await GlobalConfig.Instance?.Logging?.Errors?.Log(botClient, update, update.CallbackQuery?.Data);
                             await GenerateButtonsAndSend(botClient, update, ButtonConfig.RootButton);
                         }
                         else
