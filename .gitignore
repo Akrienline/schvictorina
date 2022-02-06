@@ -251,3 +251,14 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+.vs/SchVictorina/v17/.suo
+*.sqlite
+SchVictorina.WebAPI/obj/Debug/netcoreapp3.1/SchVictorina.WebAPI.assets.cache
+SchVictorina.WebAPI/obj/SchVictorina.WebAPI.csproj.nuget.g.props
+SchVictorina.WebAPI/obj/SchVictorina.WebAPI.csproj.nuget.dgspec.json
+SchVictorina.WebAPI/obj/Release/netcoreapp3.1/SchVictorina.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+SchVictorina.WebAPI/obj/project.nuget.cache
+SchVictorina.WebAPI/obj/project.assets.json
+SchVictorina.WebAPI/obj/Debug/netcoreapp3.1/SchVictorina.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+SchVictorina.WebAPI/obj/Debug/netcoreapp3.1/SchVictorina.WebAPI.assets.cache
+.vs/SchVictorina/v17/.suo
