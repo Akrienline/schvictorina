@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SchVictorina.WebAPI
 {
-    public class TaskInfo
+    public class QuestionInfo
     {
         public string? Question { get; set; }
         public object? RightAnswer { get; set; }
@@ -13,7 +13,7 @@ namespace SchVictorina.WebAPI
 
     public abstract class BaseEngine
     {
-        public abstract TaskInfo GenerateQuestion();
+        public abstract QuestionInfo GenerateQuestion();
     }
     public abstract class Parameter
     {

@@ -6,4 +6,11 @@
 			<url>https://api.schvictorina.gq/bot/telegrambot/post</url>
 		</webhook>
 	</telegrambot>
+	<discordbot>
+		
+	</discordbot>
+	<logging enabled="true">
+		<errors enabled="true" sendToUser="false" maxSizeInKB="10240">errors.log</errors>
+		<requests enabled="true" sendToUser="false" maxSizeInKB="10">requests.log</requests>
+	</logging>
 </settings>

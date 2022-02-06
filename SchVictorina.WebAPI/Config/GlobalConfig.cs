@@ -21,7 +21,32 @@ namespace SchVictorina.WebAPI.Utilities
         public TelegramBotSettings TelegramBot { get; set; }
         [XmlElement("discordbot")]
         public DiscordBotSettings DiscordBot { get; set; }
+        [XmlElement("logging")]
+        public LoggingSettings Logging { get; set; }
+        public class LoggingSettings
+        {
+            [XmlElement("errors")]
+            public BaseLog Errors { get; set; }
+            [XmlElement("warnings")]
+            public BaseLog Warnings { get; set; }
+            [XmlElement("requests")]
+            public BaseLog Requests { get; set; }
+            
+            public class BaseLog
+            {
+                [XmlAttribute("enabled")]
+                public bool Enabled { get; set; }
 
+                [XmlAttribute("maxSizeInKB")]
+                public int MaxSizeInKB { get; set; }
+
+                [XmlAttribute("sendToUser")]
+                public bool SendToUser { get; set; }
+
+                [XmlText]
+                public string Path { get; set; }
+            }
+        }
         public class TelegramBotSettings
         {
             [XmlElement("token")]

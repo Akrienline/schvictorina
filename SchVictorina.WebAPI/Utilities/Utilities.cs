@@ -40,20 +40,35 @@ namespace SchVictorina.WebAPI.Utilities
             obj2 = temp;
         }
     }
+    public static class LogUtilities
+    {
+        private static object _lock = new object();
+        public static void Log(string filePath, int maxSizeInKb, Exception exception)
+        {
+            Log(filePath, maxSizeInKb, exception.ToString());
+        }
+        public static void Log(string filePath, int maxSizeInKb, string message)
+        {
+            var dateTime = DateTime.Now.ToString("dd'.'MM'.'yy' 'HH':'mm':'ss");
+            var logContent = $"{dateTime}{Environment.NewLine}{message}";
+            lock (_lock)
+            {
+                if (File.Exists(filePath) && maxSizeInKb > 0 && new FileInfo(filePath).Length > maxSizeInKb * 1024)
+                    File.WriteAllText(filePath, File.ReadAllText(filePath).Substring((int)new FileInfo(filePath).Length - maxSizeInKb * 1024 / 2, maxSizeInKb * 1024 / 2));
+                File.AppendAllText(filePath, logContent + Environment.NewLine + Environment.NewLine);
+            }
+        }
+    }
 
     public static class RandomUtilities
     {
         private static readonly Random random = new Random();
 
-        public static int GetRandomInt(int min, int max)
+        public static int GetRandomInt(int min, int max, int[] excludeValues = null)
         {
-            return random.Next(min, max + 1);
-        }
-        public static int GetRandomNonZeroInt(int min, int max)
-        {
-            var value = 0;
-            while (value == 0)
-                value = GetRandomInt(min, max);
+            var value = random.Next(min, max + 1);
+            if (excludeValues != null && excludeValues.Contains(value))
+                return GetRandomInt(max, excludeValues);
             return value;
         }
         public static int GetRandomIndex(int maxCount)
@@ -64,9 +79,12 @@ namespace SchVictorina.WebAPI.Utilities
         {
             return random.Next(1, maxCount);
         }
-        public static int GetRandomInt(int max)
+        public static int GetRandomInt(int max, int[] excludeValues)
         {
-            return random.Next(-1 * max, max + 1);
+            var value = random.Next(-1 * max, max + 1);
+            if (excludeValues != null && excludeValues.Contains(value))
+                return GetRandomInt(max, excludeValues);
+            return value;
         }
         public static char GetRandomChar(this string text)
         {

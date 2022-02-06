@@ -1,6 +1,5 @@
 ﻿using SchVictorina.WebAPI.Utilities;
 using System;
-using SchVictorina.WebAPI.Utilities;
 using System.Linq;
 
 namespace SchVictorina.WebAPI.Engines
@@ -13,13 +12,13 @@ namespace SchVictorina.WebAPI.Engines
         public string Operators { get; set; }= "+-*/";
         public bool AllowNegative { get; set; } = true;
 
-        public override TaskInfo GenerateQuestion()
+        public override QuestionInfo GenerateQuestion()
         {
             var value1 = 0;
             var value2 = 0;
             var answer = 0;
-            var tolerance1 = RandomUtilities.GetRandomInt((MaxAnswerValue - MinAnswerValue) / 10);
-            var tolerance2 = RandomUtilities.GetRandomInt((MaxAnswerValue - MinAnswerValue) / 10);
+            var tolerance1 = RandomUtilities.GetRandomInt((MaxAnswerValue - MinAnswerValue) / 10, new int[] { 0 });
+            var tolerance2 = RandomUtilities.GetRandomInt((MaxAnswerValue - MinAnswerValue) / 10, new int[] { 0, tolerance1 });
 
             var @operator = RandomUtilities.GetRandomChar(Operators);
             if (@operator == '+')
@@ -47,11 +46,11 @@ namespace SchVictorina.WebAPI.Engines
                 value2 = 1 + RandomUtilities.GetRandomInt(MinAnswerValue, MaxAnswerValue) / 10;
                 value1 = value2 * RandomUtilities.GetRandomPositiveInt(10);
                 answer = value1 / value2;
-                tolerance1 = RandomUtilities.GetRandomNonZeroInt(-2, 2);
-                tolerance2 = RandomUtilities.GetRandomNonZeroInt(-3, 3);
+                tolerance1 = RandomUtilities.GetRandomInt(-2, 2, new int[] { 0 });
+                tolerance2 = RandomUtilities.GetRandomInt(-3, 3, new int[] { 0, tolerance1 });
             }
 
-            return new TaskInfo
+            return new QuestionInfo
             {
                 Question = @$"Сколько будет {value1} {@operator} {value2}",
                 AnswerOptions = new object[]
@@ -63,68 +62,5 @@ namespace SchVictorina.WebAPI.Engines
                 RightAnswer = answer
             };
         }
-
-        //public TaskInfo GenerateQuestion2()
-        //{
-        //    var @operator = MathUtilites.GetEnumByOperator(MathUtilites.GetRandomOperator(Operators).ToString());
-
-
-        //    var maxAnswerValue2 = @operator switch
-        //    {
-        //        Operator.Add => MaxAnswerValue / 2,
-        //        Operator.Subtract => MaxAnswerValue,
-        //        Operator.Multiply => Convert.ToInt32(Math.Sqrt(MaxAnswerValue)),
-        //        Operator.Divide => (random.Next(10, MaxAnswerValue) / 10),
-        //        _ => 0
-        //    };
-        //    var maxAnswerValue1 = @operator == Operator.Divide
-        //        ? maxAnswerValue2 * random.Next(1, 11)
-        //        : maxAnswerValue2;
-
-        //    var value1 = @operator == Operator.Divide ? maxAnswerValue1 : random.Next(1, maxAnswerValue1);
-        //    var value2 = @operator == Operator.Divide ? maxAnswerValue2 : random.Next(1, maxAnswerValue2);
-        //    var answer = @operator switch
-        //    {
-        //        Operator.Add => value1 + value2,
-        //        Operator.Subtract => value1 - value2,
-        //        Operator.Multiply => value1 * value2,
-        //        Operator.Divide => value1 / value2,
-        //        _ => 0
-        //    };
-        //    return new TaskInfo
-        //    {
-        //        Question = @$"Сколько будет {value1}{(@operator switch
-        //        {
-        //            Operator.Add => "+",
-        //            Operator.Subtract => "-",
-        //            Operator.Multiply => "*",
-        //            Operator.Divide => "/",
-        //            _ => 0
-        //        }
-        //            )}{value2}",
-        //        AnswerOptions = new object[]
-        //        {
-        //            answer,
-        //            answer + InvertIfNeeded(random.Next(1, MaxAnswerValue / 10), RandomUtilities.GenerateBool()),
-        //            answer + InvertIfNeeded(random.Next(1, MaxAnswerValue / 10), RandomUtilities.GenerateBool()),
-        //        }.OrderBy(x => x).ToArray(),
-        //        RightAnswer = answer
-        //    };
-        //}
-
-
-        //private static int InvertIfNeeded(int value, bool needsInvert)
-        //{
-        //    return !needsInvert ? value : (-1 * value);
-        //}
-
-        //public enum Operator
-        //{
-        //    Unknown = 0,
-        //    Add = 1,
-        //    Subtract = 2,
-        //    Multiply = 3,
-        //    Divide = 4
-        //}
     }
 }
