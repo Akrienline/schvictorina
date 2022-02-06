@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <users xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <user>
+  <user> 
     <info source="Telegram" userid="1118251133" username="kimsite" firstname="Boris" />
     <statistics lastVisitDate="2022-02-06T16:40:04.4642893+07:00" rightInSequence="0" totalQuestions="2" rightAnswers="0" wrongAnswers="1" skipQuestions="0" />
   </user>
