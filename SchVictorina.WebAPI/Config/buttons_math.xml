@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <buttons priority="1" classid="SchVictorina.WebAPI.Engines.MathEngine">
 	<group label="Математика">
-		<engine label="1 класс">
+		<engine label="1 класс" id="math_class_1">
 			<parameter id="Operators">+-</parameter>
 			<parameter id="MinAnswerValue">0</parameter>
 			<parameter id="MaxAnswerValue">20</parameter>
@@ -19,36 +19,36 @@
 			<parameter id="MaxAnswerValue">410</parameter>
 			<parameter id="AllowNegative">true</parameter>
 		</engine>
-		<engine label="4 класс" from="2022-01-24" to="2025-02-25">
+		<engine label="4 класс" from="2022-01-24" to="2025-02-25" id="math_class_4">
 			<parameter id="Operators">+-*/</parameter>
 			<parameter id="MinAnswerValue">100</parameter>
 			<parameter id="MaxAnswerValue">500</parameter>
 			<parameter id="AllowNegative">true</parameter>
 		</engine>
 		<split />
-		<group label="Огромные числа">
-			<engine label="Только с плюсом">
+		<group label="Огромные числа" id="math_big_values">
+			<engine label="сложение">
 				<parameter id="Operators">+</parameter>
-				<parameter id="MinAnswerValue">100500</parameter>
-				<parameter id="MaxAnswerValue">10005000</parameter>
+				<parameter id="MinAnswerValue">1000</parameter>
+				<parameter id="MaxAnswerValue">10000</parameter>
 				<parameter id="AllowNegative">false</parameter>
 			</engine>
-			<engine label="Только с минусом">
+			<engine label="вычитание">
 				<parameter id="Operators">-</parameter>
-				<parameter id="MinAnswerValue">100500</parameter>
-				<parameter id="MaxAnswerValue">10005000</parameter>
+				<parameter id="MinAnswerValue">1000</parameter>
+				<parameter id="MaxAnswerValue">10000</parameter>
 				<parameter id="AllowNegative">false</parameter>
 			</engine>
-			<engine label="Только с умножением">
+			<engine label="умножение">
 				<parameter id="Operators">*</parameter>
-				<parameter id="MinAnswerValue">100500</parameter>
-				<parameter id="MaxAnswerValue">10005000</parameter>
+				<parameter id="MinAnswerValue">1000</parameter>
+				<parameter id="MaxAnswerValue">10000</parameter>
 				<parameter id="AllowNegative">false</parameter>
 			</engine>
-			<engine>
+			<engine label="деление">
 				<parameter id="Operators">/</parameter>
-				<parameter id="MinAnswerValue">100500</parameter>
-				<parameter id="MaxAnswerValue">10005000</parameter>
+				<parameter id="MinAnswerValue">1000</parameter>
+				<parameter id="MaxAnswerValue">10000</parameter>
 				<parameter id="AllowNegative">false</parameter>
 			</engine>
 		</group>

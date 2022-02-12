@@ -13,6 +13,9 @@ namespace SchVictorina.WebAPI.Utilities
         private static Dictionary<string, BaseButton> _allButtons;
         private static FileSystemWatcher _watcher;
 
+        public delegate void ButtonChangedEventHandler();
+        public static event ButtonChangedEventHandler ButtonListChanged;
+
         static ButtonConfig()
         {
             _watcher = new FileSystemWatcher("Config", "buttons_*.xml");
@@ -93,6 +96,7 @@ namespace SchVictorina.WebAPI.Utilities
         {
             _buttonRoot = null;
             _allButtons = null;
+            ButtonListChanged?.Invoke();
         }
     }
 
@@ -101,8 +105,24 @@ namespace SchVictorina.WebAPI.Utilities
         [XmlAttribute("label")]
         public string Label { get; set; }
 
-        [XmlIgnore]
-        internal readonly string ID = Guid.NewGuid().ToString("N");
+        internal string LabelWithParents
+        {
+            get
+            {
+                if (Parent != null && !string.IsNullOrEmpty(Parent.Label))
+                    return $"{Parent.LabelWithParents} -> {Label}";
+                return Label;
+            }
+        }
+
+
+        internal readonly string AutoID = Guid.NewGuid().ToString("N");
+        private string _id = null;
+
+        [XmlAttribute("id")]
+        public string ID { get { return (_id ?? (_id = AutoID)); } set { _id = value; } }
+
+
         [XmlIgnore]
         internal GroupButton Parent { get; set; }
 

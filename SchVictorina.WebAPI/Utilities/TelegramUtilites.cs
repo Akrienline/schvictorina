@@ -31,6 +31,15 @@ namespace SchVictorina.WebAPI.Utilities
                 return new User();
         }
 
+        public static int GetMessageId(this Update update)
+        {
+            if (update.Type == UpdateType.Message)
+                return update.Message.MessageId;
+            else if (update.Type == UpdateType.CallbackQuery)
+                return update.CallbackQuery.Message.MessageId;
+            return 0;
+        }
+
         public static async Task SendText(this ITelegramBotClient botClient, Update update, string message, InlineKeyboardMarkup inlineKeyboardMarkup = null)
         {
             await botClient.SendTextMessageAsync(update.GetChatId(), message, replyMarkup: inlineKeyboardMarkup, cancellationToken: CancellationToken.None);
@@ -41,8 +50,9 @@ namespace SchVictorina.WebAPI.Utilities
         }
         public static async Task SendTextAndImage(this ITelegramBotClient botClient, Update update, string message, string filePath)
         {
-            await SendText(botClient, update, message);
-            await SendImage(botClient, update, filePath);
+            await botClient.SendPhotoAsync(update.GetChatId(), new InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes(filePath))), message, cancellationToken: CancellationToken.None);
+            //await SendText(botClient, update, message);
+            //await SendImage(botClient, update, filePath);
         }
     }
 }

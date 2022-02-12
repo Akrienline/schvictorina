@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using SchVictorina.WebAPI.Utilities;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Extensions.Polling;
@@ -29,6 +30,22 @@ namespace SchVictorina.WebAPI.Controllers
                 updateReceiver = new DefaultUpdateReceiver(botClient);
                 updateReceiver.ReceiveAsync(new TelegramProcessing.MainUpdateHandler());
             }
+
+            ButtonConfig.ButtonListChanged += delegate
+            {
+                SetMyCommands();
+            };
+            SetMyCommands();
+        }
+
+        private static void SetMyCommands()
+        {
+
+            botClient.SetMyCommandsAsync(ButtonConfig.AllButtons.Where(x => x.Value.ID != x.Value.AutoID).Select(x => new BotCommand
+            {
+                Command = x.Value.ID,
+                Description = x.Value.LabelWithParents
+            }));
         }
 
         [HttpGet]

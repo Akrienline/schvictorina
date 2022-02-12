@@ -34,6 +34,21 @@ namespace SchVictorina.WebAPI.Controllers
                         if (update.Message.Text != "/theme")
                             return;
                     }
+                    if (update.Message.Text.StartsWith("/"))
+                    {
+                        var button = ButtonConfig.GetButton(update.Message.Text.TrimStart('/'));
+                        if (button is GroupButton groupButton)
+                        {
+                            await GenerateButtonsAndSend(botClient, update, groupButton);
+                            return;
+                        }
+                        else if (button is EngineButton engineButton)
+                        {
+                            await SendQuestion(botClient, update, user, engineButton);
+                            return;
+                        }
+                    }
+                    
                     await GenerateButtonsAndSend(botClient, update, ButtonConfig.RootButton);
                 }
                 else if (update.Type == UpdateType.CallbackQuery)
@@ -64,24 +79,21 @@ namespace SchVictorina.WebAPI.Controllers
                                     var isRight = callbackValues[2] == callbackValues[3];
 
                                     UserConfig.Instance.Log(user, isRight ? UserConfig.EventType.RightAnswer : UserConfig.EventType.WrongAnswer);
-
-                                    await botClient.SendText(update, isRight ? "Правильно 👍" : $"Неправильно 👎{Environment.NewLine}Верный ответ: {callbackValues[2]}");
+                                    await botClient.SendText(update, isRight ? $"Правильно 👍. Ответ: {callbackValues[2]}" : $"Неправильно 👎. Верный ответ: {callbackValues[2]}, а не {callbackValues[3]}");
+                                    await botClient.EditMessageReplyMarkupAsync(update.GetChatId(), update.GetMessageId(), new InlineKeyboardMarkup(new InlineKeyboardButton[0]));
 
                                     if (isRight)
                                     {
                                         if (user.Statistics.RightInSequence % 20 == 0)
-                                            await botClient.SendTextAndImage(update, "Уже 20 правильных ответов подряд, держи парочку подарков:", "gift_sequence_20.jpg");
+                                            await botClient.SendTextAndImage(update, "Уже 20 правильных ответов подряд, держи парочку подарков.", "gift_sequence_20.jpg");
                                         else if (user.Statistics.RightInSequence % 5 == 0)
-                                            await botClient.SendTextAndImage(update, "Пять правильных ответов подряд, держи подарок:", "gift_sequence_5.jpg");
+                                            await botClient.SendTextAndImage(update, "Пять правильных ответов подряд, держи подарок.", "gift_sequence_5.jpg");
                                         if (user.Statistics.RightAnswers % 100 == 0)
-                                            await botClient.SendTextAndImage(update, "Сто правильных ответов, молодец:", "gift_rights_100.jpg");
+                                            await botClient.SendTextAndImage(update, "Сто правильных ответов, молодец.", "gift_rights_100.jpg");
                                     }
                                 }
 
-                                UserConfig.Instance.Log(user, UserConfig.EventType.SendQuestion);
-                                var question = engineButton.Engine.GenerateQuestion();
-                                var keyboard = new InlineKeyboardMarkup(GenerateInlineKeyboardButtons(question, engineButton.Engine, engineButton));
-                                await botClient.SendText(update, question?.Question ?? "нет вопроса!", keyboard);
+                                await SendQuestion(botClient, update, user, engineButton);
                             }
                         }
                     }
@@ -91,6 +103,14 @@ namespace SchVictorina.WebAPI.Controllers
             {
                 await GlobalConfig.Instance?.Logging?.Errors?.Log(botClient, update, ex.ToString());
             }
+        }
+
+        private static async Task SendQuestion(ITelegramBotClient botClient, Update update, UserConfig.User user, EngineButton engineButton)
+        {
+            UserConfig.Instance.Log(user, UserConfig.EventType.SendQuestion);
+            var question = engineButton.Engine.GenerateQuestion();
+            var keyboard = new InlineKeyboardMarkup(GenerateInlineKeyboardButtons(question, engineButton.Engine, engineButton));
+            await botClient.SendText(update, question?.Question ?? "нет вопроса!", keyboard);
         }
 
         internal class MainUpdateHandler : IUpdateHandler
