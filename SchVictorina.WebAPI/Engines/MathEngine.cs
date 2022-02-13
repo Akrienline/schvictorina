@@ -75,31 +75,19 @@ namespace SchVictorina.WebAPI.Engines
             var @operator = RandomUtilities.GetRandomChar(Operators);
             if (@operator == '+')
             {
-                value1 = RandomUtilities.GetRandomInt(MinAnswerValue, MaxAnswerValue / 2);
+                value1 = RandomUtilities.GetRandomInt(MinAnswerValue, answer);
                 value2 = answer - value1;
-                if (value2 < 0)
-                {
-                    @operator = '-';
-                    value2 = -1 * value2;
-                }
                 if (value1 == 0 || value2 == 0)
                     return answer.ToString();
             }
             else if (@operator == '-')
             {
-                value1 = RandomUtilities.GetRandomInt(MinAnswerValue, MaxAnswerValue);
+                value1 = RandomUtilities.GetRandomInt(MinAnswerValue, answer);
                 value2 = value1 - answer;
-                if (value2 < 0)
-                {
-                    @operator = '+';
-                    value2 = -1 * value2;
-                }
-                if (value1 == 0 || value2 == 0)
-                    return answer.ToString();
             }
             else if (@operator == '*')
             {
-                for (var v = 10; v >= 1; --v)
+                for (var v = 100; v >= 1; --v)
                 {
                     if ((answer / v) == (answer / Convert.ToDouble(v)))
                     {
@@ -115,6 +103,8 @@ namespace SchVictorina.WebAPI.Engines
             {
                 for (var v = 10; v >= 1; --v)
                 {
+                    if (answer * v > MaxAnswerValue)
+                        continue;
                     if ((answer / v) == (answer / Convert.ToDouble(v)))
                     {
                         value1 = answer * v;

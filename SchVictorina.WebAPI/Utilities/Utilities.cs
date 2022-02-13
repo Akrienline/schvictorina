@@ -54,7 +54,10 @@ namespace SchVictorina.WebAPI.Utilities
             lock (_lock)
             {
                 if (File.Exists(filePath) && maxSizeInKb > 0 && new FileInfo(filePath).Length > maxSizeInKb * 1024)
-                    File.WriteAllText(filePath, File.ReadAllText(filePath).Substring((int)new FileInfo(filePath).Length - maxSizeInKb * 1024 / 2 - 2, maxSizeInKb * 1024 / 2));
+                {
+                    var lines = File.ReadAllLines(filePath);
+                    File.WriteAllLines(filePath, lines.Skip(lines.Length / 2));
+                }
                 File.AppendAllText(filePath, logContent + Environment.NewLine + Environment.NewLine);
             }
         }

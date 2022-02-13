@@ -7,50 +7,66 @@
 			<parameter id="MaxAnswerValue">20</parameter>
 			<parameter id="AllowNegative">false</parameter>
 		</engine>
-		<engine label="2 класс" from="2022-01-24" to="2025-02-25">
+		<engine label="2 класс" id="math_class_2">
 			<parameter id="Operators">+-*</parameter>
 			<parameter id="MinAnswerValue">10</parameter>
-			<parameter id="MaxAnswerValue">360</parameter>
+			<parameter id="MaxAnswerValue">100</parameter>
 			<parameter id="AllowNegative">true</parameter>
 		</engine>
-		<engine label="3 класс" from="2022-01-24" to="2025-02-25">
+		<engine label="3 класс" id="math_class_3">
 			<parameter id="Operators">+-*/</parameter>
 			<parameter id="MinAnswerValue">100</parameter>
-			<parameter id="MaxAnswerValue">410</parameter>
+			<parameter id="MaxAnswerValue">250</parameter>
 			<parameter id="AllowNegative">true</parameter>
 		</engine>
-		<engine label="4 класс" from="2022-01-24" to="2025-02-25" id="math_class_4">
+		<engine label="4 класс" id="math_class_4">
 			<parameter id="Operators">+-*/</parameter>
 			<parameter id="MinAnswerValue">100</parameter>
-			<parameter id="MaxAnswerValue">500</parameter>
+			<parameter id="MaxAnswerValue">1000</parameter>
 			<parameter id="AllowNegative">true</parameter>
 			<parameter id="Depth">1</parameter>
 		</engine>
 		<split />
-		<group label="Огромные числа" id="math_big_values">
-			<engine label="сложение">
+		<group label="Огромные числа">
+			<engine label="Сложение">
 				<parameter id="Operators">+</parameter>
 				<parameter id="MinAnswerValue">1000</parameter>
 				<parameter id="MaxAnswerValue">10000</parameter>
-				<parameter id="AllowNegative">false</parameter>
+				<parameter id="AllowNegative">true</parameter>
 			</engine>
-			<engine label="вычитание">
+			<engine label="Вычитание">
 				<parameter id="Operators">-</parameter>
 				<parameter id="MinAnswerValue">1000</parameter>
 				<parameter id="MaxAnswerValue">10000</parameter>
-				<parameter id="AllowNegative">false</parameter>
+				<parameter id="AllowNegative">true</parameter>
 			</engine>
-			<engine label="умножение">
+			<engine label="Умножение">
 				<parameter id="Operators">*</parameter>
 				<parameter id="MinAnswerValue">1000</parameter>
 				<parameter id="MaxAnswerValue">10000</parameter>
-				<parameter id="AllowNegative">false</parameter>
+				<parameter id="AllowNegative">true</parameter>
 			</engine>
-			<engine label="деление">
+			<engine label="Деление">
 				<parameter id="Operators">/</parameter>
 				<parameter id="MinAnswerValue">1000</parameter>
 				<parameter id="MaxAnswerValue">10000</parameter>
-				<parameter id="AllowNegative">false</parameter>
+				<parameter id="AllowNegative">true</parameter>
+			</engine>
+		</group>
+		<group label="Много скобок">
+			<engine label="Сложение">
+				<parameter id="Operators">+</parameter>
+				<parameter id="MinAnswerValue">1000</parameter>
+				<parameter id="MaxAnswerValue">10000</parameter>
+				<parameter id="AllowNegative">true</parameter>
+				<parameter id="Depth">6</parameter>
+			</engine>
+			<engine label="Вычитание">
+				<parameter id="Operators">-</parameter>
+				<parameter id="MinAnswerValue">1000</parameter>
+				<parameter id="MaxAnswerValue">10000</parameter>
+				<parameter id="AllowNegative">true</parameter>
+				<parameter id="Depth">6</parameter>
 			</engine>
 		</group>
 	</group>

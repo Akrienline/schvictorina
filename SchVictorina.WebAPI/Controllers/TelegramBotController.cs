@@ -38,10 +38,10 @@ namespace SchVictorina.WebAPI.Controllers
             SetMyCommands();
         }
 
-        private static void SetMyCommands()
+        private static async void SetMyCommands()
         {
-
-            botClient.SetMyCommandsAsync(ButtonConfig.AllButtons.Where(x => x.Value.ID != x.Value.AutoID).Select(x => new BotCommand
+            await botClient.DeleteMyCommandsAsync();
+            await botClient.SetMyCommandsAsync(ButtonConfig.AllButtons.Where(x => x.Value.ID != x.Value.AutoID).Select(x => new BotCommand
             {
                 Command = x.Value.ID,
                 Description = x.Value.LabelWithParents

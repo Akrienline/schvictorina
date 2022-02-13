@@ -13,6 +13,8 @@ namespace SchVictorina.WebAPI.Engines
         {
             var leaderboard = UserConfig.Instance.Users
                                                  .OrderByDescending(users => users.Statistics.RightAnswers)
+                                                 .Where(user => !string.IsNullOrWhiteSpace(user.Info.FirstName))
+                                                 .Where(user => !string.IsNullOrWhiteSpace(user.Info.UserName))
                                                  .Take(MaxUsers)
                                                  .Select((user, i) => new
                                                  {
