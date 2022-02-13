@@ -112,7 +112,8 @@ namespace SchVictorina.WebAPI.Utilities
 
             [XmlElement("statistics")]
             public StatisticsInfo Statistics { get; set; }
-
+            [XmlAttribute("banned")]
+            public bool IsBanned { get; set; } = false;
             public class UserInfo
             {
                 [XmlAttribute("source")]
