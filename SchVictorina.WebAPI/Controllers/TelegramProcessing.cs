@@ -48,6 +48,13 @@ namespace SchVictorina.WebAPI.Controllers
                             await SendQuestion(botClient, update, user, engineButton);
                             return;
                         }
+                        else if (button is FunctionButton functionButton)
+                        {
+                            var result = functionButton.Class?.Invoke();
+                            if (result != null)
+                                await botClient.SendTextAndImage(update, result.Text, result.ImagePath);
+                            return;
+                        }
                     }
                     
                     await GenerateButtonsAndSend(botClient, update, ButtonConfig.RootButton);
@@ -100,9 +107,7 @@ namespace SchVictorina.WebAPI.Controllers
                             {
                                 var result = functionButton.Class?.Invoke();
                                 if (result != null)
-                                {
                                     await botClient.SendTextAndImage(update, result.Text, result.ImagePath);
-                                }
                             }
                         }
                     }

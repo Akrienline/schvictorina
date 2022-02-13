@@ -1,6 +1,7 @@
 ﻿using SchVictorina.WebAPI.Utilities;
 using System;
 using System.Linq;
+using System.Text;
 
 namespace SchVictorina.WebAPI.Engines
 {
@@ -10,11 +11,28 @@ namespace SchVictorina.WebAPI.Engines
 
         public FunctionButton.Result Invoke()
         {
-            var leaderboard = UserConfig.Instance.Users.OrderByDescending(users => users.Statistics.RightAnswers).Take(MaxUsers).ToArray();
-            var resultInString = string.Empty;
+            var leaderboard = UserConfig.Instance.Users
+                                                 .OrderByDescending(users => users.Statistics.RightAnswers)
+                                                 .Take(MaxUsers)
+                                                 .Select((user, i) => new
+                                                 {
+                                                     Position = i + 1,
+                                                     Name = $"{user.Info.FirstName} (@{user.Info.UserName})",
+                                                     Score = user.Statistics.RightAnswers,
+                                                     Total = user.Statistics.RightAnswers + user.Statistics.WrongAnswers + user.Statistics.SkipQuestions
+                                                 })
+                                                 .ToArray();
+            var result = new StringBuilder();
+            result.AppendLine("Десятка лучших:");
             foreach (var user in leaderboard)
-                resultInString += $"{user.Info.FirstName} (@{user.Info.UserName}) - правильных ответов: {user.Statistics.RightAnswers}, неправильных ответов: {user.Statistics.WrongAnswers}, пропущеных вопросов: {user.Statistics.SkipQuestions}, всего вопросов задано: {user.Statistics.TotalQuestions}{Environment.NewLine}{Environment.NewLine}";
-            return new FunctionButton.Result { Text = resultInString + $"{Environment.NewLine} Это была десятка лучших!" };
+            {
+                result.AppendLine($"{user.Position}. {user.Name}: {user.Score} правильно из {user.Total}");
+            }
+
+            return new FunctionButton.Result
+            {
+                Text = result.ToString()
+            };
         }
     }
 }
