@@ -1,4 +1,4 @@
-using System.IO;
+                                         using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
@@ -42,9 +42,8 @@ namespace SchVictorina.WebAPI.Utilities
 
         public static async Task SendImageAsSticker(this ITelegramBotClient botClient, Update update, string filePath)
         {
-            await botClient.SendStickerAsync(update.GetChatId(), new InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes(filePath))), cancellationToken: CancellationToken.None)
+            await botClient.SendStickerAsync(update.GetChatId(), new InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes(filePath))), cancellationToken: CancellationToken.None);
         }
-
         public static async Task SendText(this ITelegramBotClient botClient, Update update, string message, InlineKeyboardMarkup inlineKeyboardMarkup = null)
         {
             await botClient.SendTextMessageAsync(update.GetChatId(), message, replyMarkup: inlineKeyboardMarkup, cancellationToken: CancellationToken.None);
@@ -55,7 +54,10 @@ namespace SchVictorina.WebAPI.Utilities
         }
         public static async Task SendTextAndImage(this ITelegramBotClient botClient, Update update, string message, string filePath)
         {
-            await botClient.SendPhotoAsync(update.GetChatId(), new InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes(filePath))), message, cancellationToken: CancellationToken.None);
+            if (string.IsNullOrEmpty(filePath))
+                await botClient.SendText(update, message);
+            else
+                await botClient.SendPhotoAsync(update.GetChatId(), new InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes(filePath))), message, cancellationToken: CancellationToken.None);
             //await SendText(botClient, update, message);
             //await SendImage(botClient, update, filePath);
         }

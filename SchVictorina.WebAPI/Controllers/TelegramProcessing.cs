@@ -96,6 +96,14 @@ namespace SchVictorina.WebAPI.Controllers
 
                                 await SendQuestion(botClient, update, user, engineButton);
                             }
+                            else if (button is FunctionButton functionButton)
+                            {
+                                var result = functionButton.Class?.Invoke();
+                                if (result != null)
+                                {
+                                    await botClient.SendTextAndImage(update, result.Text, result.ImagePath);
+                                }
+                            }
                         }
                     }
                 }
@@ -109,8 +117,8 @@ namespace SchVictorina.WebAPI.Controllers
         private static async Task SendQuestion(ITelegramBotClient botClient, Update update, UserConfig.User user, EngineButton engineButton)
         {
             UserConfig.Instance.Log(user, UserConfig.EventType.SendQuestion);
-            var question = engineButton.Engine.GenerateQuestion();
-            var keyboard = new InlineKeyboardMarkup(GenerateInlineKeyboardButtons(question, engineButton.Engine, engineButton));
+            var question = engineButton.Class.GenerateQuestion();
+            var keyboard = new InlineKeyboardMarkup(GenerateInlineKeyboardButtons(question, engineButton.Class, engineButton));
             await botClient.SendText(update, question?.Question ?? "нет вопроса!", keyboard);
         }
 

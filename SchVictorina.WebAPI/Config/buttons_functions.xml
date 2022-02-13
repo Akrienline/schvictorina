@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<buttons priority="100">
+	<function label="Таблица лидеров" id="leaderboard" classid="SchVictorina.WebAPI.Engines.LeadersFunction">
+		<parameter id="MaxUsers">10</parameter>
+	</function>
+</buttons>

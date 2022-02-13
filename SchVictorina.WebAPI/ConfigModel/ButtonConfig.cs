@@ -158,16 +158,17 @@ namespace SchVictorina.WebAPI.Utilities
             }
         }
     }
-    public interface IEnginableButton
+    public interface IClassableButton
     {
         string ClassID { get; set; }
     }
 
-    public class GroupButton : BaseButton, IEnginableButton
+    public class GroupButton : BaseButton, IClassableButton
     {
         [XmlElement("group", typeof(GroupButton))]
         [XmlElement("engine", typeof(EngineButton))]
         [XmlElement("split", typeof(SplitButton))]
+        [XmlElement("function", typeof(FunctionButton))]
         public BaseButton[] Children { get; set; }
 
         internal IEnumerable<BaseButton> Descendant
@@ -200,7 +201,7 @@ namespace SchVictorina.WebAPI.Utilities
                     return;
                 if (Children == null)
                     return;
-                foreach (var child in Children.OfType<IEnginableButton>()
+                foreach (var child in Children.OfType<IClassableButton>()
                                               .Where(x => string.IsNullOrEmpty(x.ClassID)))
                 {
                     child.ClassID = value;
@@ -226,9 +227,11 @@ namespace SchVictorina.WebAPI.Utilities
         [XmlAttribute("priority")]
         public int Priority { get; set; }
     }
-    public sealed class EngineButton: BaseButton, IEnginableButton
+
+    public abstract class ClassableButton<T> : BaseButton, IClassableButton
+        where T : class
     {
-        public sealed class EngineParameter
+        public sealed class Parameter
         {
             [XmlAttribute("id")]
             public string ID { get; set; }
@@ -238,35 +241,36 @@ namespace SchVictorina.WebAPI.Utilities
 
         [XmlAttribute("classid")]
         public string ClassID { get; set; }
-        [XmlElement("parameter")]
-        public EngineParameter[] Parameters { get; set; }
 
-        private BaseEngine _engine;
-        internal BaseEngine Engine
+        [XmlElement("parameter")]
+        public Parameter[] Parameters { get; set; }
+
+        private T _class;
+        internal T Class
         {
             get
             {
-                if (_engine == null)
+                if (_class == null)
                 {
-                    var engineType = Type.GetType(ClassID);
-                    if (engineType == null)
+                    var classType = Type.GetType(ClassID);
+                    if (classType == null)
                         return null;
-                    _engine = (BaseEngine)Activator.CreateInstance(engineType);
+                    _class = (T)Activator.CreateInstance(classType);
                     if (Parameters != null)
                     {
                         foreach (var parameter in Parameters)
                         {
-                            var property = engineType.GetProperty(parameter.ID);
+                            var property = classType.GetProperty(parameter.ID);
                             if (property != null)
                             {
                                 var value = parameter.Value.ParseTo(property.PropertyType);
                                 if (value != null)
-                                    property.SetValue(_engine, value);
+                                    property.SetValue(_class, value);
                             }
                         }
                     }
                 }
-                return _engine;
+                return _class;
             }
         }
 
@@ -279,6 +283,24 @@ namespace SchVictorina.WebAPI.Utilities
                     return false;
                 return base.IsValid;
             }
+        }
+    }
+
+    public sealed class EngineButton: ClassableButton<BaseEngine>
+    {
+    }
+
+    public interface IFunction
+    {
+        FunctionButton.Result Invoke();
+    }
+
+    public sealed class FunctionButton : ClassableButton<IFunction>
+    {
+        public sealed class Result
+        {
+            public string Text;
+            public string ImagePath;
         }
     }
 
