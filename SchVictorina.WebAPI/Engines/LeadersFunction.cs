@@ -13,7 +13,7 @@ namespace SchVictorina.WebAPI.Engines
             var leaderboard = UserConfig.Instance.Users.OrderByDescending(users => users.Statistics.RightAnswers).Take(MaxUsers).ToArray();
             var resultInString = string.Empty;
             foreach (var user in leaderboard)
-                resultInString += $"{user.Info.FirstName} ({user.Info.UserName}) - правильных ответов: {user.Statistics.RightAnswers}, неправильных ответов: {user.Statistics.WrongAnswers},{Environment.NewLine}пропущеных вопросов: {user.Statistics.SkipQuestions}, всего вопросов задано: {user.Statistics.TotalQuestions}";
+                resultInString += $"{user.Info.FirstName} (@{user.Info.UserName}) - правильных ответов: {user.Statistics.RightAnswers}, неправильных ответов: {user.Statistics.WrongAnswers}, пропущеных вопросов: {user.Statistics.SkipQuestions}, всего вопросов задано: {user.Statistics.TotalQuestions}{Environment.NewLine}{Environment.NewLine}";
             return new FunctionButton.Result { Text = resultInString + $"{Environment.NewLine} Это была десятка лучших!" };
         }
     }
