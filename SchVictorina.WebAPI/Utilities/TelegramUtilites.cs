@@ -40,6 +40,11 @@ namespace SchVictorina.WebAPI.Utilities
             return 0;
         }
 
+        public static async Task SendImageAsSticker(this ITelegramBotClient botClient, Update update, string filePath)
+        {
+            await botClient.SendStickerAsync(update.GetChatId(), new InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes(filePath))), cancellationToken: CancellationToken.None)
+        }
+
         public static async Task SendText(this ITelegramBotClient botClient, Update update, string message, InlineKeyboardMarkup inlineKeyboardMarkup = null)
         {
             await botClient.SendTextMessageAsync(update.GetChatId(), message, replyMarkup: inlineKeyboardMarkup, cancellationToken: CancellationToken.None);

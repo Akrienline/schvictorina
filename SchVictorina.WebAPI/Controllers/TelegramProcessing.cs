@@ -18,6 +18,7 @@ namespace SchVictorina.WebAPI.Controllers
         {
             try
             {
+                
                 await GlobalConfig.Instance?.Logging?.Requests?.Log(botClient, update, $"{update.Type}: {update.Message?.Text ?? update.CallbackQuery?.Data}");
 
                 var user = UserConfig.Instance.GetUser(GetUserInfo(update.GetUser()));
