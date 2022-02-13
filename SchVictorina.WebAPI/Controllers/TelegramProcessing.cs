@@ -88,7 +88,11 @@ namespace SchVictorina.WebAPI.Controllers
 
                                     UserConfig.Instance.Log(user, isRight ? UserConfig.EventType.RightAnswer : UserConfig.EventType.WrongAnswer);
                                     await botClient.SendText(update, isRight ? $"Правильно 👍. Ответ: {callbackValues[2]}" : $"Неправильно 👎. Верный ответ: {callbackValues[2]}, а не {callbackValues[3]}");
-                                    await botClient.EditMessageReplyMarkupAsync(update.GetChatId(), update.GetMessageId(), new InlineKeyboardMarkup(new InlineKeyboardButton[0]));
+                                    try
+                                    {
+                                        await botClient.EditMessageReplyMarkupAsync(update.GetChatId(), update.GetMessageId(), new InlineKeyboardMarkup(new InlineKeyboardButton[0]));
+                                    }
+                                    catch { }
 
                                     if (isRight)
                                     {

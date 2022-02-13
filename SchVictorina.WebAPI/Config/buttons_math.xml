@@ -24,6 +24,7 @@
 			<parameter id="MinAnswerValue">100</parameter>
 			<parameter id="MaxAnswerValue">500</parameter>
 			<parameter id="AllowNegative">true</parameter>
+			<parameter id="Depth">1</parameter>
 		</engine>
 		<split />
 		<group label="Огромные числа" id="math_big_values">
