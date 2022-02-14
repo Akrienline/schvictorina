@@ -112,8 +112,8 @@ namespace SchVictorina.WebAPI.Utilities
 
             [XmlElement("statistics")]
             public StatisticsInfo Statistics { get; set; }
-            [XmlAttribute("hided")]
-            public bool IsHided { get; set; } = false;
+            [XmlAttribute("hiden")]
+            public bool IsHiden { get; set; } = false;
             public class UserInfo
             {
                 [XmlAttribute("source")]

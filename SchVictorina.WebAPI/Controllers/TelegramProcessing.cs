@@ -40,37 +40,11 @@ namespace SchVictorina.WebAPI.Controllers
                     {
                         if (update.Message.Text.StartsWith("/hide"))
                         {
-                            if (update.Message.From.Username == "alekami649" || update.Message.From.Username == "kimsite")
-                            {
-                                var nicknameToHide = update.Message.Text.Substring("/hide".Length).Trim().TrimStart('@');
-                                var userToHide = GetUserByUsername(nicknameToHide);
-                                if (userToHide == null)
-                                    await botClient.SendText(update, $"{nicknameToHide} не найден.");
-                                else
-                                {
-                                    userToHide.IsHided = true;
-                                    await botClient.SendText(update, $"Ученик @{nicknameToHide} был удалён из списка лидеров.");
-                                }
-                            }
-                            else
-                                await botClient.SendText(update, "У тебя нет разрешения!");
+                            await HideUser(botClient, update);
                         }
                         if (update.Message.Text.StartsWith("/show"))
                         {
-                            if (update.Message.From.Username == "alekami649" || update.Message.From.Username == "kimsite")
-                            {
-                                var nicknameToShow = update.Message.Text.Substring("/show".Length).Trim().TrimStart('@');
-                                var userToHide = GetUserByUsername(nicknameToShow);
-                                if (userToHide == null)
-                                    await botClient.SendText(update, $"{nicknameToShow} не найден.");
-                                else
-                                {
-                                    userToHide.IsHided = false;
-                                    await botClient.SendText(update, $"Ученик @{nicknameToShow} был добавлен в список лидеров.");
-                                }
-                            }
-                            else
-                                await botClient.SendText(update, "У тебя нет разрешения!");
+                            await ShowUser(botClient, update);
                         }
 
                         var button = ButtonConfig.GetButton(update.Message.Text.TrimStart('/'));
@@ -263,6 +237,48 @@ namespace SchVictorina.WebAPI.Controllers
                                            .Where(user => user.Info.UserName == username)
                                            .FirstOrDefault();
             return user;
+        }
+        private static async Task HideUser(ITelegramBotClient botClient, Update update)
+        {
+            if (update.Message.Text.StartsWith("/hide"))
+            {
+                if (update.Message.From.Username == "alekami649" || update.Message.From.Username == "kimsite")
+                {
+                    var nicknameToHide = update.Message.Text.Substring("/hide".Length).Trim().TrimStart('@');
+                    var userToHide = GetUserByUsername(nicknameToHide);
+                    if (userToHide == null)
+                        await botClient.SendText(update, $"{nicknameToHide} не найден.");
+                    else
+                    {
+                        userToHide.IsHiden = true;
+                        await botClient.SendText(update, $"Ученик @{nicknameToHide} был удалён из списка лидеров.");
+                    }
+                }
+                else
+                    await botClient.SendText(update, "У тебя нет разрешения!");
+            }
+            else
+                throw new ArgumentException();
+        }
+        private static async Task ShowUser(ITelegramBotClient botClient, Update update)
+        {
+            if (update.Message.Text.StartsWith("/show"))
+            {
+                if (update.Message.From.Username == "alekami649" || update.Message.From.Username == "kimsite")
+                {
+                    var nicknameToShow = update.Message.Text.Substring("/show".Length).Trim().TrimStart('@');
+                    var userToHide = GetUserByUsername(nicknameToShow);
+                    if (userToHide == null)
+                        await botClient.SendText(update, $"{nicknameToShow} не найден.");
+                    else
+                    {
+                        userToHide.IsHiden = false;
+                        await botClient.SendText(update, $"Ученик @{nicknameToShow} был добавлен в список лидеров.");
+                    }
+                }
+                else
+                    await botClient.SendText(update, "У тебя нет разрешения!");
+            }
         }
     }
 }

@@ -15,7 +15,7 @@ namespace SchVictorina.WebAPI.Engines
                                                  .OrderByDescending(users => users.Statistics.RightAnswers)
                                                  .Where(user => !string.IsNullOrWhiteSpace(user.Info.FirstName))
                                                  .Where(user => !string.IsNullOrWhiteSpace(user.Info.UserName))
-                                                 .Where(user => !user.IsHided)
+                                                 .Where(user => !user.IsHiden)
                                                  .Take(MaxUsers)
                                                  .Select((user, i) => new
                                                  {
