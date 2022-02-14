@@ -8,6 +8,7 @@ using Telegram.Bot;
 using Telegram.Bot.Extensions.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.Payments;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace SchVictorina.WebAPI.Controllers
@@ -37,6 +38,30 @@ namespace SchVictorina.WebAPI.Controllers
                     }
                     if (update.Message.Text.StartsWith("/"))
                     {
+                        if (update.Message.Text.StartsWith("/hide"))
+                        {
+                            if (update.Message.From.Username == "alekami649" || update.Message.From.Username == "kimsite")
+                            {
+                                var nicknameToHide = update.Message.Text.Substring("/hide".Length).Trim().TrimStart('@');
+                                var userToHide = GetUserByUsername(nicknameToHide);
+                                userToHide.IsHided = true;
+                                await botClient.SendText(update, $"Ученик @{nicknameToHide} был удалён из списка лидеров.");
+                            }
+                            else
+                                await botClient.SendText(update, "У тебя нет разрешения!");
+                        }
+                        if (update.Message.Text.StartsWith("/show"))
+                        {
+                            if (update.Message.From.Username == "alekami649" || update.Message.From.Username == "kimsite")
+                            {
+                                var nicknameToShow = update.Message.Text.Substring("/show".Length).Trim().TrimStart('@');
+                                var userToHide = GetUserByUsername(nicknameToShow);
+                                userToHide.IsHided = false;
+                            }
+                            else
+                                await botClient.SendText(update, "У тебя нет разрешения!");
+                        }
+
                         var button = ButtonConfig.GetButton(update.Message.Text.TrimStart('/'));
                         if (button is GroupButton groupButton)
                         {
@@ -220,6 +245,13 @@ namespace SchVictorina.WebAPI.Controllers
                     await botClient.SendText(update, message);
             }
             catch { }
+        }
+        private static UserConfig.User GetUserByUsername(string username)
+        {
+            var user = UserConfig.Instance.Users
+                                           .Where(user => user.Info.UserName == username)
+                                           .FirstOrDefault();
+            return user;
         }
     }
 }
