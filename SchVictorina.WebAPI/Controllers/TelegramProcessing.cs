@@ -57,6 +57,7 @@ namespace SchVictorina.WebAPI.Controllers
                                 var nicknameToShow = update.Message.Text.Substring("/show".Length).Trim().TrimStart('@');
                                 var userToHide = GetUserByUsername(nicknameToShow);
                                 userToHide.IsHided = false;
+                                await botClient.SendText(update, $"Ученик @{nicknameToShow} был добавлен в список лидеров.");
                             }
                             else
                                 await botClient.SendText(update, "У тебя нет разрешения!");
