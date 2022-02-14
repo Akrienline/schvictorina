@@ -44,6 +44,8 @@ namespace SchVictorina.WebAPI.Controllers
                             {
                                 var nicknameToHide = update.Message.Text.Substring("/hide".Length).Trim().TrimStart('@');
                                 var userToHide = GetUserByUsername(nicknameToHide);
+                                if (userToHide == null)
+                                    await botClient.SendText(update, $"{nicknameToHide} не найден.");
                                 userToHide.IsHided = true;
                                 await botClient.SendText(update, $"Ученик @{nicknameToHide} был удалён из списка лидеров.");
                             }
@@ -56,6 +58,8 @@ namespace SchVictorina.WebAPI.Controllers
                             {
                                 var nicknameToShow = update.Message.Text.Substring("/show".Length).Trim().TrimStart('@');
                                 var userToHide = GetUserByUsername(nicknameToShow);
+                                if (userToHide == null)
+                                    await botClient.SendText(update, $"{nicknameToShow} не найден.");
                                 userToHide.IsHided = false;
                                 await botClient.SendText(update, $"Ученик @{nicknameToShow} был добавлен в список лидеров.");
                             }
