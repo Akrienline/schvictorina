@@ -49,9 +49,8 @@ namespace SchVictorina.WebAPI.Controllers
         }
 
         [HttpGet]
-        public static string Start() 
+        public async Task Start() 
         {
-            return "Telegram bot core started!";
         }
 
         [HttpGet]

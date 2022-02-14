@@ -46,8 +46,11 @@ namespace SchVictorina.WebAPI.Controllers
                                 var userToHide = GetUserByUsername(nicknameToHide);
                                 if (userToHide == null)
                                     await botClient.SendText(update, $"{nicknameToHide} не найден.");
-                                userToHide.IsHided = true;
-                                await botClient.SendText(update, $"Ученик @{nicknameToHide} был удалён из списка лидеров.");
+                                else
+                                {
+                                    userToHide.IsHided = true;
+                                    await botClient.SendText(update, $"Ученик @{nicknameToHide} был удалён из списка лидеров.");
+                                }
                             }
                             else
                                 await botClient.SendText(update, "У тебя нет разрешения!");
@@ -60,8 +63,11 @@ namespace SchVictorina.WebAPI.Controllers
                                 var userToHide = GetUserByUsername(nicknameToShow);
                                 if (userToHide == null)
                                     await botClient.SendText(update, $"{nicknameToShow} не найден.");
-                                userToHide.IsHided = false;
-                                await botClient.SendText(update, $"Ученик @{nicknameToShow} был добавлен в список лидеров.");
+                                else
+                                {
+                                    userToHide.IsHided = false;
+                                    await botClient.SendText(update, $"Ученик @{nicknameToShow} был добавлен в список лидеров.");
+                                }
                             }
                             else
                                 await botClient.SendText(update, "У тебя нет разрешения!");
