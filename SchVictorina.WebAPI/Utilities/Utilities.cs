@@ -69,6 +69,8 @@ namespace SchVictorina.WebAPI.Utilities
 
         public static int GetRandomInt(int min, int max, int[] excludeValues = null)
         {
+            if (max < min)
+                ConvertUtilities.Switch(ref min, ref max);
             var value = random.Next(min, max + 1);
             if (excludeValues != null && excludeValues.Contains(value))
                 return GetRandomInt(max, excludeValues);
