@@ -34,7 +34,8 @@ namespace SchVictorina.WebAPI.Controllers
                     if (update.Message.Chat.Type == ChatType.Group || update.Message.Chat.Type == ChatType.Channel || update.Message.Chat.Type == ChatType.Supergroup)
                     {
                         if (update.Message.Text != "/theme")
-                            return;
+                        throw new ArgumentNullException("update");
+                        return;
                     }
                     if (update.Message.Text.StartsWith("/"))
                     {
@@ -71,8 +72,8 @@ namespace SchVictorina.WebAPI.Controllers
                             return;
                         }
                     }
-                    
-                    await GenerateButtonsAndSend(botClient, update, ButtonConfig.RootButton);
+                    else
+                        await GenerateButtonsAndSend(botClient, update, ButtonConfig.RootButton);
                 }
                 else if (update.Type == UpdateType.CallbackQuery)
                 {
@@ -295,9 +296,10 @@ namespace SchVictorina.WebAPI.Controllers
         private static async Task Score(ITelegramBotClient botClient, Update update)
         {
             if (string.IsNullOrWhiteSpace(update.Message.Text))
+            {
                 throw new ArgumentNullException("update");
-            else
-                await botClient.SendText(update, "Произошла внутреняя ошибка.");
+                return;
+            }
             if (update.Message.Text.StartsWith("/score right"))
                 await RightScore(botClient, update);
             else if (update.Message.Text.StartsWith("/score wrong"))
@@ -345,12 +347,12 @@ namespace SchVictorina.WebAPI.Controllers
                     if (score < 0)
                     {
                         user.Statistics.RightAnswers += score;
-                        await botClient.SendText(update, $"{score.ToString().Substring(1)} баллов было удалено у ученика {username}.");
+                        await botClient.SendText(update, $"{score.ToString().Substring(1)} баллов (правильных) было удалено у ученика {username}.");
                     }
                     else
                     {
                         user.Statistics.RightAnswers += score;
-                        await botClient.SendText(update, $"{score} баллов было добавлено ученику {username}");
+                        await botClient.SendText(update, $"{score} баллов (правильных) было добавлено ученику {username}");
                     }
                 }
 
@@ -396,12 +398,12 @@ namespace SchVictorina.WebAPI.Controllers
                     if (score < 0)
                     {
                         user.Statistics.WrongAnswers += score;
-                        await botClient.SendText(update, $"{score.ToString().Substring(1)} баллов было удалено у ученика {username}.");
+                        await botClient.SendText(update, $"{score.ToString().Substring(1)} баллов (неправильных) было удалено у ученика {username}.");
                     }
                     else
                     {
                         user.Statistics.WrongAnswers += score;
-                        await botClient.SendText(update, $"{score} баллов было добавлено ученику {username}");
+                        await botClient.SendText(update, $"{score} баллов (неправильных) было добавлено ученику {username}");
                     }
                 }
 
