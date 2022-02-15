@@ -15,7 +15,12 @@ namespace SchVictorina.WebAPI.Utilities
         private static bool hasChanges = false;
         private static Timer timer;
         private static object lockObject = new object();
-
+        public enum UserRole
+        {
+            Student = 0,
+            Teacher = 1,
+            Administrator = 2
+        }
         static UserConfig()
         {
             timer = new Timer(delegate
@@ -114,6 +119,8 @@ namespace SchVictorina.WebAPI.Utilities
             public StatisticsInfo Statistics { get; set; }
             [XmlAttribute("hiden")]
             public bool IsHiden { get; set; } = false;
+            [XmlAttribute("role")]
+            public UserRole Role { get; set; } = UserRole.Student;
             public class UserInfo
             {
                 [XmlAttribute("source")]
