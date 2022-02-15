@@ -43,7 +43,10 @@ namespace SchVictorina.WebAPI.Controllers
                         {
                             await Score(botClient, update);
                         }
-
+                        if (update.Message.Text.StartsWith("/role"))
+                        {
+                            await Role(botClient, update);
+                        }
                         if (update.Message.Text.StartsWith("/hide"))
                         {
                             await HideUser(botClient, update);
@@ -233,7 +236,7 @@ namespace SchVictorina.WebAPI.Controllers
         }
         public static UserConfig.User GetUserByUsername(string username)
         {
-            var rightUsername = username.Replace('@', ' ');
+            var rightUsername = username.Replace("@", "");
             var user = UserConfig.Instance.Users
                                           .Where(user => user.Info.UserName == rightUsername)
                                           .FirstOrDefault();
@@ -248,6 +251,10 @@ namespace SchVictorina.WebAPI.Controllers
             if (GetUserByUsername(username).Role == UserConfig.UserRole.Administrator)
                 return true;
             return false;
+        }
+        public static bool IsAdmin(Update update)
+        {
+            return IsAdmin(update.Message.From.Username);
         }
         private static async Task HideUser(ITelegramBotClient botClient, Update update)
         {
@@ -291,6 +298,83 @@ namespace SchVictorina.WebAPI.Controllers
                     await botClient.SendText(update, "У тебя нет разрешения!");
             }
         }
+        
+        #region Role Control
+        private static async Task Role(ITelegramBotClient botClient, Update update)
+        {
+            if (update.Message.Text.StartsWith("/role"))
+            {
+                if (IsAdmin(update))
+                {
+                    if (update.Message.Text.StartsWith("/role admin"))
+                        await SetAdmin(botClient, update);
+                    else if (update.Message.Text.StartsWith("/role teacher"))
+                        await SetTeacher(botClient, update);
+                    else if (update.Message.Text.StartsWith("/role student"))
+                        await SetStudent(botClient, update);
+                    else
+                        await botClient.SendText(update, "Не хватает аргументов.");
+                }
+                else
+                    await botClient.SendText(update, "У вас нет разрешения!");
+            }
+            else
+                throw new ArgumentException();
+        }
+        private static async Task SetAdmin(ITelegramBotClient botClient, Update update)
+        {
+            if (IsAdmin(update))
+            {
+                var username = update.Message.Text.Substring("/role admin".Trim().Replace("@", "").Length);
+                var admin = GetUserByUsername(update.Message.From.Username);
+                if (admin == null)
+                    throw new ArgumentNullException();
+                else
+                {
+                    GetUserByUsername(username).Role = UserConfig.UserRole.Administrator;
+                    await botClient.SendText(update, $"@{update.Message.From.Username} стал(а) администратором(ой).");
+                }
+            }
+        }
+        private static async Task SetTeacher(ITelegramBotClient botClient, Update update)
+        {
+            if (IsAdmin(update))
+            {
+                if (update.Message.Text == "/role teacher" || (update.Message.Text == "/role teacher "))
+                    await botClient.SendText(update, "Не хватает аргументов.");
+                else
+                {
+                    var username = update.Message.Text.Substring("/role teacher ".Replace("@", "").Length);
+                    var user = GetUserByUsername(username);
+                    var admin = GetUserByUsername(update.Message.From.Username);
+                    if (admin == null)
+                        throw new ArgumentNullException();
+                    else
+                    {
+                        if (user == null)
+                            throw new ArgumentNullException("user");
+                        user.Role = UserConfig.UserRole.Teacher;
+                        await botClient.SendText(update, $"@{update.Message.From.Username} стал(а) учителем.");
+                    }
+                }
+            }
+        }
+        private static async Task SetStudent(ITelegramBotClient botClient, Update update)
+        {
+            if (IsAdmin(update))
+            {
+                var username = update.Message.Text.Substring("/role student".Trim().Replace("@", "").Length);
+                var user = GetUserByUsername(username);
+                if (user == null)
+                    throw new ArgumentNullException();
+                else
+                {
+                    GetUserByUsername(username).Role = UserConfig.UserRole.Student;
+                    await botClient.SendText(update, $"@{update.Message.From.Username} стал(а) учеником(ей).");
+                }
+            }
+        }
+        #endregion
 
         #region Score Control
         private static async Task Score(ITelegramBotClient botClient, Update update)
@@ -331,7 +415,15 @@ namespace SchVictorina.WebAPI.Controllers
             else
             {
                 var username = argsarray[2];
-                var score = Convert.ToInt32(argsarray[3]);
+                var score = 0;
+                try
+                {
+                    score = Convert.ToInt32(argsarray[3]);
+                }
+                catch (FormatException)
+                {
+                    await botClient.SendText(update, "Введено неверное число!");
+                }
                 await RightScore(botClient, update, username, score);
             }
         }
