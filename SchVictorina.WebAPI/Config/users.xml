@@ -2,7 +2,7 @@
 <users xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <user hiden="false" role="Administrator">
     <info source="Telegram" userid="1864373905" username="alekami649" firstname="Алексей" lastname="Моисеев" />
-    <statistics lastVisitDate="2022-02-20T14:14:40.870854+07:00" rightInSequence="0" totalQuestions="43" rightAnswers="440" wrongAnswers="7" skipQuestions="8" />
+    <statistics lastVisitDate="2022-02-20T21:29:39.1095072+07:00" rightInSequence="0" totalQuestions="51" rightAnswers="442" wrongAnswers="11" skipQuestions="8" />
   </user>
   <user hiden="false" role="Administrator">
     <info source="Telegram" userid="1118251133" username="kimsite" firstname="Boris" />
@@ -35,5 +35,9 @@
   <user hiden="false" role="Student">
     <info source="Telegram" userid="1502901024" firstname="Kirillagu67" />
     <statistics lastVisitDate="2022-02-16T12:48:06.5398572+07:00" rightInSequence="1" totalQuestions="52" rightAnswers="39" wrongAnswers="8" skipQuestions="0" />
+  </user>
+  <user hiden="false" role="Student">
+    <info source="Telegram" userid="1718571527" firstname="Кеша" />
+    <statistics lastVisitDate="2022-02-20T21:30:09.2501545+07:00" rightInSequence="0" totalQuestions="0" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
   </user>
 </users>
