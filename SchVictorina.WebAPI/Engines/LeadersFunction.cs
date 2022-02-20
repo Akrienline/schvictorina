@@ -12,19 +12,19 @@ namespace SchVictorina.WebAPI.Engines
         public FunctionButton.Result Invoke()
         {
             var leaderboard = UserConfig.Instance.Users
-                                                 .OrderByDescending(users => users.Statistics.RightAnswers)
-                                                 .Where(user => !string.IsNullOrWhiteSpace(user.Info.FirstName))
-                                                 .Where(user => !string.IsNullOrWhiteSpace(user.Info.UserName))
-                                                 .Where(user => !user.IsHiden)
-                                                 .Take(MaxUsers)
-                                                 .Select((user, i) => new
-                                                 {
-                                                     Position = i + 1,
-                                                     Name = $"{user.Info.FirstName} (@{user.Info.UserName})",
-                                                     Score = user.Statistics.RightAnswers,
-                                                     Total = user.Statistics.RightAnswers + user.Statistics.WrongAnswers + user.Statistics.SkipQuestions
-                                                 })
-                                                 .ToArray();
+                                                  .OrderByDescending(users => users.Statistics.RightAnswers)
+                                                  .Where(user => !string.IsNullOrWhiteSpace(user.Info.FirstName))
+                                                  .Where(user => !string.IsNullOrWhiteSpace(user.Info.UserName))
+                                                  .Where(user => !user.IsHiden)
+                                                  .Take(MaxUsers)
+                                                  .Select((user, i) => new
+                                                  {
+                                                      Position = i + 1,
+                                                      Name = $"{user.Info.FirstName} (@{user.Info.UserName})",
+                                                      Score = user.Statistics.RightAnswers,
+                                                      Total = user.Statistics.RightAnswers + user.Statistics.WrongAnswers + user.Statistics.SkipQuestions
+                                                  })
+                                                  .ToArray();
             var result = new StringBuilder();
             result.AppendLine("Десятка лучших:");
             foreach (var user in leaderboard)

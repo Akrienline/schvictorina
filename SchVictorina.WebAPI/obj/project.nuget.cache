@@ -1,14 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "1pV2wh4vlGFsJN4vZoO3WsjyRHN71Fp9RGyhZq4Duka07qfADdPc9l3hBOrd46zi0IiwaQx2Tz1YhMaBK+ZQGg==",
+  "dgSpecHash": "LrFKM15gi+LgK0RQlC442WlaimuJw+9w9c6mKinuR32oF8HlYZjMbHsrcVom8C/M7BjoVxYMP1iPTJ4NHPHmhQ==",
   "success": true,
   "projectFilePath": "C:\\projects\\schvictorina\\schvictorina\\SchVictorina.WebAPI\\SchVictorina.WebAPI.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\aleka\\.nuget\\packages\\documentformat.openxml\\2.15.0\\documentformat.openxml.2.15.0.nupkg.sha512",
     "C:\\Users\\aleka\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\3.1.22\\microsoft.aspnetcore.jsonpatch.3.1.22.nupkg.sha512",
     "C:\\Users\\aleka\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\3.1.22\\microsoft.aspnetcore.mvc.newtonsoftjson.3.1.22.nupkg.sha512",
     "C:\\Users\\aleka\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\aleka\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512",
     "C:\\Users\\aleka\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
+    "C:\\Users\\aleka\\.nuget\\packages\\system.io.packaging\\4.7.0\\system.io.packaging.4.7.0.nupkg.sha512",
     "C:\\Users\\aleka\\.nuget\\packages\\system.threading.channels\\6.0.0\\system.threading.channels.6.0.0.nupkg.sha512",
     "C:\\Users\\aleka\\.nuget\\packages\\telegram.bot\\17.0.0\\telegram.bot.17.0.0.nupkg.sha512",
     "C:\\Users\\aleka\\.nuget\\packages\\telegram.bot.extensions.polling\\1.0.2\\telegram.bot.extensions.polling.1.0.2.nupkg.sha512"
