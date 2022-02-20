@@ -29,6 +29,14 @@ namespace SchVictorina.WebAPI.Engines
             {
                 wrongCandidates = wrongCandidates.Where(candidate => candidate[questionRow.Equal] == answerRow[questionRow.Equal]).ToArray();
             }
+            if (!string.IsNullOrWhiteSpace(questionRow.OrderBy))
+            {
+                wrongCandidates = wrongCandidates.OrderBy(candidate => candidate[questionRow.OrderBy]).ToArray();
+            }
+            if (!string.IsNullOrWhiteSpace(questionRow.OrderByDescending))
+            {
+                wrongCandidates = wrongCandidates.OrderByDescending(candidate => candidate[questionRow.OrderBy]).ToArray();
+            }
             var wrongRows = Enumerable.Range(0, WrongAnswerCount)
                                       .Select(i => wrongCandidates[RandomUtilities.GetRandomIndex(wrongCandidates.Length)])
                                       .ToArray();
