@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
@@ -101,12 +102,13 @@ namespace SchVictorina.WebAPI.Controllers
                                 {
                                     UserConfig.Instance.Log(user, UserConfig.EventType.SkipQuestion);
                                 }
-                                else if (callbackValues.Length == 4 && callbackValues[1] == "answer")
+                                else if (callbackValues.Length == 4 && callbackValues[1] == "a") //answer
                                 {
-                                    var isRight = callbackValues[2] == callbackValues[3];
+                                    var isRight = (callbackValues[2] == callbackValues[3]) || (callbackValues[2] != "c" && callbackValues[3] == "c");
 
                                     UserConfig.Instance.Log(user, isRight ? UserConfig.EventType.RightAnswer : UserConfig.EventType.WrongAnswer);
-                                    await botClient.SendText(update, isRight ? $"Правильно 👍. Ответ: {callbackValues[2]}" : $"Неправильно 👎. Верный ответ: {callbackValues[2]}, а не {callbackValues[3]}");
+                                    await botClient.SendText(update, isRight ? $"Правильно 👍. Ответ: {callbackValues[2]}" : $"Неправильно 👎. Верный ответ: {callbackValues[2]}{(callbackValues[3] == "w" ? "" : ", а не " + callbackValues[3])}");
+
                                     try
                                     {
                                         await botClient.EditMessageReplyMarkupAsync(update.GetChatId(), update.GetMessageId(), new InlineKeyboardMarkup(new InlineKeyboardButton[0]));
@@ -146,6 +148,7 @@ namespace SchVictorina.WebAPI.Controllers
             UserConfig.Instance.Log(user, UserConfig.EventType.SendQuestion);
             var question = engineButton.Class.GenerateQuestion();
             var keyboard = new InlineKeyboardMarkup(GenerateInlineKeyboardButtons(question, engineButton.Class, engineButton));
+            
             await botClient.SendText(update, question?.Question ?? "нет вопроса!", keyboard);
         }
         internal class MainUpdateHandler : IUpdateHandler
@@ -161,10 +164,22 @@ namespace SchVictorina.WebAPI.Controllers
         }
         private static IEnumerable<IEnumerable<InlineKeyboardButton>> GenerateInlineKeyboardButtons(QuestionInfo question, BaseEngine baseEngine, EngineButton button)
         {
-            if (question.AnswerOptions != null && question.AnswerOptions.Any())
+            if (question.WrongAnswers != null && question.WrongAnswers.Any())
             {
-                yield return question.AnswerOptions
-                                     .Select(option => InlineKeyboardButton.WithCallbackData(option?.ToString() ?? "", $"{button.ID}|answer|{question.RightAnswer}|{option}"));
+                yield return question.WrongAnswers
+                                     .Concat(new[] { question.RightAnswer })
+                                     .OrderByRandom()
+                                     .Select(option =>
+                                     {
+                                         var data = $"{button.ID}|a|{question.RightAnswer}|{option}";
+                                         if (Encoding.UTF8.GetByteCount(data) > 64) // telegram limit
+                                         {
+                                             data = $"{button.ID}|a|{question.RightAnswer}|{(option == question.RightAnswer ? "c" : "w")}";
+                                             if (Encoding.UTF8.GetByteCount(data) > 64)
+                                                 data = $"{button.ID}|a|{question.RightAnswer.ToString().Substring(0, (64 - $"{button.ID}|a|".Length - "|w".Length) / 2)}|{(option == question.RightAnswer ? "c" : "w")}";
+                                         }
+                                         return InlineKeyboardButton.WithCallbackData(option?.ToString() ?? "", data);
+                                     });
             }
 
             yield return new[]

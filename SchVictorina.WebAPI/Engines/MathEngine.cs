@@ -54,13 +54,13 @@ namespace SchVictorina.WebAPI.Engines
             return new QuestionInfo
             {
                 Question = @$"Сколько будет {GetExpression(value1, Depth)} {@operator} {GetExpression(value2, Depth)}",
-                AnswerOptions = new object[]
+                RightAnswer = answer,
+                WrongAnswers = new object[]
                 {
-                    answer,
                     answer + tolerance1,
                     answer + tolerance2,
-                }.OrderByRandom().ToArray(),
-                RightAnswer = answer
+                },
+                
             };
         }
         public string GetExpression(int answer, int depth)

@@ -29,6 +29,9 @@
     <None Update="Config\buttons_math.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Config\countries.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Config\users.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

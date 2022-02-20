@@ -62,7 +62,6 @@ namespace SchVictorina.WebAPI.Utilities
             }
         }
     }
-
     public static class RandomUtilities
     {
         private static readonly Random random = new Random();

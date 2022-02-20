@@ -116,7 +116,7 @@ namespace SchVictorina.WebAPI.Utilities
         }
 
 
-        internal readonly string AutoID = Guid.NewGuid().ToString("N");
+        internal readonly string AutoID = Guid.NewGuid().ToString("N").Substring(0, 8);
         private string _id = null;
 
         [XmlAttribute("id")]

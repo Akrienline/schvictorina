@@ -8,7 +8,7 @@ namespace SchVictorina.WebAPI
     {
         public string? Question { get; set; }
         public object? RightAnswer { get; set; }
-        public object[]? AnswerOptions { get; set; }
+        public object[]? WrongAnswers { get; set; }
     }
 
     public abstract class BaseEngine

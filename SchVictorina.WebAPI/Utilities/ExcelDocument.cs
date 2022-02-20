@@ -37,18 +37,23 @@ namespace SchVictorina.WebAPI.Utilities
                     var rows = sheetData.OfType<DocumentFormat.OpenXml.Spreadsheet.Row>().OrderBy(x => x.RowIndex.Value).ToArray();
                     foreach (var row in rows)
                     {
-                        var values = ParseExcelRow(row, sharedStringsTable).ToArray();
+                        var values = ParseExcelRow(row, sharedStringsTable);
                         if (sheet.Columns.Count == 0)
-                            sheet.Columns.AddRange(values.Select(x => new Column() { Name = x }));
+                            sheet.Columns.AddRange(values.Values.Select(x => new Column() { Name = x }));
                         else
-                            sheet.Rows.Add(new Row(values));
+                            sheet.Rows.Add(new Row(
+                                Enumerable.Range(0, sheet.Columns.Count)
+                                          .Select(i => values.ContainsKey(i) ? values[i] : null)
+                                          .ToArray()
+                            ));
                     }
                 }
             }
             return document;
         }
-        private static IEnumerable<string> ParseExcelRow(DocumentFormat.OpenXml.Spreadsheet.Row row, SharedStringTable sharedStringsTable)
+        private static Dictionary<int, string> ParseExcelRow(DocumentFormat.OpenXml.Spreadsheet.Row row, SharedStringTable sharedStringsTable)
         {
+            var values = new Dictionary<int, string>();
             var cells = row.OfType<Cell>().ToArray();
             foreach (var cell in cells)
             {
@@ -58,20 +63,21 @@ namespace SchVictorina.WebAPI.Utilities
                     switch (cell.DataType.Value)
                     {
                         case CellValues.SharedString:
-                            {
-                                if (int.TryParse(cell.CellValue?.Text, out int index))
-                                    value = sharedStringsTable.Elements<SharedStringItem>().ElementAt(index).Text.Text;
-                                break;
-                            }
+                        {
+                            if (int.TryParse(cell.CellValue?.Text, out int index))
+                                value = sharedStringsTable.Elements<SharedStringItem>().ElementAt(index).Text.Text;
+                            break;
+                        }
                         case CellValues.InlineString:
-                            {
-                                value = cell.InlineString?.InnerText;
-                                break;
-                            }
+                        {
+                            value = cell.InlineString?.InnerText;
+                            break;
+                        }
                     }
                 }
-                yield return value;
+                values[cell.CellReference.Value[0] - 'A'] = value;
             }
+            return values;
         }
         public class Sheet
         {

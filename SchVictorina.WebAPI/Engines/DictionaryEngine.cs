@@ -4,8 +4,42 @@ using SchVictorina.WebAPI.Utilities;
 
 namespace SchVictorina.WebAPI.Engines
 {
-    public class DictionaryEngine
+    public class DictionaryEngine : BaseEngine
     {
+        public string FilePath { get; set; }
+        public string Filter { get; set; }
+        public int WrongAnswerCount { get; set; } = 2;
+
+        DictionaryDocument document;
+        public override QuestionInfo GenerateQuestion()
+        {
+            if (document == null)
+                document = DictionaryDocument.Open(FilePath);
+
+            var questionRow = document.Questions[RandomUtilities.GetRandomIndex(document.Questions.Length)];
+            var answerRow = document.DataRows[RandomUtilities.GetRandomIndex(document.DataRows.Length)];
+
+            
+            var question = questionRow.Question;
+            foreach (var columnName in answerRow.Keys)
+                question = question.Replace("{" + columnName + "}", answerRow[columnName]);
+            
+            var wrongCandidates = document.DataRows.ToArray();
+            if (!string.IsNullOrWhiteSpace(questionRow.Equal))
+            {
+                wrongCandidates = wrongCandidates.Where(candidate => candidate[questionRow.Equal] == answerRow[questionRow.Equal]).ToArray();
+            }
+            var wrongRows = Enumerable.Range(0, WrongAnswerCount)
+                                      .Select(i => wrongCandidates[RandomUtilities.GetRandomIndex(wrongCandidates.Length)])
+                                      .ToArray();
+
+            return new QuestionInfo()
+            {
+                Question = question,
+                RightAnswer = answerRow[questionRow.Answer],
+                WrongAnswers = wrongRows.Select(x => x[questionRow.Answer]).ToArray()
+            };
+        }
     }
     public class DictionaryDocument
     {
@@ -33,6 +67,7 @@ namespace SchVictorina.WebAPI.Engines
                 WrongOrderMaxIndex = x.Values[questionSheet.GetColumnIndex("wrongOrderMaxIndex")],
                 NotEqual = x.Values[questionSheet.GetColumnIndex("notequal")],
                 OrderBy = x.Values[questionSheet.GetColumnIndex("orderBy")],
+                OrderByDescending = x.Values[questionSheet.GetColumnIndex("orderByDesc")],
                 Answer = x.Values[questionSheet.GetColumnIndex("answer")]
             }).ToArray();
 
@@ -46,6 +81,7 @@ namespace SchVictorina.WebAPI.Engines
             public string WrongOrderMaxIndex { get; set; }
             public string NotEqual { get; set; }
             public string OrderBy { get; set; }
+            public string OrderByDescending { get; set; }
             public string Answer { get; set; }
         }
     }
