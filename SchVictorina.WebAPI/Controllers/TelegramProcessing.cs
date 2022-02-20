@@ -245,7 +245,7 @@ namespace SchVictorina.WebAPI.Controllers
             try
             {
                 if (log.SendToUser)
-                    await botClient.SendText(update, message);
+                    await botClient.SendText(update, "Произошла внутряняя ошибка!");
             }
             catch { }
         }
