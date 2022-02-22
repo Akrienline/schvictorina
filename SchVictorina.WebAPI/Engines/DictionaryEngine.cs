@@ -18,29 +18,33 @@ namespace SchVictorina.WebAPI.Engines
 
             var questionRow = document.Questions[RandomUtilities.GetRandomIndex(document.Questions.Length)];
             var answerRow = document.DataRows[RandomUtilities.GetRandomIndex(document.DataRows.Length)];
-
+            
             
             var question = questionRow.Question;
             foreach (var columnName in answerRow.Keys)
                 question = question.Replace("{" + columnName + "}", answerRow[columnName]);
             
             var wrongCandidates = document.DataRows.ToArray();
+            #region Order Procsessing
             if (!string.IsNullOrWhiteSpace(questionRow.Equal))
             {
                 wrongCandidates = wrongCandidates.Where(candidate => candidate[questionRow.Equal] == answerRow[questionRow.Equal]).ToArray();
             }
             if (!string.IsNullOrWhiteSpace(questionRow.OrderBy))
             {
+                answerRow = document.DataRows.OrderBy(row => questionRow.OrderBy).FirstOrDefault();
                 wrongCandidates = wrongCandidates.OrderBy(candidate => candidate[questionRow.OrderBy]).ToArray();
             }
             if (!string.IsNullOrWhiteSpace(questionRow.OrderByDescending))
             {
+                answerRow = document.DataRows.OrderByDescending(row => questionRow.OrderByDescending).FirstOrDefault();
                 wrongCandidates = wrongCandidates.OrderByDescending(candidate => candidate[questionRow.OrderByDescending]).ToArray();
             }
             if (!string.IsNullOrWhiteSpace(questionRow.NotEqual))
             {
                 wrongCandidates = wrongCandidates.Where(candidate => candidate[questionRow.NotEqual] != answerRow[questionRow.NotEqual]).ToArray();
             }
+            #endregion
             var wrongRows = Enumerable.Range(0, WrongAnswerCount)
                                       .Select(i => wrongCandidates[RandomUtilities.GetRandomIndex(wrongCandidates.Length)])
                                       .ToArray();

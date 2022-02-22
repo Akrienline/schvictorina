@@ -20,7 +20,11 @@ namespace SchVictorina.WebAPI.Controllers
         {
             try
             {
-                
+                var _lockObject = string.Empty;
+                lock (_lockObject)
+                {
+
+                }
                 await GlobalConfig.Instance?.Logging?.Requests?.Log(botClient, update, $"{update.Type}: {update.Message?.Text ?? update.CallbackQuery?.Data}");
 
                 var user = UserConfig.Instance.GetUser(GetUserInfo(update.GetUser()));
@@ -347,7 +351,7 @@ namespace SchVictorina.WebAPI.Controllers
                 else
                 {
                     GetUserByUsername(username).Role = UserConfig.UserRole.Administrator;
-                    await botClient.SendText(update, $"@{update.Message.From.Username} стал(а) администратором(ой).");
+                    await botClient.SendText(update, $"@{username} стал(а) администратором(ой).");
                 }
             }
         }
@@ -369,7 +373,7 @@ namespace SchVictorina.WebAPI.Controllers
                         if (user == null)
                             throw new ArgumentNullException("user");
                         user.Role = UserConfig.UserRole.Teacher;
-                        await botClient.SendText(update, $"@{update.Message.From.Username} стал(а) учителем.");
+                        await botClient.SendText(update, $"@{username} стал(а) учителем.");
                     }
                 }
             }
@@ -385,7 +389,7 @@ namespace SchVictorina.WebAPI.Controllers
                 else
                 {
                     GetUserByUsername(username).Role = UserConfig.UserRole.Student;
-                    await botClient.SendText(update, $"@{update.Message.From.Username} стал(а) учеником(ей).");
+                    await botClient.SendText(update, $"@{username} стал(а) учеником(ей).");
                 }
             }
         }
