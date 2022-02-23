@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using SchVictorina.WebAPI.Utilities;
 
@@ -14,7 +16,10 @@ namespace SchVictorina.WebAPI.Engines
         public override QuestionInfo GenerateQuestion()
         {
             if (document == null)
+            {
                 document = DictionaryDocument.Open(FilePath);
+                document.DataRows = document.DataRows.Where(row => DictionaryDocument.WithinFilter(row, Filter)).ToArray();
+            }
 
             var questionRow = document.Questions[RandomUtilities.GetRandomIndex(document.Questions.Length)];
             var answerRow = document.DataRows[RandomUtilities.GetRandomIndex(document.DataRows.Length)];
@@ -25,25 +30,8 @@ namespace SchVictorina.WebAPI.Engines
                 question = question.Replace("{" + columnName + "}", answerRow[columnName]);
             
             var wrongCandidates = document.DataRows.ToArray();
-            #region Order Procsessing
-            if (!string.IsNullOrWhiteSpace(questionRow.Equal))
-            {
-                wrongCandidates = wrongCandidates.Where(candidate => candidate[questionRow.Equal] == answerRow[questionRow.Equal]).ToArray();
-            }
-            if (!string.IsNullOrWhiteSpace(questionRow.OrderBy))
-            {
-                answerRow = document.DataRows.OrderBy(row => questionRow.OrderBy).FirstOrDefault();
-                wrongCandidates = wrongCandidates.OrderBy(candidate => candidate[questionRow.OrderBy]).ToArray();
-            }
-            if (!string.IsNullOrWhiteSpace(questionRow.OrderByDescending))
-            {
-                answerRow = document.DataRows.OrderByDescending(row => questionRow.OrderByDescending).FirstOrDefault();
-                wrongCandidates = wrongCandidates.OrderByDescending(candidate => candidate[questionRow.OrderByDescending]).ToArray();
-            }
-            if (!string.IsNullOrWhiteSpace(questionRow.NotEqual))
-            {
-                wrongCandidates = wrongCandidates.Where(candidate => candidate[questionRow.NotEqual] != answerRow[questionRow.NotEqual]).ToArray();
-            }
+            #region Filter Procsessing
+            
             #endregion
             var wrongRows = Enumerable.Range(0, WrongAnswerCount)
                                       .Select(i => wrongCandidates[RandomUtilities.GetRandomIndex(wrongCandidates.Length)])
@@ -59,6 +47,7 @@ namespace SchVictorina.WebAPI.Engines
     }
     public class DictionaryDocument
     {
+
         public Dictionary<string, string>[] DataRows { get; set; }
         public QuestionInfo[] Questions { get; set; }
         public static DictionaryDocument Open(string filename)
@@ -99,6 +88,58 @@ namespace SchVictorina.WebAPI.Engines
             public string OrderBy { get; set; }
             public string OrderByDescending { get; set; }
             public string Answer { get; set; }
+        }
+        public static bool WithinFilter(Dictionary<string, string> row, params string[] filters)
+        {
+
+            if (row == null)
+                throw new ArgumentNullException(nameof(row));
+            if (filters == null)
+                return true;
+            filters = filters.Where(x => !string.IsNullOrWhiteSpace(x))
+                             .SelectMany(x => x.Split(';'))
+                             .ToArray();
+            if (filters.Length == 0)
+                return true;
+
+            
+            var processors = new Dictionary<string, object>
+            {
+                { "<=", new Func<double?, double?, bool>((x1, x2) => x1 <= x2 ) },
+                { ">=", new Func<double?, double?, bool>((x1, x2) => x1 >= x2 ) },
+                { "<>", new Func<string, string, bool>((x1, x2) => x1 != x2 ) },
+                { "!=", new Func<string, string, bool>((x1, x2) => x1 != x2 ) },
+                { "!~", new Func<string, string, bool>((x1, x2) => !x1.Contains(x2)) },
+                { "~", new Func<string, string, bool>((x1, x2) => x1.Contains(x2)) },
+                { "<", new Func<double?, double?, bool>((x1, x2) => x1 < x2) },
+                { ">", new Func<double?, double?, bool>((x1, x2) => x1 > x2) },
+                { "=", new Func<string, string, bool>((x1, x2) => x1 == x2) }
+            };
+            foreach (var filter in filters)
+            {
+                foreach (var processor in processors)
+                {
+                    if (!filter.Contains(processor.Key))
+                        continue;
+                    var parts = filter.Split(processor.Key).Select(x => x.Trim()).ToArray();
+                    var columnName = parts[0];
+                    var value = parts[1].Replace(" ", string.Empty).Replace(",", ".");
+                    var rowValue = row[columnName]?.Replace(" ", string.Empty).Replace(",", ".");
+
+                    if (processor.Value is Func<double?, double?, bool> doubleFunc)
+                    {
+                        if (!doubleFunc(rowValue.ToDouble(), value.ToDouble()))
+                            return false;
+                    }
+                    else if (processor.Value is Func<string, string, bool> stringFunc)
+                    {
+                        if (!stringFunc(rowValue, value))
+                            return false;
+                    }
+                }
+                
+            }
+            return true;
         }
     }
 }

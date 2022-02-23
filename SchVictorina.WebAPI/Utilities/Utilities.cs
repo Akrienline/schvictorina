@@ -39,6 +39,15 @@ namespace SchVictorina.WebAPI.Utilities
             obj1 = obj2;
             obj2 = temp;
         }
+        public static double? ToDouble(this string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return null;
+            text = text.Replace(" ", string.Empty).Replace(",", ".");
+            if (double.TryParse(text, NumberStyles.Any, CultureInfo.InvariantCulture, out var result))
+                return result;
+            return null;
+        }
     }
     public static class LogUtilities
     {
