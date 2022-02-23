@@ -18,20 +18,24 @@ namespace SchVictorina.WebAPI.Engines
             if (document == null)
             {
                 document = DictionaryDocument.Open(FilePath);
-                document.DataRows = document.DataRows.Where(row => DictionaryDocument.WithinFilter(row, Filter)).ToArray();
+                document.DataRows = document.DataRows.WithinFilter(Filter).ToArray();
             }
-            
+
             var questionRow = document.Questions[RandomUtilities.GetRandomIndex(document.Questions.Length)];
-            var dataRows = document.DataRows.Where(row => DictionaryDocument.WithinFilter(row, questionRow.Filter)).ToArray();
+            var dataRows = document.DataRows.WithinFilter(questionRow.Filter).ToArray();
+
             var answerRow = dataRows[RandomUtilities.GetRandomIndex(dataRows.Length)];
-            
-            
+            if (!string.IsNullOrWhiteSpace(questionRow.OrderBy))
+                answerRow = dataRows.OrderBy(row => row[questionRow.OrderBy].ToDouble()).FirstOrDefault();
+            else if (!string.IsNullOrWhiteSpace(questionRow.OrderByDescending))
+                answerRow = dataRows.OrderByDescending(row => row[questionRow.OrderByDescending].ToDouble()).FirstOrDefault();
+
             var question = questionRow.Question;
             foreach (var columnName in answerRow.Keys)
                 question = question.Replace("{" + columnName + "}", answerRow[columnName]);
-            
+
             var wrongCandidates = dataRows;
-            
+
             var wrongRows = Enumerable.Range(0, WrongAnswerCount)
                                       .Select(i => wrongCandidates[RandomUtilities.GetRandomIndex(wrongCandidates.Length)])
                                       .ToArray();
@@ -88,7 +92,11 @@ namespace SchVictorina.WebAPI.Engines
             public string OrderByDescending { get; set; }
             public string Answer { get; set; }
         }
-        public static bool WithinFilter(Dictionary<string, string> row, params string[] filters)
+    }
+
+    internal static class DictionaryDocumentUtilities
+    {
+        public static bool WithinFilter(this Dictionary<string, string> row, params string[] filters)
         {
 
             if (row == null)
@@ -101,7 +109,7 @@ namespace SchVictorina.WebAPI.Engines
             if (filters.Length == 0)
                 return true;
 
-            
+
             var processors = new Dictionary<string, object>
             {
                 { "<=", new Func<double?, double?, bool>((x1, x2) => x1 <= x2 ) },
@@ -136,9 +144,13 @@ namespace SchVictorina.WebAPI.Engines
                             return false;
                     }
                 }
-                
+
             }
             return true;
+        }
+        public static IEnumerable<Dictionary<string, string>> WithinFilter(this IEnumerable<Dictionary<string, string>> rows, params string[] filters)
+        {
+            return rows.Where(row => row.WithinFilter(filters));
         }
     }
 }
