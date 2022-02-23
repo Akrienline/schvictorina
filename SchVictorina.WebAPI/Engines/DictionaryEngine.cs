@@ -22,19 +22,24 @@ namespace SchVictorina.WebAPI.Engines
             }
 
             var questionRow = document.Questions[RandomUtilities.GetRandomIndex(document.Questions.Length)];
+            //var questionRow = document.Questions[4];
             var dataRows = document.DataRows.WithinFilter(questionRow.Filter).ToArray();
 
-            var answerRow = dataRows[RandomUtilities.GetRandomIndex(dataRows.Length)];
-            if (!string.IsNullOrWhiteSpace(questionRow.OrderBy))
-                answerRow = dataRows.OrderBy(row => row[questionRow.OrderBy].ToDouble()).FirstOrDefault();
-            else if (!string.IsNullOrWhiteSpace(questionRow.OrderByDescending))
-                answerRow = dataRows.OrderByDescending(row => row[questionRow.OrderByDescending].ToDouble()).FirstOrDefault();
+            var randomRow = dataRows[RandomUtilities.GetRandomIndex(dataRows.Length)];
+            if (!string.IsNullOrWhiteSpace(questionRow.Equal))
+                dataRows = dataRows.WithinFilter($"{questionRow.Equal} = {randomRow[questionRow.Equal]}").ToArray();
+
+            var answerRow = !string.IsNullOrWhiteSpace(questionRow.OrderBy)
+                                ? dataRows.OrderBy(row => row[questionRow.OrderBy].ToDouble()).FirstOrDefault()
+                                : !string.IsNullOrWhiteSpace(questionRow.OrderByDescending)
+                                    ? dataRows.OrderByDescending(row => row[questionRow.OrderByDescending].ToDouble()).FirstOrDefault()
+                                    : randomRow;
 
             var question = questionRow.Question;
             foreach (var columnName in answerRow.Keys)
                 question = question.Replace("{" + columnName + "}", answerRow[columnName]);
 
-            var wrongCandidates = dataRows;
+            var wrongCandidates = dataRows.Where(candidate => candidate != answerRow).ToArray();
 
             var wrongRows = Enumerable.Range(0, WrongAnswerCount)
                                       .Select(i => wrongCandidates[RandomUtilities.GetRandomIndex(wrongCandidates.Length)])
@@ -72,7 +77,6 @@ namespace SchVictorina.WebAPI.Engines
                 Question = x.Values[questionSheet.GetColumnIndex("question")],
                 Filter = x.Values[questionSheet.GetColumnIndex("filter")],
                 Equal = x.Values[questionSheet.GetColumnIndex("equal")],
-                WrongOrderMaxIndex = x.Values[questionSheet.GetColumnIndex("wrongOrderMaxIndex")],
                 NotEqual = x.Values[questionSheet.GetColumnIndex("notequal")],
                 OrderBy = x.Values[questionSheet.GetColumnIndex("orderBy")],
                 OrderByDescending = x.Values[questionSheet.GetColumnIndex("orderByDesc")],
@@ -86,7 +90,6 @@ namespace SchVictorina.WebAPI.Engines
             public string Question { get; set; }
             public string Filter { get; set; }
             public string Equal { get; set; }
-            public string WrongOrderMaxIndex { get; set; }
             public string NotEqual { get; set; }
             public string OrderBy { get; set; }
             public string OrderByDescending { get; set; }

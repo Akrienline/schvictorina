@@ -2,6 +2,6 @@
 <buttons priority="5" classid="SchVictorina.WebAPI.Engines.DictionaryEngine">
 	<engine label="География (test)">
 		<parameter id="FilePath">Config\countries.xlsx</parameter>
-		<parameter id="Filter">Население > 50 000 000</parameter>
+		<parameter id="Filter">Население > 10 000 000</parameter>
 	</engine>
 </buttons>
