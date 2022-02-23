@@ -22,7 +22,7 @@ namespace SchVictorina.WebAPI.Engines
             }
 
             var questionRow = document.Questions[RandomUtilities.GetRandomIndex(document.Questions.Length)];
-            //var questionRow = document.Questions[4];
+            questionRow = document.Questions[6];
             var dataRows = document.DataRows.WithinFilter(questionRow.Filter).ToArray();
 
             var randomRow = dataRows[RandomUtilities.GetRandomIndex(dataRows.Length)];
@@ -41,15 +41,18 @@ namespace SchVictorina.WebAPI.Engines
 
             var wrongCandidates = dataRows.Where(candidate => candidate != answerRow).ToArray();
 
-            var wrongRows = Enumerable.Range(0, WrongAnswerCount)
-                                      .Select(i => wrongCandidates[RandomUtilities.GetRandomIndex(wrongCandidates.Length)])
-                                      .ToArray();
+            var wrongAnswers = dataRows.OrderByRandom()
+                                       .Select(row => row[questionRow.Answer])
+                                       .Where(x => x != answerRow[questionRow.Answer])
+                                       .Distinct()
+                                       .Take(WrongAnswerCount)
+                                       .ToArray();
 
             return new QuestionInfo()
             {
                 Question = question,
                 RightAnswer = answerRow[questionRow.Answer],
-                WrongAnswers = wrongRows.Select(x => x[questionRow.Answer]).ToArray()
+                WrongAnswers = wrongAnswers
             };
         }
     }
@@ -77,7 +80,6 @@ namespace SchVictorina.WebAPI.Engines
                 Question = x.Values[questionSheet.GetColumnIndex("question")],
                 Filter = x.Values[questionSheet.GetColumnIndex("filter")],
                 Equal = x.Values[questionSheet.GetColumnIndex("equal")],
-                NotEqual = x.Values[questionSheet.GetColumnIndex("notequal")],
                 OrderBy = x.Values[questionSheet.GetColumnIndex("orderBy")],
                 OrderByDescending = x.Values[questionSheet.GetColumnIndex("orderByDesc")],
                 Answer = x.Values[questionSheet.GetColumnIndex("answer")]
@@ -90,7 +92,6 @@ namespace SchVictorina.WebAPI.Engines
             public string Question { get; set; }
             public string Filter { get; set; }
             public string Equal { get; set; }
-            public string NotEqual { get; set; }
             public string OrderBy { get; set; }
             public string OrderByDescending { get; set; }
             public string Answer { get; set; }
