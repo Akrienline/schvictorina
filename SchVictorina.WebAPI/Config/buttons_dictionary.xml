@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <buttons priority="5" classid="SchVictorina.WebAPI.Engines.DictionaryEngine">
-	<engine label="География">
+	<engine label="География" id="geography">
 		<parameter id="FilePath">Config\countries.xlsx</parameter>
 		<parameter id="Filter">Население > 10 000 000</parameter>
 	</engine>
