@@ -2,42 +2,6 @@
 <users xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <user hiden="false" role="Administrator">
     <info source="Telegram" userid="1864373905" username="alekami649" firstname="Алексей" lastname="Моисеев" />
-    <statistics lastVisitDate="2022-02-23T15:13:36.3074897+07:00" rightInSequence="2" totalQuestions="130" rightAnswers="490" wrongAnswers="27" skipQuestions="8" />
-  </user>
-  <user hiden="false" role="Administrator">
-    <info source="Telegram" userid="1118251133" username="kimsite" firstname="Boris" />
-    <statistics lastVisitDate="2022-02-15T19:26:27.8144962+07:00" rightInSequence="2" totalQuestions="54" rightAnswers="15" wrongAnswers="20" skipQuestions="1" />
-  </user>
-  <user hiden="false" role="Student">
-    <info source="Telegram" userid="650111973" username="patuulya1" firstname="Патюля💗" />
-    <statistics lastVisitDate="2022-02-07T09:53:33.2070566+07:00" rightInSequence="0" totalQuestions="1" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
-  </user>
-  <user hiden="false" role="Student">
-    <info source="Telegram" userid="343211890" username="Gromgard" firstname="Oleg" />
-    <statistics lastVisitDate="2022-02-07T17:00:31.043409+07:00" rightInSequence="0" totalQuestions="1" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
-  </user>
-  <user hiden="false" role="Student">
-    <info source="Telegram" userid="0" />
-    <statistics lastVisitDate="0001-01-01T00:00:00" rightInSequence="0" totalQuestions="0" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
-  </user>
-  <user hiden="false" role="Student">
-    <info source="Telegram" userid="1026047980" username="MasterVitte" firstname="Artem" lastname="Vitte" />
-    <statistics lastVisitDate="2022-02-07T16:58:56.6103548+07:00" rightInSequence="0" totalQuestions="0" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
-  </user>
-  <user hiden="false" role="Student">
-    <info source="Telegram" userid="519113744" username="popenchik96" firstname="Дима Ульянов" />
-    <statistics lastVisitDate="2022-02-07T16:59:15.3541402+07:00" rightInSequence="0" totalQuestions="0" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
-  </user>
-  <user hiden="false" role="Student">
-    <info source="Telegram" userid="260795540" username="lourence" firstname="Ilya" lastname="Korneev" />
-    <statistics lastVisitDate="2022-02-07T17:18:08.0222482+07:00" rightInSequence="0" totalQuestions="0" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
-  </user>
-  <user hiden="false" role="Student">
-    <info source="Telegram" userid="1502901024" firstname="Kirillagu67" />
-    <statistics lastVisitDate="2022-02-16T12:48:06.5398572+07:00" rightInSequence="1" totalQuestions="52" rightAnswers="39" wrongAnswers="8" skipQuestions="0" />
-  </user>
-  <user hiden="false" role="Student">
-    <info source="Telegram" userid="1718571527" firstname="Кеша" />
-    <statistics lastVisitDate="2022-02-20T21:30:09.2501545+07:00" rightInSequence="0" totalQuestions="0" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
+    <statistics lastVisitDate="2022-02-23T22:24:13.5453875+07:00" rightInSequence="1" totalQuestions="32" rightAnswers="5" wrongAnswers="13" skipQuestions="4" />
   </user>
 </users>

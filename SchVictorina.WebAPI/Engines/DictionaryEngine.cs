@@ -37,10 +37,14 @@ namespace SchVictorina.WebAPI.Engines
 
             var question = questionRow.Question;
             foreach (var columnName in answerRow.Keys)
-                question = question.Replace("{" + columnName + "}", answerRow[columnName]);
+            {
+                var value = answerRow[columnName];
+                if (value.ToDouble().HasValue)
+                    value = value.ToDouble().Value.ToString("N0", new CultureInfo("ru-RU"));
+                question = question.Replace("{" + columnName + "}", value);
+            }
 
             var wrongCandidates = dataRows.Where(candidate => candidate != answerRow).ToArray();
-
             var wrongAnswers = dataRows.OrderByRandom()
                                        .Select(row => row[questionRow.Answer])
                                        .Where(x => x != answerRow[questionRow.Answer])

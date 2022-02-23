@@ -13,6 +13,8 @@ namespace SchVictorina.WebAPI.Utilities
         public static T FromXml<T>(this string xml)
             where T: class, new()
         {
+            if (string.IsNullOrEmpty(xml))
+                return null;
             using var memoryStream = new MemoryStream();
             memoryStream.Write(Encoding.UTF8.GetBytes(xml));
             memoryStream.Position = 0;
@@ -77,6 +79,8 @@ namespace SchVictorina.WebAPI.Utilities
 
         public static int GetRandomInt(int min, int max, int[] excludeValues = null)
         {
+            if (min == max)
+                return min;
             if (max < min)
                 ConvertUtilities.Switch(ref min, ref max);
             var value = random.Next(min, max + 1);
@@ -92,7 +96,7 @@ namespace SchVictorina.WebAPI.Utilities
         {
             return random.Next(1, maxCount);
         }
-        public static int GetRandomInt(int max, int[] excludeValues)
+        public static int GetRandomInt(int max, int[] excludeValues = null)
         {
             var value = random.Next(-1 * max, max + 1);
             if (excludeValues != null && excludeValues.Contains(value))
@@ -121,6 +125,18 @@ namespace SchVictorina.WebAPI.Utilities
         public static IEnumerable<T> OrderByRandom<T>(this IEnumerable<T> items)
         {
             return items.OrderBy(x => GetRandomIndex(100000));
+        }
+    }
+    public static class FileUtilities
+    {
+        public static void SimpleWatchFiles(this FileSystemWatcher watcher, Action action)
+        {
+            watcher.EnableRaisingEvents = true;
+            watcher.NotifyFilter = NotifyFilters.LastWrite;
+            watcher.Changed += delegate { action(); };
+            watcher.Created += delegate { action(); };
+            watcher.Deleted += delegate { action(); };
+            watcher.Renamed += delegate { action(); };
         }
     }
 }

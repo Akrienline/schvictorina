@@ -11,7 +11,8 @@ namespace SchVictorina.WebAPI.Engines
         public int MaxAnswerValue { get; set; } = 100;
         public string Operators { get; set; }= "+-*/";
         public bool AllowNegative { get; set; } = true;
-        public int Depth { get; set; } = 0;
+        public int MinDepth { get; set; } = 0;
+        public int MaxDepth { get; set; } = 0;
 
         public override QuestionInfo GenerateQuestion()
         {
@@ -50,10 +51,10 @@ namespace SchVictorina.WebAPI.Engines
                 tolerance1 = RandomUtilities.GetRandomInt(-2, 2, new int[] { 0 });
                 tolerance2 = RandomUtilities.GetRandomInt(-3, 3, new int[] { 0, tolerance1 });
             }
-
+            var depth = RandomUtilities.GetRandomInt(MinDepth, MaxDepth);
             return new QuestionInfo
             {
-                Question = @$"Сколько будет {GetExpression(value1, Depth)} {@operator} {GetExpression(value2, Depth)}",
+                Question = @$"Сколько будет {Environment.NewLine}{GetExpression(value1, depth)} {@operator} {GetExpression(value2, depth)}",
                 RightAnswer = answer,
                 WrongAnswers = new object[]
                 {
@@ -65,6 +66,8 @@ namespace SchVictorina.WebAPI.Engines
         }
         public string GetExpression(int answer, int depth)
         {
+            if (RandomUtilities.GetRandomInt(1, 3) == 3)
+                --depth;
             if (depth <= 0)
                 return answer.ToString();
             if (answer == 0)

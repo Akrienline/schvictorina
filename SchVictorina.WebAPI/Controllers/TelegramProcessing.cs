@@ -1,6 +1,7 @@
 ﻿using SchVictorina.WebAPI.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -44,6 +45,10 @@ namespace SchVictorina.WebAPI.Controllers
                     }
                     if (update.Message.Text.StartsWith("/"))
                     {
+                        if (update.Message.Text.StartsWith("/user"))
+                        {
+                            //await UserController(botClient, update);
+                        }
                         if (update.Message.Text.StartsWith("/score"))
                         {
                             await Score(botClient, update);
@@ -77,6 +82,7 @@ namespace SchVictorina.WebAPI.Controllers
                             var result = functionButton.Class?.Invoke();
                             if (result != null)
                                 await botClient.SendTextAndImage(update, result.Text, result.ImagePath);
+                            await GenerateButtonsAndSend(botClient, update, ButtonConfig.RootButton);
                             return;
                         }
                     }
@@ -85,6 +91,8 @@ namespace SchVictorina.WebAPI.Controllers
                 }
                 else if (update.Type == UpdateType.CallbackQuery)
                 {
+                    //if (update.CallbackQuery.Data.StartsWith("usercontrol-"))
+                    //    await UserController(botClient, update);
                     var callbackValues = update.CallbackQuery?.Data.Split('|');
                     if (callbackValues.Any())
                     {
@@ -256,24 +264,34 @@ namespace SchVictorina.WebAPI.Controllers
         public static UserConfig.User GetUserByUsername(string username)
         {
             var rightUsername = username.Replace("@", "");
-            var user = UserConfig.Instance.Users
-                                          .Where(user => user.Info.UserName == rightUsername)
-                                          .FirstOrDefault();
+            var user = UserConfig.Instance.Users.Where(user => user.Info.UserName == rightUsername)
+                                                .FirstOrDefault();
             return user;
         }
         public static bool IsAdmin(string username)
         {
             if (string.IsNullOrEmpty(username))
                 throw new ArgumentNullException("username");
+            if (username == "schvictorina_debug_bot")
+                return false;
             else if (GetUserByUsername(username) == null)
-                throw new ArgumentNullException("username");
+                throw new Exception($"User with username {username} not found");
             if (GetUserByUsername(username).Role == UserConfig.UserRole.Administrator)
                 return true;
             return false;
         }
         public static bool IsAdmin(Update update)
         {
-            return IsAdmin(update.Message.From.Username);
+            if (update.Type == UpdateType.Message)
+                return IsAdmin(update.Message.From.Username);
+            else if (update.Type == UpdateType.CallbackQuery)
+                return IsAdmin(update.CallbackQuery.Message.From.Username);
+            else
+                return false;
+        }
+        public static bool IsAdmin(this User user)
+        {
+            return IsAdmin(user.Username);
         }
         private static async Task HideUser(ITelegramBotClient botClient, Update update)
         {
@@ -317,7 +335,78 @@ namespace SchVictorina.WebAPI.Controllers
                     await botClient.SendText(update, "У тебя нет разрешения!");
             }
         }
-        
+        #region User Control
+        //private static async Task UserController(ITelegramBotClient botClient, Update update)
+        //{
+        //    if (update.Type == UpdateType.Message)
+        //    {
+        //        if (IsAdmin(update))
+        //        {
+        //            await UserControl(botClient, update, update.Message.Text.Substring("/user".Replace("@", "").Trim().Length));
+        //        }
+        //        else
+        //        {
+        //            await botClient.SendText(update, "У вас нет разрешения!");
+        //        }
+        //    }
+        //    else if (update.Type == UpdateType.CallbackQuery)
+        //    {
+        //       if (IsAdmin(update))
+        //       {
+        //            await UserControl(botClient, update, "");
+        //       }
+        //       else
+        //       {
+        //           await botClient.SendText(update, "У вас нет разрешения!");
+        //       }
+        //    }
+        //}
+        //private static async Task UserControl(ITelegramBotClient botClient, Update update, string username)
+        //{
+        //    if (update.Type == UpdateType.CallbackQuery)
+        //    {
+        //        if (update.CallbackQuery.Data.StartsWith("usercontrol-student-"))
+        //        {
+        //            var userInfo = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-student-".Trim().Length));
+        //            userInfo.Role = UserConfig.UserRole.Student;
+        //        }
+        //        if (update.CallbackQuery.Data.StartsWith("usercontrol-teacher-"))
+        //        {
+        //            var userInfo = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-teacher-".Trim().Length));
+        //            userInfo.Role = UserConfig.UserRole.Teacher;
+        //        }
+        //        if (update.CallbackQuery.Data.StartsWith("usercontrol-admin-"))
+        //        {
+        //            var userInfo = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-admin-".Trim().Length));
+        //            userInfo.Role = UserConfig.UserRole.Administrator;
+        //        }
+        //    }
+        //    else if (update.Type == UpdateType.Message)
+        //    {
+        //        username = username.Trim();
+        //        var userInfo = GetUserByUsername(username.Trim());
+        //        if (userInfo == null)
+        //        {
+        //            await botClient.SendText(update, $"@{username.Trim()} не найден!");
+        //        }
+        //        else
+        //        {
+        //            var preKeyboard = new List<List<InlineKeyboardButton>>();
+        //            var buttons = new List<InlineKeyboardButton>();
+        //            buttons.Add(InlineKeyboardButton.WithCallbackData("Сделать учеником", $"usercontrol-student-{username}"));
+        //            buttons.Add(InlineKeyboardButton.WithCallbackData("Сделать учителем", $"usercontrol-teacher-{username}"));
+        //            buttons.Add(InlineKeyboardButton.WithCallbackData("Сделать админов", $"usercontrol-admin-{username}"));
+        //            preKeyboard.Add(buttons.ToList());
+        //            buttons.Clear();
+        //            buttons.Add(InlineKeyboardButton.WithCallbackData("Добавить в список лидеров", $"usercontrol-show-{username}"));
+        //            buttons.Add(InlineKeyboardButton.WithCallbackData("Удалить из списка лидеров", $"usercontrol-hide-{username}"));
+        //            preKeyboard.Add(buttons.ToList());
+        //            var keyboard = new InlineKeyboardMarkup(preKeyboard);
+        //            await botClient.SendText(update, $"Ученик {userInfo.Info.LastName} {userInfo.Info.FirstName} - @{userInfo.Info.UserName}: \nДата поселднего посещения: {userInfo.Statistics.LastVisitDate.ToString("dd'.'mm'.'yyyy' 'HH':'mm':'ss")}, показан в списке лидеров: {userInfo.IsHiden.ToString(CultureInfo.InvariantCulture)}\nПравильных ответов: {userInfo.Statistics.RightAnswers}, правильных ответов подряд: {userInfo.Statistics.RightInSequence}, неправильных ответов: {userInfo.Statistics.WrongAnswers}, пропущеных вопросов: {userInfo.Statistics.SkipQuestions}, всего вопросов: {userInfo.Statistics.RightAnswers + userInfo.Statistics.WrongAnswers + userInfo.Statistics.SkipQuestions}", keyboard);
+        //        }
+        //    }
+        //}
+        #endregion
         #region Role Control
         private static async Task Role(ITelegramBotClient botClient, Update update)
         {
@@ -394,14 +483,12 @@ namespace SchVictorina.WebAPI.Controllers
             }
         }
         #endregion
-
         #region Score Control
         private static async Task Score(ITelegramBotClient botClient, Update update)
         {
             if (string.IsNullOrWhiteSpace(update.Message.Text))
             {
                 throw new ArgumentNullException("update");
-                return;
             }
             if (update.Message.Text.StartsWith("/score right"))
                 await RightScore(botClient, update);

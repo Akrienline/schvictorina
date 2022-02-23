@@ -47,7 +47,7 @@ namespace SchVictorina.WebAPI.Utilities
                     {
                         if (File.Exists(configPath))
                             instance = File.ReadAllText(configPath).FromXml<UserConfig>();
-                        else
+                        if (instance == null)
                             instance = new UserConfig();
                     }
                     return instance;

@@ -24,7 +24,6 @@ namespace SchVictorina.WebAPI.Controllers
         static TelegramBotController()
         {
             TelegramProcessing.GetUserByUsername("alekami649").Role = UserConfig.UserRole.Administrator;
-            TelegramProcessing.GetUserByUsername("kimsite").Role = UserConfig.UserRole.Administrator;
             var settings = GlobalConfig.Instance;
             botClient = new TelegramBotClient(settings.TelegramBot.Token);
             if ((settings.TelegramBot?.Webhook?.Enabled ?? false) == false)

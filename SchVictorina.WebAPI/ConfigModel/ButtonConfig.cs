@@ -11,21 +11,19 @@ namespace SchVictorina.WebAPI.Utilities
     {
         private static ButtonRoot _buttonRoot;
         private static Dictionary<string, BaseButton> _allButtons;
-        private static FileSystemWatcher _watcher;
+        private static FileSystemWatcher _buttonsWatcher;
+        private static FileSystemWatcher _excelWatcher;
 
         public delegate void ButtonChangedEventHandler();
         public static event ButtonChangedEventHandler ButtonListChanged;
 
         static ButtonConfig()
         {
-            _watcher = new FileSystemWatcher("Config", "buttons_*.xml");
-            _watcher.EnableRaisingEvents = true;
-            _watcher.IncludeSubdirectories = true;
-            _watcher.NotifyFilter = NotifyFilters.LastWrite;
-            _watcher.Changed += delegate { ClearCache(); };
-            _watcher.Created += delegate { ClearCache(); };
-            _watcher.Deleted += delegate { ClearCache(); };
-            _watcher.Renamed += delegate { ClearCache(); };
+            _buttonsWatcher = new FileSystemWatcher("Config", "buttons_*.xml") { IncludeSubdirectories = true };
+            _buttonsWatcher.SimpleWatchFiles(() => ClearCache());
+
+            _buttonsWatcher = new FileSystemWatcher("Config", "*.xlsx") { IncludeSubdirectories = true };
+            _buttonsWatcher.SimpleWatchFiles(() => ClearCache());
         }
 
         public static BaseButton GetButton(string id)

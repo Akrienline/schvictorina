@@ -24,7 +24,7 @@
 			<parameter id="MinAnswerValue">100</parameter>
 			<parameter id="MaxAnswerValue">1000</parameter>
 			<parameter id="AllowNegative">true</parameter>
-			<parameter id="Depth">1</parameter>
+			<parameter id="MaxDepth">1</parameter>
 		</engine>
 		<split />
 		<group label="Огромные числа">
@@ -59,14 +59,16 @@
 				<parameter id="MinAnswerValue">1000</parameter>
 				<parameter id="MaxAnswerValue">10000</parameter>
 				<parameter id="AllowNegative">true</parameter>
-				<parameter id="Depth">6</parameter>
+				<parameter id="MinDepth">4</parameter>
+				<parameter id="MaxDepth">4</parameter>
 			</engine>
 			<engine label="Вычитание">
 				<parameter id="Operators">-</parameter>
 				<parameter id="MinAnswerValue">1000</parameter>
 				<parameter id="MaxAnswerValue">10000</parameter>
 				<parameter id="AllowNegative">true</parameter>
-				<parameter id="Depth">6</parameter>
+				<parameter id="MinDepth">4</parameter>
+				<parameter id="MaxDepth">4</parameter>
 			</engine>
 		</group>
 	</group>
