@@ -22,7 +22,7 @@ namespace SchVictorina.WebAPI.Engines
             }
 
             var questionRow = document.Questions[RandomUtilities.GetRandomIndex(document.Questions.Length)];
-            questionRow = document.Questions[6];
+            //questionRow = document.Questions[6];
             var dataRows = document.DataRows.WithinFilter(questionRow.Filter).ToArray();
 
             var randomRow = dataRows[RandomUtilities.GetRandomIndex(dataRows.Length)];
