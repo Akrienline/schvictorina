@@ -20,19 +20,18 @@ namespace SchVictorina.WebAPI.Engines
                 document = DictionaryDocument.Open(FilePath);
                 document.DataRows = document.DataRows.Where(row => DictionaryDocument.WithinFilter(row, Filter)).ToArray();
             }
-
+            
             var questionRow = document.Questions[RandomUtilities.GetRandomIndex(document.Questions.Length)];
-            var answerRow = document.DataRows[RandomUtilities.GetRandomIndex(document.DataRows.Length)];
+            var dataRows = document.DataRows.Where(row => DictionaryDocument.WithinFilter(row, questionRow.Filter)).ToArray();
+            var answerRow = dataRows[RandomUtilities.GetRandomIndex(dataRows.Length)];
             
             
             var question = questionRow.Question;
             foreach (var columnName in answerRow.Keys)
                 question = question.Replace("{" + columnName + "}", answerRow[columnName]);
             
-            var wrongCandidates = document.DataRows.ToArray();
-            #region Filter Procsessing
+            var wrongCandidates = dataRows;
             
-            #endregion
             var wrongRows = Enumerable.Range(0, WrongAnswerCount)
                                       .Select(i => wrongCandidates[RandomUtilities.GetRandomIndex(wrongCandidates.Length)])
                                       .ToArray();
