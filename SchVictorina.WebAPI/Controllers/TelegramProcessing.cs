@@ -173,7 +173,10 @@ namespace SchVictorina.WebAPI.Controllers
             var question = engineButton.Class.GenerateQuestion();
             var keyboard = new InlineKeyboardMarkup(GenerateInlineKeyboardButtons(question, engineButton.Class, engineButton));
             
-            await botClient.SendText(update, question?.Question ?? "нет вопроса!", keyboard);
+            if (question.WrongAnswers != null)
+                await botClient.SendText(update, question?.Question ?? "К сожелению не удалось найти вопрос!", keyboard);
+            else
+                await botClient.SendText(update, question?.Question + "\nВариантов ответа нет." ?? "К сожелению не удалось найти вопрос!");
         }
         internal class MainUpdateHandler : IUpdateHandler
         {
@@ -205,7 +208,10 @@ namespace SchVictorina.WebAPI.Controllers
                                          return InlineKeyboardButton.WithCallbackData(option?.ToString() ?? "", data);
                                      });
             }
+            else
+            {
 
+            }
             yield return new[]
             {
                 InlineKeyboardButton.WithCallbackData("Пропустить", $"{button.ID}|skip"),
@@ -347,6 +353,7 @@ namespace SchVictorina.WebAPI.Controllers
                     await botClient.SendText(update, "У тебя нет разрешения!");
             }
         }
+
         #region User Control
         //private static async Task UserController(ITelegramBotClient botClient, Update update)
         //{
