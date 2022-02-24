@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <users xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <user hiden="false" role="Administrator">
+  <user hiden="false" role="Student">
     <info source="Telegram" userid="1864373905" username="alekami649" firstname="Алексей" lastname="Моисеев" />
-    <statistics lastVisitDate="2022-02-24T13:45:24.9357634+07:00" rightInSequence="0" wrongInSequence="1" totalQuestions="97" rightAnswers="27" wrongAnswers="49" skipQuestions="4" />
+    <statistics lastVisitDate="2022-02-24T19:12:45.0406482+07:00" rightInSequence="0" wrongInSequence="1" totalQuestions="14" rightAnswers="7" wrongAnswers="4" skipQuestions="0" />
   </user>
 </users>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -22,8 +23,8 @@ namespace SchVictorina.WebAPI.Utilities
             _buttonsWatcher = new FileSystemWatcher("Config", "buttons_*.xml") { IncludeSubdirectories = true };
             _buttonsWatcher.SimpleWatchFiles(() => ClearCache());
 
-            _buttonsWatcher = new FileSystemWatcher("Config", "*.xlsx") { IncludeSubdirectories = true };
-            _buttonsWatcher.SimpleWatchFiles(() => ClearCache());
+            _excelWatcher = new FileSystemWatcher("Config", "*.xlsx") { IncludeSubdirectories = true };
+            _excelWatcher.SimpleWatchFiles(() => ClearCache());
         }
 
         public static BaseButton GetButton(string id)
@@ -256,14 +257,34 @@ namespace SchVictorina.WebAPI.Utilities
                     _class = (T)Activator.CreateInstance(classType);
                     if (Parameters != null)
                     {
-                        foreach (var parameter in Parameters)
+                        foreach (var parameter in Parameters.GroupBy(x => x.ID)
+                                                            .ToDictionary(x => x.Key, x => x.Select(x => x.Value)
+                                                                                            .ToArray()))
                         {
-                            var property = classType.GetProperty(parameter.ID);
+                            var property = classType.GetProperty(parameter.Key);
                             if (property != null)
                             {
-                                var value = parameter.Value.ParseTo(property.PropertyType);
-                                if (value != null)
-                                    property.SetValue(_class, value);
+                                if (property.PropertyType.IsArray)
+                                {
+                                    var propertyType = property.PropertyType.GetElementType();
+                                    var values = parameter.Value.Select(x => x.ParseTo(propertyType))
+                                                                .Where(x => x != null)
+                                                                .ToArray();
+                                    if (values.Any())
+                                    {
+                                        var arrayValue = (IList)Array.CreateInstance(propertyType, values.Length);
+                                        for (var i = 0; i < values.Length; ++i)
+                                            arrayValue[i] = values[i];
+                                        property.SetValue(_class, arrayValue);
+                                    }
+                                }
+                                else
+                                {
+                                    var value = parameter.Value.Single().ParseTo(property.PropertyType);
+                                    if (value != null)
+                                        property.SetValue(_class, value);
+
+                                }
                             }
                         }
                     }

@@ -6,9 +6,11 @@ namespace SchVictorina.WebAPI
 {
     public class QuestionInfo
     {
+        #nullable enable
         public string? Question { get; set; }
         public object? RightAnswer { get; set; }
         public object[]? WrongAnswers { get; set; }
+        #nullable disable
     }
 
     public abstract class BaseEngine
@@ -17,7 +19,10 @@ namespace SchVictorina.WebAPI
     }
     public abstract class Parameter
     {
+        
         string Name = "";
+#nullable enable
         object? Value = "";
+#nullable disable
     }
 }

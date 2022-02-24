@@ -8,19 +8,27 @@ namespace SchVictorina.WebAPI.Engines
 {
     public class DictionaryEngine : BaseEngine
     {
-        public string FilePath { get; set; }
-        public string Filter { get; set; }
+        public string[] FilePath { get; set; }
+        public string[] Filter { get; set; }
         public int WrongAnswerCount { get; set; } = 2;
 
-        DictionaryDocument document;
+        private DictionaryDocument[] documents;
+
         public override QuestionInfo GenerateQuestion()
         {
-            if (document == null)
+            if (documents == null)
             {
-                document = DictionaryDocument.Open(FilePath);
-                document.DataRows = document.DataRows.WithinFilter(Filter).ToArray();
+                documents = FilePath.Zip(Filter, (filePath, filter) => new { filePath, filter } )
+                                    .Select(x =>
+                                    {
+                                        var doc = DictionaryDocument.Open(x.filePath);
+                                        doc.DataRows = doc.DataRows.WithinFilter(x.filter).ToArray();
+                                        return doc;
+                                    })
+                                    .ToArray();
             }
 
+            var document = documents[RandomUtilities.GetRandomIndex(documents.Length)];
             var questionRow = document.Questions[RandomUtilities.GetRandomIndex(document.Questions.Length)];
             //questionRow = document.Questions[6];
             var dataRows = document.DataRows.WithinFilter(questionRow.Filter).ToArray();
