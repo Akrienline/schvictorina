@@ -268,7 +268,7 @@ namespace SchVictorina.WebAPI.Utilities
                                 {
                                     var propertyType = property.PropertyType.GetElementType();
                                     var values = parameter.Value.Select(x => x.ParseTo(propertyType))
-                                                                .Where(x => x != null)
+                                                                //.Where(x => x is string || x != null)
                                                                 .ToArray();
                                     if (values.Any())
                                     {
