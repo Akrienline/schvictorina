@@ -44,19 +44,22 @@
     <None Update="gift.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="gift_back.jpg">
+    <None Update="Images\gift_back.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="gift_rights_100.jpg">
+    <None Update="Images\gift_rights_100.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="gift_sequence_20.jpg">
+    <None Update="Images\gift_sequence_20.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="gift_sequence_5.jpg">
+    <None Update="Images\gift_sequence_5_1.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="gift_signup.jpg">
+    <None Update="Images\gift_sequence_5_2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\gift_signup.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

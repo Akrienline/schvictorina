@@ -96,7 +96,14 @@ namespace SchVictorina.WebAPI.Utilities
                 user.Statistics.WrongAnswers += 1;
 
             if (eventType == EventType.RightAnswer)
+            {
                 user.Statistics.RightInSequence += 1;
+                user.Statistics.WrongInSequence = 0;
+            }
+            if (eventType == EventType.WrongAnswer)
+            {
+                user.Statistics.WrongInSequence += 1;
+            }
             else if (eventType == EventType.SkipQuestion || eventType == EventType.WrongAnswer)
                 user.Statistics.RightInSequence = 0;
         }
@@ -146,6 +153,8 @@ namespace SchVictorina.WebAPI.Utilities
 
                 [XmlAttribute("rightInSequence")]
                 public int RightInSequence { get; set; }
+                [XmlAttribute("wrongInSequence")]
+                public int WrongInSequence { get; set; }
 
                 [XmlAttribute("totalQuestions")]
                 public int TotalQuestions { get; set; }

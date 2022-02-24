@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,9 +31,9 @@ namespace SchVictorina.WebAPI.Controllers
 
                 var user = UserConfig.Instance.GetUser(GetUserInfo(update.GetUser()));
                 if (user.Statistics.LastVisitDate == new DateTime())
-                    await botClient.SendTextAndImage(update, "Приветствую тебя в этом канале! Дерзай!", "gift_signup.jpg");
+                    await botClient.SendTextAndImage(update, "Приветствую тебя в этом канале! Дерзай!", "Images/gift_signup.jpg");
                 else if ((DateTime.Now - user.Statistics.LastVisitDate).TotalDays > 7)
-                    await botClient.SendTextAndImage(update, "С возвращением!", "gift_back.jpg");
+                    await botClient.SendTextAndImage(update, "С возвращением!", "Images/gift_back.jpg");
                 UserConfig.Instance.Log(user, UserConfig.EventType.Request);
 
                 if (update.Type == UpdateType.Message)
@@ -118,6 +119,7 @@ namespace SchVictorina.WebAPI.Controllers
                                 {
                                     var isRight = (callbackValues[2] == callbackValues[3]) || (callbackValues[2] != "c" && callbackValues[3] == "c");
 
+                                    
                                     UserConfig.Instance.Log(user, isRight ? UserConfig.EventType.RightAnswer : UserConfig.EventType.WrongAnswer);
                                     await botClient.SendText(update, isRight ? $"Правильно 👍. Ответ: {callbackValues[2]}" : $"Неправильно 👎. Верный ответ: {callbackValues[2]}{(callbackValues[3] == "w" ? "" : ", а не " + callbackValues[3])}");
 
@@ -126,15 +128,25 @@ namespace SchVictorina.WebAPI.Controllers
                                         await botClient.EditMessageReplyMarkupAsync(update.GetChatId(), update.GetMessageId(), new InlineKeyboardMarkup(new InlineKeyboardButton[0]));
                                     }
                                     catch { }
-
+                                    
                                     if (isRight)
                                     {
                                         if (user.Statistics.RightInSequence % 20 == 0)
-                                            await botClient.SendTextAndImage(update, "Уже 20 правильных ответов подряд, держи парочку подарков.", "gift_sequence_20.jpg");
+                                            await botClient.SendTextAndImage(update, "Уже 20 правильных ответов подряд, держи парочку подарков.", "Images/gift_sequence_20.jpg");
                                         else if (user.Statistics.RightInSequence % 5 == 0)
-                                            await botClient.SendTextAndImage(update, "Пять правильных ответов подряд, держи подарок.", "gift_sequence_5.jpg");
+                                            await botClient.SendTextAndImage(update, "Пять правильных ответов подряд, держи подарок.", "Images/gift_sequence_5_*.jpg");
                                         if (user.Statistics.RightAnswers % 100 == 0)
-                                            await botClient.SendTextAndImage(update, "Сто правильных ответов, молодец.", "gift_rights_100.jpg");
+                                            await botClient.SendTextAndImage(update, "Сто правильных ответов, молодец.", "Images/gift_rights_100.jpg");
+                                        user.Statistics.WrongInSequence = 0;
+                                    }
+                                    if (!isRight)
+                                    {
+                                        
+                                        if (user.Statistics.WrongInSequence % 5 == 0)
+                                            await botClient.SendTextAndImage(update, "Не расстраивайся, держи конфетку", "Images/gift_sequence_.10jpg");
+                                        if (user.Statistics.RightInSequence % 5 > 0)
+                                            await botClient.SendTextAndImage(update, "Не расстраивайся, держи конфетку", "Images/gift_sequence_10.jpg");
+                                        user.Statistics.RightInSequence = 0;
                                     }
                                 }
 

@@ -10,14 +10,14 @@
         "projectUniqueName": "C:\\projects\\schvictorina\\schvictorina\\SchVictorina.WebAPI\\SchVictorina.WebAPI.csproj",
         "projectName": "SchVictorina.WebAPI",
         "projectPath": "C:\\projects\\schvictorina\\schvictorina\\SchVictorina.WebAPI\\SchVictorina.WebAPI.csproj",
-        "packagesPath": "C:\\Users\\aleka\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\aleka_tq8v4di\\.nuget\\packages\\",
         "outputPath": "C:\\projects\\schvictorina\\schvictorina\\SchVictorina.WebAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\aleka\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\aleka_tq8v4di\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

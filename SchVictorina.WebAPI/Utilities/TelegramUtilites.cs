@@ -1,4 +1,5 @@
                                          using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
@@ -57,7 +58,11 @@ namespace SchVictorina.WebAPI.Utilities
             if (string.IsNullOrEmpty(filePath))
                 await botClient.SendText(update, message);
             else
+            {
+                if (filePath.Contains("*"))
+                    filePath = Directory.GetFiles(Path.GetDirectoryName(filePath), Path.GetFileName(filePath)).OrderByRandom().First();
                 await botClient.SendPhotoAsync(update.GetChatId(), new InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes(filePath))), message, cancellationToken: CancellationToken.None);
+            }
             //await SendText(botClient, update, message);
             //await SendImage(botClient, update, filePath);
         }
