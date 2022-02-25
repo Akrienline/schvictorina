@@ -12,11 +12,18 @@ namespace SchVictorina.WebAPI.Utilities
                 throw new ArgumentNullException("expression2");
             if (expression2.StartsWith('-'))
             {
-                expression2 = expression2.TrimStart('-');
-                if (@operator == '-')
-                    @operator = '+';
-                else if (@operator == '+')
-                    @operator = '-';
+                if (@operator == '+' || @operator == '-')
+                {
+                    expression2 = expression2.TrimStart('-');
+                    if (@operator == '-')
+                        @operator = '+';
+                    else if (@operator == '+')
+                        @operator = '-';
+                }
+                else
+                {
+                    expression2 = $"({expression2})";
+                }
             }
             return $"{expression1} {@operator} {expression2}";
         }

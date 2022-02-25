@@ -28,14 +28,8 @@
 		</engine>
 		<split />
 		<group label="Огромные числа">
-			<engine label="Сложение">
-				<parameter id="Operators">+</parameter>
-				<parameter id="MinAnswerValue">1000</parameter>
-				<parameter id="MaxAnswerValue">10000</parameter>
-				<parameter id="AllowNegative">true</parameter>
-			</engine>
-			<engine label="Вычитание">
-				<parameter id="Operators">-</parameter>
+			<engine label="Сложение и вычитание">
+				<parameter id="Operators">+-</parameter>
 				<parameter id="MinAnswerValue">1000</parameter>
 				<parameter id="MaxAnswerValue">10000</parameter>
 				<parameter id="AllowNegative">true</parameter>
@@ -53,23 +47,13 @@
 				<parameter id="AllowNegative">true</parameter>
 			</engine>
 		</group>
-		<group label="Много скобок">
-			<engine label="Сложение">
-				<parameter id="Operators">+</parameter>
-				<parameter id="MinAnswerValue">1000</parameter>
-				<parameter id="MaxAnswerValue">10000</parameter>
-				<parameter id="AllowNegative">true</parameter>
-				<parameter id="MinDepth">4</parameter>
-				<parameter id="MaxDepth">4</parameter>
-			</engine>
-			<engine label="Вычитание">
-				<parameter id="Operators">-</parameter>
-				<parameter id="MinAnswerValue">1000</parameter>
-				<parameter id="MaxAnswerValue">10000</parameter>
-				<parameter id="AllowNegative">true</parameter>
-				<parameter id="MinDepth">4</parameter>
-				<parameter id="MaxDepth">4</parameter>
-			</engine>
-		</group>
+		<engine label="Много скобок">
+			<parameter id="Operators">+-</parameter>
+			<parameter id="MinAnswerValue">1000</parameter>
+			<parameter id="MaxAnswerValue">10000</parameter>
+			<parameter id="AllowNegative">true</parameter>
+			<parameter id="MinDepth">3</parameter>
+			<parameter id="MaxDepth">4</parameter>
+		</engine>
 	</group>
 </buttons>
