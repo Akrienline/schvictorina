@@ -22,11 +22,6 @@ namespace SchVictorina.WebAPI.Controllers
         {
             try
             {
-                var _lockObject = string.Empty;
-                lock (_lockObject)
-                {
-
-                }
                 await GlobalConfig.Instance?.Logging?.Requests?.Log(botClient, update, $"{update.Type}: {update.Message?.Text ?? update.CallbackQuery?.Data}");
 
                 var user = UserConfig.Instance.GetUser(GetUserInfo(update.GetUser()));
