@@ -51,10 +51,14 @@ namespace SchVictorina.WebAPI.Engines
                 tolerance1 = RandomUtilities.GetRandomInt(-2, 2, new int[] { 0 });
                 tolerance2 = RandomUtilities.GetRandomInt(-3, 3, new int[] { 0, tolerance1 });
             }
+            
             var depth = RandomUtilities.GetRandomInt(MinDepth, MaxDepth);
+            var expression1 = GetExpression(value1, depth);
+            var expression2 = GetExpression(value2, depth);
+            var fullExpression = MathUtilities.GetPositiveExpression(expression1, expression2, @operator);
             return new QuestionInfo
             {
-                Question = @$"Сколько будет {Environment.NewLine}{GetExpression(value1, depth)} {@operator} {GetExpression(value2, depth)}",
+                Question = @$"Сколько будет {Environment.NewLine}{fullExpression}",
                 RightAnswer = answer,
                 WrongAnswers = new object[]
                 {
@@ -118,9 +122,11 @@ namespace SchVictorina.WebAPI.Engines
                 if (value1 == 1 || value2 == 1)
                     return answer.ToString();
             }
-
             --depth;
-            return $"( {GetExpression(value1, depth)} {@operator} {GetExpression(value2, depth)} )";
+            var expression1 = GetExpression(value1, depth);
+            var expression2 = GetExpression(value2, depth);
+            var fullExpressison = MathUtilities.GetPositiveExpression(expression1, expression2, @operator);
+            return $"({fullExpressison})";
         }
     }
 }
