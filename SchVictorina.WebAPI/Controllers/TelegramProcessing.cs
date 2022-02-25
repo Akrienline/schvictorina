@@ -166,7 +166,7 @@ namespace SchVictorina.WebAPI.Controllers
         {
             UserConfig.Instance.Log(user, UserConfig.EventType.SendQuestion);
             var question = engineButton.Class.GenerateQuestion();
-            var keyboard = new InlineKeyboardMarkup(GenerateInlineKeyboardButtons(question, engineButton.Class, engineButton));
+            var keyboard = new InlineKeyboardMarkup(GenerateInlineKeyboardButtons(question, engineButton.Class, engineButton).SplitLongLines());
             
             if (question.WrongAnswers != null)
                 await botClient.SendText(update, question?.Question ?? "К сожелению не удалось найти вопрос!", keyboard);
@@ -219,6 +219,7 @@ namespace SchVictorina.WebAPI.Controllers
             if (groupButton.Children != null)
             {
                 var uiLineButtons = new List<InlineKeyboardButton>();
+
                 foreach (var child in groupButton.Children.Where(child => child.IsValidWithAscender))
                 {
                     if (child is SplitButton)
@@ -243,7 +244,7 @@ namespace SchVictorina.WebAPI.Controllers
                 uiButtons.Add(new[] { InlineKeyboardButton.WithCallbackData("Наверх!", groupButton.Parent.ID) });
             }
 
-            return botClient.SendText(update, "Выбери тему задания:", new InlineKeyboardMarkup(uiButtons));
+            return botClient.SendText(update, "Выбери тему задания:", new InlineKeyboardMarkup(uiButtons.SplitLongLines()));
         }
         private static UserConfig.User.UserInfo GetUserInfo(User user)
         {

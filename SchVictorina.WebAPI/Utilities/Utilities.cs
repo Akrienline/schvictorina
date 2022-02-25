@@ -50,6 +50,29 @@ namespace SchVictorina.WebAPI.Utilities
                 return result;
             return null;
         }
+
+        public static IEnumerable<IEnumerable<T>> SplitByCount<T>(this IEnumerable<T> items, int countLimit)
+        {
+            return items.SplitByLimit(countLimit, x => 1);
+        }
+        public static IEnumerable<IEnumerable<T>> SplitByLimit<T>(this IEnumerable<T> items, int lengthLimit, Func<T, int> getLength)
+        {
+            var result = new List<T>();
+            var totalLength = 0;
+            foreach (var item in items)
+            {
+                var length = getLength(item);
+                if (totalLength + length > lengthLimit && result.Any())
+                {
+                    yield return result.ToArray();
+                    result.Clear();
+                }
+                totalLength += length;
+                result.Add(item);
+            }
+            if (result.Any())
+                yield return result;
+        }
     }
     public static class LogUtilities
     {

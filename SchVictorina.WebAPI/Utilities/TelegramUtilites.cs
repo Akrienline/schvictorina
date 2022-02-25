@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -39,6 +41,11 @@ namespace SchVictorina.WebAPI.Utilities
             else if (update.Type == UpdateType.CallbackQuery)
                 return update.CallbackQuery.Message.MessageId;
             return 0;
+        }
+
+        public static IEnumerable<IEnumerable<InlineKeyboardButton>> SplitLongLines(this IEnumerable<IEnumerable<InlineKeyboardButton>> buttons)
+        {
+            return buttons.SelectMany(x => x.SplitByLimit(45, y => Math.Max(10, y.Text.Length) + 5));
         }
 
         public static async Task SendImageAsSticker(this ITelegramBotClient botClient, Update update, string filePath)

@@ -1,6 +1,6 @@
-В кнопки не влезают длинные названия
+MaxWrongAnswerCount math engine
 
-Попадаются вопрос без ответов
+MaxWrongAnswerCount dictionary engine
 
 ==========================================
 
