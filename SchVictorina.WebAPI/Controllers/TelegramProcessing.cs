@@ -114,8 +114,8 @@ namespace SchVictorina.WebAPI.Controllers
                                 {
                                     var isRight = (callbackValues[2] == callbackValues[3]) || (callbackValues[2] != "c" && callbackValues[3] == "c");
 
-                                    
-                                    UserConfig.Instance.Log(user, isRight ? UserConfig.EventType.RightAnswer : UserConfig.EventType.WrongAnswer);
+
+                                    //UserConfig.Instance.Log(user, isRight ? UserConfig.EventType.RightAnswer : UserConfig.EventType.WrongAnswer);
                                     await botClient.SendText(update, isRight ? $"Правильно 👍. Ответ: {callbackValues[2]}" : $"Неправильно 👎. Верный ответ: {callbackValues[2]}{(callbackValues[3] == "w" ? "" : ", а не " + callbackValues[3])}");
 
                                     try
@@ -126,6 +126,7 @@ namespace SchVictorina.WebAPI.Controllers
                                     
                                     if (isRight)
                                     {
+                                        UserConfig.Instance.Log(user, UserConfig.EventType.RightAnswer, engineButton.Score);
                                         if (user.Statistics.RightInSequence % 20 == 0)
                                             await botClient.SendTextAndImage(update, "Уже 20 правильных ответов подряд, держи парочку подарков.", "Images/gift_sequence_20.jpg");
                                         else if (user.Statistics.RightInSequence % 5 == 0)
@@ -136,9 +137,9 @@ namespace SchVictorina.WebAPI.Controllers
                                     }
                                     if (!isRight)
                                     {
-                                        
+                                        UserConfig.Instance.Log(user, UserConfig.EventType.RightAnswer, -engineButton.Score);
                                         if (user.Statistics.WrongInSequence % 5 == 0)
-                                            await botClient.SendTextAndImage(update, "Не расстраивайся, держи конфетку", "Images/gift_sequence_.10jpg");
+                                            await botClient.SendTextAndImage(update, "Не расстраивайся, держи конфетку", "Images/gift_sequence_10.jpg");
                                         if (user.Statistics.RightInSequence % 5 > 0)
                                             await botClient.SendTextAndImage(update, "Не расстраивайся, держи конфетку", "Images/gift_sequence_10.jpg");
                                         user.Statistics.RightInSequence = 0;

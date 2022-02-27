@@ -80,7 +80,7 @@ namespace SchVictorina.WebAPI.Utilities
             return user;
         }
 
-        public void Log(User user, EventType eventType)
+        public void Log(User user, EventType eventType, double? score = 0)
         {
             hasChanges = true;
 
@@ -106,6 +106,7 @@ namespace SchVictorina.WebAPI.Utilities
             }
             else if (eventType == EventType.SkipQuestion || eventType == EventType.WrongAnswer)
                 user.Statistics.RightInSequence = 0;
+            user.Statistics.Score += (double)score;
         }
 
         public enum EventType
@@ -158,6 +159,8 @@ namespace SchVictorina.WebAPI.Utilities
 
                 [XmlAttribute("totalQuestions")]
                 public int TotalQuestions { get; set; }
+                [XmlAttribute("score")]
+                public double Score { get; set; } = 0;
 
                 [XmlAttribute("rightAnswers")]
                 public int RightAnswers { get; set; }

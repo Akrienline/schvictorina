@@ -2,6 +2,6 @@
 <users xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <user hiden="false" role="Student">
     <info source="Telegram" userid="1864373905" username="alekami649" firstname="Алексей" lastname="Моисеев" />
-    <statistics lastVisitDate="2022-02-25T13:26:03.4607452+07:00" rightInSequence="0" wrongInSequence="0" totalQuestions="77" rightAnswers="13" wrongAnswers="9" skipQuestions="43" />
+    <statistics lastVisitDate="2022-02-27T23:52:07.0837885+07:00" rightInSequence="0" wrongInSequence="0" totalQuestions="154" score="1" rightAnswers="18" wrongAnswers="11" skipQuestions="104" />
   </user>
 </users>

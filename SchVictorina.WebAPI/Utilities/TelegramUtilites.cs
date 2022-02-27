@@ -45,7 +45,7 @@ namespace SchVictorina.WebAPI.Utilities
 
         public static IEnumerable<IEnumerable<InlineKeyboardButton>> SplitLongLines(this IEnumerable<IEnumerable<InlineKeyboardButton>> buttons)
         {
-            return buttons.SelectMany(x => x.SplitByLimit(45, y => Math.Max(10, y.Text.Length) + 5));
+            return buttons.SelectMany(x => x.SplitByEqualLimit(50, y => y.Text.Length + 4));
         }
 
         public static async Task SendImageAsSticker(this ITelegramBotClient botClient, Update update, string filePath)

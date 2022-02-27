@@ -1,6 +1,10 @@
-MaxWrongAnswerCount math engine
+score double + leaders order + score commands
 
-MaxWrongAnswerCount dictionary engine
+озёра
+
+горы  https://spravochnick.ru/geografiya/osnovnye_gornye_hrebty_i_gornye_sistemy_mira/
+
+после ответа на вопрос показывать справочную информацию с картинкой
 
 ==========================================
 

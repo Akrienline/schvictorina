@@ -1,5 +1,4 @@
 ﻿using SchVictorina.WebAPI.Utilities;
-using System;
 using System.Linq;
 using System.Text;
 
@@ -11,25 +10,23 @@ namespace SchVictorina.WebAPI.Engines
 
         public FunctionButton.Result Invoke()
         {
-            var leaderboard = UserConfig.Instance.Users
-                                                  .OrderByDescending(users => users.Statistics.RightAnswers)
-                                                  .Where(user => !string.IsNullOrWhiteSpace(user.Info.FirstName))
-                                                  .Where(user => !string.IsNullOrWhiteSpace(user.Info.UserName))
-                                                  .Where(user => !user.IsHiden)
-                                                  .Take(MaxUsers)
-                                                  .Select((user, i) => new
-                                                  {
-                                                      Position = i + 1,
-                                                      Name = $"{user.Info.FirstName} (@{user.Info.UserName})",
-                                                      Score = user.Statistics.RightAnswers,
-                                                      Total = user.Statistics.RightAnswers + user.Statistics.WrongAnswers + user.Statistics.SkipQuestions
-                                                  })
-                                                  .ToArray();
+            var leaderboard = UserConfig.Instance.Users.OrderByDescending(users => users.Statistics.Score)
+                                                       .Where(user => !string.IsNullOrWhiteSpace(user.Info.FirstName))
+                                                       .Where(user => !string.IsNullOrWhiteSpace(user.Info.UserName))
+                                                       .Where(user => !user.IsHiden)
+                                                       .Take(MaxUsers)
+                                                       .Select((user, i) => new
+                                                       {
+                                                           Position = i + 1,
+                                                           Name = $"{user.Info.FirstName} (@{user.Info.UserName})",
+                                                           Score = user.Statistics.Score.ToInt().ToString(),
+                                                       })
+                                                       .ToArray();
             var result = new StringBuilder();
             result.AppendLine("Десятка лучших:");
-            foreach (var user in leaderboard)
+            foreach (var leader in leaderboard)
             {
-                result.AppendLine($"{user.Position}. {user.Name}: {user.Score} правильно из {user.Total}");
+                result.AppendLine($"{leader.Position}. {leader.Name}: {leader.Score} баллов");
             }
 
             return new FunctionButton.Result

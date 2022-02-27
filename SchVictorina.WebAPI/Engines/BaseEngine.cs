@@ -19,10 +19,9 @@ namespace SchVictorina.WebAPI
     }
     public abstract class Parameter
     {
-        
+        #nullable enable
         string Name = "";
-#nullable enable
         object? Value = "";
-#nullable disable
+        #nullable disable
     }
 }

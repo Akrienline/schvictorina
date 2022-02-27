@@ -2,24 +2,28 @@
 <buttons priority="1" classid="SchVictorina.WebAPI.Engines.MathEngine">
 	<group label="Математика">
 		<engine label="1 класс" id="math_class_1">
+			<score>0.5</score>
 			<parameter id="Operators">+-</parameter>
 			<parameter id="MinAnswerValue">0</parameter>
 			<parameter id="MaxAnswerValue">20</parameter>
 			<parameter id="AllowNegative">false</parameter>
 		</engine>
 		<engine label="2 класс" id="math_class_2">
+			<score>0.7</score>
 			<parameter id="Operators">+-*</parameter>
 			<parameter id="MinAnswerValue">10</parameter>
 			<parameter id="MaxAnswerValue">100</parameter>
 			<parameter id="AllowNegative">true</parameter>
 		</engine>
 		<engine label="3 класс" id="math_class_3">
+			<score>1</score>
 			<parameter id="Operators">+-*/</parameter>
 			<parameter id="MinAnswerValue">100</parameter>
 			<parameter id="MaxAnswerValue">250</parameter>
 			<parameter id="AllowNegative">true</parameter>
 		</engine>
 		<engine label="4 класс" id="math_class_4">
+			<score>2.2</score>
 			<parameter id="Operators">+-*/</parameter>
 			<parameter id="MinAnswerValue">100</parameter>
 			<parameter id="MaxAnswerValue">1000</parameter>
@@ -29,18 +33,21 @@
 		<split />
 		<group label="Огромные числа">
 			<engine label="Сложение и вычитание">
+				<score>8</score>
 				<parameter id="Operators">+-</parameter>
 				<parameter id="MinAnswerValue">1000</parameter>
 				<parameter id="MaxAnswerValue">10000</parameter>
 				<parameter id="AllowNegative">true</parameter>
 			</engine>
 			<engine label="Умножение">
+				<score>8</score>
 				<parameter id="Operators">*</parameter>
 				<parameter id="MinAnswerValue">1000</parameter>
 				<parameter id="MaxAnswerValue">10000</parameter>
 				<parameter id="AllowNegative">true</parameter>
 			</engine>
 			<engine label="Деление">
+				<score>8</score>
 				<parameter id="Operators">/</parameter>
 				<parameter id="MinAnswerValue">1000</parameter>
 				<parameter id="MaxAnswerValue">10000</parameter>
@@ -48,6 +55,7 @@
 			</engine>
 		</group>
 		<engine label="Много скобок">
+			<score>10</score>
 			<parameter id="Operators">+-</parameter>
 			<parameter id="MinAnswerValue">1000</parameter>
 			<parameter id="MaxAnswerValue">10000</parameter>

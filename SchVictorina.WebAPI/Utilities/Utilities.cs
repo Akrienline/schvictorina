@@ -20,7 +20,7 @@ namespace SchVictorina.WebAPI.Utilities
             memoryStream.Position = 0;
             var serializer = new XmlSerializer(typeof(T));
             return (T)serializer.Deserialize(memoryStream);
-        }
+        }   
         public static string ToXml<T>(this T obj)
         {
             using var memoryStream = new MemoryStream();
@@ -66,12 +66,44 @@ namespace SchVictorina.WebAPI.Utilities
                 {
                     yield return result.ToArray();
                     result.Clear();
+                    totalLength = 0;
                 }
                 totalLength += length;
                 result.Add(item);
             }
             if (result.Any())
                 yield return result;
+        }
+        public static IEnumerable<IEnumerable<T>> SplitByEqualLimit<T>(this IEnumerable<T> items, int lengthLimit, Func<T, int> getLength)
+        {
+            var result = new List<T>();
+            var maxLength = 0;
+            foreach (var item in items)
+            {
+                var length = getLength(item);
+                if (maxLength < length)
+                    maxLength = length;
+                if (maxLength * (result.Count + 1) > lengthLimit && result.Any())
+                {
+                    yield return result.ToArray();
+                    result.Clear();
+                    maxLength = 0;
+                }
+                result.Add(item);
+            }
+            if (result.Any())
+                yield return result;
+        }
+
+        public static IEnumerable<T> SequenceElements<T>(int count, IEnumerable<T> initialPreviousValues, Func<T[], T> getNextValue)
+        {
+            var preriousItems = initialPreviousValues.ToList();
+            for (var i = 0; i < count; ++i)
+            {
+                var value = getNextValue(preriousItems.ToArray());
+                preriousItems.Add(value);
+                yield return value;
+            }
         }
     }
     public static class LogUtilities

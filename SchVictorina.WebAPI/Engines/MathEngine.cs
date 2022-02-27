@@ -1,5 +1,6 @@
 ﻿using SchVictorina.WebAPI.Utilities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SchVictorina.WebAPI.Engines
@@ -13,14 +14,14 @@ namespace SchVictorina.WebAPI.Engines
         public bool AllowNegative { get; set; } = true;
         public int MinDepth { get; set; } = 0;
         public int MaxDepth { get; set; } = 0;
+        public int WrongAnswerCount { get; set; } = 2;
 
         public override QuestionInfo GenerateQuestion()
         {
             var value1 = 0;
             var value2 = 0;
             var answer = 0;
-            var tolerance1 = RandomUtilities.GetRandomInt((MaxAnswerValue - MinAnswerValue) / 10, new int[] { 0 });
-            var tolerance2 = RandomUtilities.GetRandomInt((MaxAnswerValue - MinAnswerValue) / 10, new int[] { 0, tolerance1 });
+            var tolerances = ConvertUtilities.SequenceElements(WrongAnswerCount, new[] { 0 }, previous => RandomUtilities.GetRandomInt((MaxAnswerValue - MinAnswerValue) / 10, previous)).ToArray();
 
             var @operator = RandomUtilities.GetRandomChar(Operators);
             if (@operator == '+')
@@ -48,8 +49,7 @@ namespace SchVictorina.WebAPI.Engines
                 value2 = 1 + RandomUtilities.GetRandomInt(MinAnswerValue, MaxAnswerValue) / 10;
                 value1 = value2 * RandomUtilities.GetRandomPositiveInt(10);
                 answer = value1 / value2;
-                tolerance1 = RandomUtilities.GetRandomInt(-2, 2, new int[] { 0 });
-                tolerance2 = RandomUtilities.GetRandomInt(-3, 3, new int[] { 0, tolerance1 });
+                tolerances = ConvertUtilities.SequenceElements(WrongAnswerCount, new[] { 0 }, previous => RandomUtilities.GetRandomInt(-2 - previous.Length + 1, 2 + previous.Length - 1, previous)).ToArray();
             }
             
             var depth = RandomUtilities.GetRandomInt(MinDepth, MaxDepth);
@@ -60,12 +60,7 @@ namespace SchVictorina.WebAPI.Engines
             {
                 Question = @$"Сколько будет {Environment.NewLine}{fullExpression}",
                 RightAnswer = answer,
-                WrongAnswers = new object[]
-                {
-                    answer + tolerance1,
-                    answer + tolerance2,
-                },
-                
+                WrongAnswers = tolerances.Select(tolerance => answer + tolerance).Cast<object>().ToArray()
             };
         }
         public string GetExpression(int answer, int depth)

@@ -149,6 +149,7 @@ namespace SchVictorina.WebAPI.Utilities
                 return true;
             }
         }
+        [XmlIgnore]
         public bool IsValidWithAscender
         {
             get
@@ -159,7 +160,9 @@ namespace SchVictorina.WebAPI.Utilities
     }
     public interface IClassableButton
     {
+        [XmlIgnore]
         string ClassID { get; set; }
+
     }
 
     public class GroupButton : BaseButton, IClassableButton
@@ -218,6 +221,7 @@ namespace SchVictorina.WebAPI.Utilities
                 return base.IsValid;
             }
         }
+
     }
 
     [XmlRoot("buttons")]
@@ -307,6 +311,8 @@ namespace SchVictorina.WebAPI.Utilities
 
     public sealed class EngineButton: ClassableButton<BaseEngine>
     {
+        [XmlElement("score")]
+        public double Score { get; set; }
     }
 
     public interface IFunction
