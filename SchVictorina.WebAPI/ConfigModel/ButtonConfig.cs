@@ -241,7 +241,10 @@ namespace SchVictorina.WebAPI.Utilities
             [XmlText]
             public string Value { get; set; }
         }
-
+        [XmlAttribute("rightScore")]
+        public double RightScore { get; set; }
+        [XmlAttribute("wrongScore")]
+        public double WrongScore { get; set; }
         [XmlAttribute("classid")]
         public string ClassID { get; set; }
 
@@ -311,8 +314,6 @@ namespace SchVictorina.WebAPI.Utilities
 
     public sealed class EngineButton: ClassableButton<BaseEngine>
     {
-        [XmlElement("score")]
-        public double Score { get; set; }
     }
 
     public interface IFunction

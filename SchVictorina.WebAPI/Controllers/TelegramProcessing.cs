@@ -41,6 +41,13 @@ namespace SchVictorina.WebAPI.Controllers
                     }
                     if (update.Message.Text.StartsWith("/"))
                     {
+                        if (update.Message.Text.StartsWith("/makewaip"))
+                        {
+                            if (IsAdmin(update))
+                                await MakeWaip(botClient, update);
+                            else
+                                await botClient.SendText(update, "У тебя нет разрешения!");
+                        }
                         if (update.Message.Text.StartsWith("/user"))
                         {
                             //await UserController(botClient, update);
@@ -126,7 +133,7 @@ namespace SchVictorina.WebAPI.Controllers
                                     
                                     if (isRight)
                                     {
-                                        UserConfig.Instance.Log(user, UserConfig.EventType.RightAnswer, engineButton.Score);
+                                        UserConfig.Instance.Log(user, UserConfig.EventType.RightAnswer, engineButton.RightScore);
                                         if (user.Statistics.RightInSequence % 20 == 0)
                                             await botClient.SendTextAndImage(update, "Уже 20 правильных ответов подряд, держи парочку подарков.", "Images/gift_sequence_20.jpg");
                                         else if (user.Statistics.RightInSequence % 5 == 0)
@@ -137,7 +144,7 @@ namespace SchVictorina.WebAPI.Controllers
                                     }
                                     if (!isRight)
                                     {
-                                        UserConfig.Instance.Log(user, UserConfig.EventType.RightAnswer, -engineButton.Score);
+                                        UserConfig.Instance.Log(user, UserConfig.EventType.RightAnswer, -engineButton.WrongScore);
                                         if (user.Statistics.WrongInSequence % 5 == 0)
                                             await botClient.SendTextAndImage(update, "Не расстраивайся, держи конфетку", "Images/gift_sequence_10.jpg");
                                         if (user.Statistics.RightInSequence % 5 > 0)
@@ -350,78 +357,93 @@ namespace SchVictorina.WebAPI.Controllers
                     await botClient.SendText(update, "У тебя нет разрешения!");
             }
         }
+        private static async Task MakeWaip(ITelegramBotClient botClient, Update update)
+        {
+            UserConfig.Instance.Users = new List<UserConfig.User>();
+            await botClient.SendText(update, "Вайп успешно выполнен!");
+        }
 
         #region User Control
-        //private static async Task UserController(ITelegramBotClient botClient, Update update)
-        //{
-        //    if (update.Type == UpdateType.Message)
-        //    {
-        //        if (IsAdmin(update))
-        //        {
-        //            await UserControl(botClient, update, update.Message.Text.Substring("/user".Replace("@", "").Trim().Length));
-        //        }
-        //        else
-        //        {
-        //            await botClient.SendText(update, "У вас нет разрешения!");
-        //        }
-        //    }
-        //    else if (update.Type == UpdateType.CallbackQuery)
-        //    {
-        //       if (IsAdmin(update))
-        //       {
-        //            await UserControl(botClient, update, "");
-        //       }
-        //       else
-        //       {
-        //           await botClient.SendText(update, "У вас нет разрешения!");
-        //       }
-        //    }
-        //}
-        //private static async Task UserControl(ITelegramBotClient botClient, Update update, string username)
-        //{
-        //    if (update.Type == UpdateType.CallbackQuery)
-        //    {
-        //        if (update.CallbackQuery.Data.StartsWith("usercontrol-student-"))
-        //        {
-        //            var userInfo = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-student-".Trim().Length));
-        //            userInfo.Role = UserConfig.UserRole.Student;
-        //        }
-        //        if (update.CallbackQuery.Data.StartsWith("usercontrol-teacher-"))
-        //        {
-        //            var userInfo = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-teacher-".Trim().Length));
-        //            userInfo.Role = UserConfig.UserRole.Teacher;
-        //        }
-        //        if (update.CallbackQuery.Data.StartsWith("usercontrol-admin-"))
-        //        {
-        //            var userInfo = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-admin-".Trim().Length));
-        //            userInfo.Role = UserConfig.UserRole.Administrator;
-        //        }
-        //    }
-        //    else if (update.Type == UpdateType.Message)
-        //    {
-        //        username = username.Trim();
-        //        var userInfo = GetUserByUsername(username.Trim());
-        //        if (userInfo == null)
-        //        {
-        //            await botClient.SendText(update, $"@{username.Trim()} не найден!");
-        //        }
-        //        else
-        //        {
-        //            var preKeyboard = new List<List<InlineKeyboardButton>>();
-        //            var buttons = new List<InlineKeyboardButton>();
-        //            buttons.Add(InlineKeyboardButton.WithCallbackData("Сделать учеником", $"usercontrol-student-{username}"));
-        //            buttons.Add(InlineKeyboardButton.WithCallbackData("Сделать учителем", $"usercontrol-teacher-{username}"));
-        //            buttons.Add(InlineKeyboardButton.WithCallbackData("Сделать админов", $"usercontrol-admin-{username}"));
-        //            preKeyboard.Add(buttons.ToList());
-        //            buttons.Clear();
-        //            buttons.Add(InlineKeyboardButton.WithCallbackData("Добавить в список лидеров", $"usercontrol-show-{username}"));
-        //            buttons.Add(InlineKeyboardButton.WithCallbackData("Удалить из списка лидеров", $"usercontrol-hide-{username}"));
-        //            preKeyboard.Add(buttons.ToList());
-        //            var keyboard = new InlineKeyboardMarkup(preKeyboard);
-        //            await botClient.SendText(update, $"Ученик {userInfo.Info.LastName} {userInfo.Info.FirstName} - @{userInfo.Info.UserName}: \nДата поселднего посещения: {userInfo.Statistics.LastVisitDate.ToString("dd'.'mm'.'yyyy' 'HH':'mm':'ss")}, показан в списке лидеров: {userInfo.IsHiden.ToString(CultureInfo.InvariantCulture)}\nПравильных ответов: {userInfo.Statistics.RightAnswers}, правильных ответов подряд: {userInfo.Statistics.RightInSequence}, неправильных ответов: {userInfo.Statistics.WrongAnswers}, пропущеных вопросов: {userInfo.Statistics.SkipQuestions}, всего вопросов: {userInfo.Statistics.RightAnswers + userInfo.Statistics.WrongAnswers + userInfo.Statistics.SkipQuestions}", keyboard);
-        //        }
-        //    }
-        //}
+        private static async Task UserController(ITelegramBotClient botClient, Update update)
+        {
+            if (update.Type == UpdateType.Message)
+            {
+                if (IsAdmin(update))
+                {
+                    await UserControl(botClient, update, update.Message.Text.Substring("/user".Replace("@", "").Trim().Length));
+                }
+                else
+                {
+                    await botClient.SendText(update, "У вас нет разрешения!");
+                }
+            }
+            else if (update.Type == UpdateType.CallbackQuery)
+            {
+                if (IsAdmin(update))
+                {
+                    await UserControl(botClient, update, "");
+                }
+                else
+                {
+                    await botClient.SendText(update, "У вас нет разрешения!");
+                }
+            }
+        }
+        private static async Task UserControl(ITelegramBotClient botClient, Update update, string username)
+        {
+            if (update.Type == UpdateType.CallbackQuery)
+            {
+                if (update.CallbackQuery.Data.StartsWith("usercontrol-student-"))
+                {
+                    var userInfo = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-student-".Trim().Length));
+                    userInfo.Role = UserConfig.UserRole.Student;
+                }
+                if (update.CallbackQuery.Data.StartsWith("usercontrol-teacher-"))
+                {
+                    var userInfo = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-teacher-".Trim().Length));
+                    userInfo.Role = UserConfig.UserRole.Teacher;
+                }
+                if (update.CallbackQuery.Data.StartsWith("usercontrol-admin-"))
+                {
+                    var userInfo = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-admin-".Trim().Length));
+                    userInfo.Role = UserConfig.UserRole.Administrator;
+                }
+                if (update.CallbackQuery.Data.StartsWith("usercontrol-hide-"))
+                {
+                    var userInfo = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-hide-".Trim().Length));
+                    userInfo.IsHiden = true;
+                }
+                if (update.CallbackQuery.Data.StartsWith("usercontrol-show-"))
+                {
+                    var userInfo = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-admin-".Trim().Length));
+                    userInfo.IsHiden = false;
+                }
+            }
+            else if (update.Type == UpdateType.Message)
+            {
+                username = username.Trim();
+                var userInfo = GetUserByUsername(username.Trim());
+                if (userInfo == null)
+                {
+                    await botClient.SendText(update, $"@{username.Trim()} не найден!");
+                }
+                else
+                {
+                    var preKeyboard = new List<List<InlineKeyboardButton>>();
+                    var buttons = new List<InlineKeyboardButton>();
+                    buttons.Add(InlineKeyboardButton.WithCallbackData("Сделать учеником", $"usercontrol-student-{username}"));
+                    buttons.Add(InlineKeyboardButton.WithCallbackData("Сделать учителем", $"usercontrol-teacher-{username}"));
+                    buttons.Add(InlineKeyboardButton.WithCallbackData("Сделать админом", $"usercontrol-admin-{username}"));
+                    preKeyboard.Add(buttons.ToList());
+                    buttons.Clear();
+                    buttons.Add(InlineKeyboardButton.WithCallbackData("Добавить в список лидеров", $"usercontrol-show-{username}"));
+                    buttons.Add(InlineKeyboardButton.WithCallbackData("Удалить из списка лидеров", $"usercontrol-hide-{username}"));
+                    preKeyboard.Add(buttons.ToList());
+                    var keyboard = new InlineKeyboardMarkup(preKeyboard);
+                    await botClient.SendText(update, $"Ученик {userInfo.Info.LastName} {userInfo.Info.FirstName} - @{userInfo.Info.UserName}: \nДата поселднего посещения: {userInfo.Statistics.LastVisitDate.ToString("dd'.'mm'.'yyyy' 'HH':'mm':'ss")}, показан в списке лидеров: {userInfo.IsHiden.ToString(CultureInfo.InvariantCulture)}\nПравильных ответов: {userInfo.Statistics.RightAnswers}, правильных ответов подряд: {userInfo.Statistics.RightInSequence}, неправильных ответов: {userInfo.Statistics.WrongAnswers}, пропущеных вопросов: {userInfo.Statistics.SkipQuestions}, всего вопросов: {userInfo.Statistics.RightAnswers + userInfo.Statistics.WrongAnswers + userInfo.Statistics.SkipQuestions}", keyboard);
+                }
+            }
+        }
         #endregion
         #region Role Control
         private static async Task Role(ITelegramBotClient botClient, Update update)
