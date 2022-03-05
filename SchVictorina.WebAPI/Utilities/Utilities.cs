@@ -8,6 +8,16 @@ using System.Collections.Generic;
 
 namespace SchVictorina.WebAPI.Utilities
 {
+    public static class ArrayUtilities
+    {
+        public static bool IsNullOrEmpty(this Array array)
+        {
+            if (array == null || array.Length == 0)
+                return true;
+            else
+                return false;
+        } 
+    }
     public static class XmlUtilities
     {
         public static T FromXml<T>(this string xml)

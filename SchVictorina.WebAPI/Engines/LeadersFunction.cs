@@ -24,7 +24,7 @@ namespace SchVictorina.WebAPI.Engines
                                                            Score = user.Statistics.Score.ToInt().ToString(),
                                                        })
                                                        .ToArray();
-            if (leaderboard == null || leaderboard[0] == null)
+            if (leaderboard.IsNullOrEmpty())
                 return new FunctionButton.Result()
                 {
                     Text = "К сожелению пока здесь нет никого..."
