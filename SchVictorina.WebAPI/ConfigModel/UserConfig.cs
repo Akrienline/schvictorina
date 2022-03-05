@@ -84,6 +84,9 @@ namespace SchVictorina.WebAPI.Utilities
         {
             hasChanges = true;
 
+            if (user.Statistics.Score - score <= 0)
+                score = 0;
+
             user.Statistics.LastVisitDate = DateTime.Now;
 
             if (eventType == EventType.SendQuestion)
