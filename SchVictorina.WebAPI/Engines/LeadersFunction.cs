@@ -1,4 +1,5 @@
 ﻿using SchVictorina.WebAPI.Utilities;
+using System;
 using System.Linq;
 using System.Text;
 
@@ -23,7 +24,7 @@ namespace SchVictorina.WebAPI.Engines
                                                            Score = user.Statistics.Score.ToInt().ToString(),
                                                        })
                                                        .ToArray();
-            if (leaderboard == null)
+            if (leaderboard == null || leaderboard[0] == null)
                 return new FunctionButton.Result()
                 {
                     Text = "К сожелению пока здесь нет никого..."
@@ -34,7 +35,7 @@ namespace SchVictorina.WebAPI.Engines
             {
                 result.AppendLine($"{leader.Position}. {leader.Name}: {leader.Score} баллов");
             }
-
+            
             return new FunctionButton.Result
             {
                 Text = result.ToString()
