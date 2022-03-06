@@ -12,8 +12,6 @@ namespace SchVictorina.WebAPI.Utilities
         }
         public static int ToInt(this double d)
         {
-            if (d == null)
-                throw new ArgumentNullException(nameof(d));
             return Convert.ToInt32(d);
         }
     }

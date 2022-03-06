@@ -17,11 +17,4 @@ namespace SchVictorina.WebAPI
     {
         public abstract QuestionInfo GenerateQuestion();
     }
-    public abstract class Parameter
-    {
-        #nullable enable
-        string Name = "";
-        object? Value = "";
-        #nullable disable
-    }
 }

@@ -170,7 +170,7 @@ namespace SchVictorina.WebAPI.Controllers
         {
             UserConfig.Instance.Log(user, UserConfig.EventType.SendQuestion);
             var question = engineButton.Class.GenerateQuestion();
-            var keyboard = new InlineKeyboardMarkup(GenerateInlineKeyboardButtons(question, engineButton.Class, engineButton).SplitLongLines());
+            var keyboard = new InlineKeyboardMarkup(GenerateInlineKeyboardButtons(question, engineButton).SplitLongLines());
             
             if (question.WrongAnswers != null)
                 await botClient.SendText(update, question?.Question ?? "К сожелению не удалось найти вопрос!", keyboard);
@@ -188,7 +188,7 @@ namespace SchVictorina.WebAPI.Controllers
                 await ProcessEvent(botClient, update);
             }
         }
-        private static IEnumerable<IEnumerable<InlineKeyboardButton>> GenerateInlineKeyboardButtons(QuestionInfo question, BaseEngine baseEngine, EngineButton button)
+        private static IEnumerable<IEnumerable<InlineKeyboardButton>> GenerateInlineKeyboardButtons(QuestionInfo question, EngineButton button)
         {
             if (question.WrongAnswers != null && question.WrongAnswers.Any())
             {
@@ -311,48 +311,6 @@ namespace SchVictorina.WebAPI.Controllers
         {
             return IsAdmin(user.Username);
         }
-        private static async Task HideUser(ITelegramBotClient botClient, Update update)
-        {
-            if (update.Message.Text.StartsWith("/hide"))
-            {
-                if (IsAdmin(update.Message.From.Username))
-                {
-                    var nicknameToHide = update.Message.Text.Substring("/hide".Length).Trim().TrimStart('@');
-                    var userToHide = GetUserByUsername(nicknameToHide);
-                    if (userToHide == null)
-                        await botClient.SendText(update, $"{nicknameToHide} не найден.");
-                    else
-                    {
-                        userToHide.IsHiden = true;
-                        await botClient.SendText(update, $"Ученик @{nicknameToHide} был удалён из списка лидеров.");
-                    }
-                }
-                else
-                    await botClient.SendText(update, "У вас нет разрешения!");
-            }
-            else
-                throw new ArgumentException();
-        }
-        private static async Task ShowUser(ITelegramBotClient botClient, Update update)
-        {
-            if (update.Message.Text.StartsWith("/show"))
-            {
-                if (IsAdmin(update.Message.From.Username))
-                {
-                    var nicknameToShow = update.Message.Text.Substring("/show".Length).Trim().TrimStart('@');
-                    var userToHide = GetUserByUsername(nicknameToShow);
-                    if (userToHide == null)
-                        await botClient.SendText(update, $"{nicknameToShow} не найден.");
-                    else
-                    {
-                        userToHide.IsHiden = false;
-                        await botClient.SendText(update, $"Ученик @{nicknameToShow} был добавлен в список лидеров.");
-                    }
-                }
-                else
-                    await botClient.SendText(update, "У вас нет разрешения!");
-            }
-        }
         private static async Task MakeWaip(ITelegramBotClient botClient, Update update)
         {
             UserConfig.Instance.Users = new List<UserConfig.User>();
@@ -426,17 +384,19 @@ namespace SchVictorina.WebAPI.Controllers
                 else
                 {
                     var preKeyboard = new List<List<InlineKeyboardButton>>();
-                    var buttons = new List<InlineKeyboardButton>();
-                    buttons.Add(InlineKeyboardButton.WithCallbackData("Сделать учеником", $"usercontrol-student-{username}"));
-                    buttons.Add(InlineKeyboardButton.WithCallbackData("Сделать учителем", $"usercontrol-teacher-{username}"));
-                    buttons.Add(InlineKeyboardButton.WithCallbackData("Сделать администратором", $"usercontrol-admin-{username}"));
+                    var buttons = new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData("Сделать учеником", $"usercontrol-student-{username}"),
+                        InlineKeyboardButton.WithCallbackData("Сделать учителем", $"usercontrol-teacher-{username}"),
+                        InlineKeyboardButton.WithCallbackData("Сделать администратором", $"usercontrol-admin-{username}")
+                    };
                     preKeyboard.Add(buttons.ToList());
                     buttons.Clear();
                     buttons.Add(InlineKeyboardButton.WithCallbackData("Добавить в список лидеров", $"usercontrol-show-{username}"));
                     buttons.Add(InlineKeyboardButton.WithCallbackData("Удалить из списка лидеров", $"usercontrol-hide-{username}"));
                     preKeyboard.Add(buttons.ToList());
                     var keyboard = new InlineKeyboardMarkup(preKeyboard);
-                    await botClient.SendText(update, $"Ученик {userInfo.Info.LastName} {userInfo.Info.FirstName} - @{userInfo.Info.UserName}: \nДата поселднего посещения: {userInfo.Statistics.LastVisitDate.ToString("dd'.'mm'.'yyyy' 'HH':'mm':'ss")}, показан в списке лидеров: {userInfo.IsHiden.ToString(CultureInfo.InvariantCulture)}\nПравильных ответов: {userInfo.Statistics.RightAnswers}, правильных ответов подряд: {userInfo.Statistics.RightInSequence}, неправильных ответов: {userInfo.Statistics.WrongAnswers}, пропущеных вопросов: {userInfo.Statistics.SkipQuestions}, всего вопросов: {userInfo.Statistics.RightAnswers + userInfo.Statistics.WrongAnswers + userInfo.Statistics.SkipQuestions}", keyboard);
+                    await botClient.SendText(update, $"Ученик {userInfo.Info.LastName} {userInfo.Info.FirstName} - @{userInfo.Info.UserName}: \nДата поселднего посещения: {userInfo.Statistics.LastVisitDate:dd'.'mm'.'yyyy' 'HH':'mm':'ss}, показан в списке лидеров: {userInfo.IsHiden.ToString(CultureInfo.InvariantCulture)}\nПравильных ответов: {userInfo.Statistics.RightAnswers}, правильных ответов подряд: {userInfo.Statistics.RightInSequence}, неправильных ответов: {userInfo.Statistics.WrongAnswers}, пропущеных вопросов: {userInfo.Statistics.SkipQuestions}, всего вопросов: {userInfo.Statistics.RightAnswers + userInfo.Statistics.WrongAnswers + userInfo.Statistics.SkipQuestions}", keyboard);
                 }
             }
         }
@@ -468,12 +428,15 @@ namespace SchVictorina.WebAPI.Controllers
                         await botClient.SendText(update, "Значение Score не может быть null");
                         return;
                     }
-                    if (user.Statistics.Score - parts[2].ToDouble() < 0)
+                    if (parts[2].ToDouble() / 2 < 0)
                     {
-                        await botClient.SendText(update, "Операция не может быть выполена - баллы пользователя будут меньше нуля.");
-                        return;
+                        if (user.Statistics.Score - parts[2].ToDouble() < 0)
+                        {
+                            await botClient.SendText(update, "Операция не может быть выполена - баллы пользователя будут меньше нуля.");
+                            return;
+                        }
                     }
-                    user.Statistics.Score += (double)parts[2].ToDouble();
+                    user.Statistics.Score += (double)parts[2].ToDouble() / 2;
                     await botClient.SendText(update, "Операция успешно выполнена");
                 }
             }
