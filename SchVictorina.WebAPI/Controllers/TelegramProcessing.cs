@@ -26,9 +26,10 @@ namespace SchVictorina.WebAPI.Controllers
 
                 var user = UserConfig.Instance.GetUser(GetUserInfo(update.GetUser()));
                 if (user.Statistics.LastVisitDate == new DateTime())
-                    await botClient.SendTextAndImage(update, "Приветствую тебя в этом канале! Дерзай!", "Images/gift_signup.jpg");
+                    await botClient.SendTextAndImage(update, "Приветствую тебя в этом канале! Дерзай!\nНе забудь подписаться на новости - @schvictorina_news!", "Images/gift_signup.jpg");
                 else if ((DateTime.Now - user.Statistics.LastVisitDate).TotalDays > 7)
                     await botClient.SendTextAndImage(update, "С возвращением!", "Images/gift_back.jpg");
+
                 UserConfig.Instance.Log(user, UserConfig.EventType.Request);
 
                 if (update.Type == UpdateType.Message)
@@ -36,37 +37,32 @@ namespace SchVictorina.WebAPI.Controllers
                     if (update.Message.Chat.Type == ChatType.Group || update.Message.Chat.Type == ChatType.Channel || update.Message.Chat.Type == ChatType.Supergroup)
                     {
                         if (update.Message.Text != "/theme")
-                        throw new ArgumentNullException("update");
-                        return;
+                            return;
                     }
                     if (update.Message.Text.StartsWith("/"))
                     {
-                        if (update.Message.Text.StartsWith("/makewaip"))
+                        if (update.Message.Text == "/start")
                         {
-                            if (IsAdmin(update))
-                                await MakeWaip(botClient, update);
-                            else
-                                await botClient.SendText(update, "У тебя нет разрешения!");
-                        }
-                        if (update.Message.Text.StartsWith("/user"))
-                        {
-                            //await UserController(botClient, update);
+                            await GenerateButtonsAndSend(botClient, update, ButtonConfig.RootButton);
                         }
                         if (update.Message.Text.StartsWith("/score"))
                         {
                             await Score(botClient, update);
                         }
-                        if (update.Message.Text.StartsWith("/role"))
+                        if (update.Message.Text.StartsWith("/makewaip"))
                         {
-                            await Role(botClient, update);
+                            if (IsAdmin(update))
+                                await MakeWaip(botClient, update);
+                            else
+                                await botClient.SendText(update, "У вас нет разрешения!");
                         }
-                        if (update.Message.Text.StartsWith("/hide"))
+                        if (update.Message.Text.StartsWith("/user"))
                         {
-                            await HideUser(botClient, update);
+                            await UserController(botClient, update);
                         }
-                        if (update.Message.Text.StartsWith("/show"))
+                        if (update.Message.Text.StartsWith("/score"))
                         {
-                            await ShowUser(botClient, update);
+                            await Score(botClient, update);
                         }
 
                         var button = ButtonConfig.GetButton(update.Message.Text.TrimStart('/'));
@@ -332,7 +328,7 @@ namespace SchVictorina.WebAPI.Controllers
                     }
                 }
                 else
-                    await botClient.SendText(update, "У тебя нет разрешения!");
+                    await botClient.SendText(update, "У вас нет разрешения!");
             }
             else
                 throw new ArgumentException();
@@ -354,7 +350,7 @@ namespace SchVictorina.WebAPI.Controllers
                     }
                 }
                 else
-                    await botClient.SendText(update, "У тебя нет разрешения!");
+                    await botClient.SendText(update, "У вас нет разрешения!");
             }
         }
         private static async Task MakeWaip(ITelegramBotClient botClient, Update update)
@@ -415,7 +411,7 @@ namespace SchVictorina.WebAPI.Controllers
                 }
                 if (update.CallbackQuery.Data.StartsWith("usercontrol-show-"))
                 {
-                    var userInfo = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-admin-".Trim().Length));
+                    var userInfo = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-show-".Trim().Length));
                     userInfo.IsHiden = false;
                 }
             }
@@ -433,7 +429,7 @@ namespace SchVictorina.WebAPI.Controllers
                     var buttons = new List<InlineKeyboardButton>();
                     buttons.Add(InlineKeyboardButton.WithCallbackData("Сделать учеником", $"usercontrol-student-{username}"));
                     buttons.Add(InlineKeyboardButton.WithCallbackData("Сделать учителем", $"usercontrol-teacher-{username}"));
-                    buttons.Add(InlineKeyboardButton.WithCallbackData("Сделать админом", $"usercontrol-admin-{username}"));
+                    buttons.Add(InlineKeyboardButton.WithCallbackData("Сделать администратором", $"usercontrol-admin-{username}"));
                     preKeyboard.Add(buttons.ToList());
                     buttons.Clear();
                     buttons.Add(InlineKeyboardButton.WithCallbackData("Добавить в список лидеров", $"usercontrol-show-{username}"));
@@ -445,258 +441,46 @@ namespace SchVictorina.WebAPI.Controllers
             }
         }
         #endregion
-        #region Role Control
-        private static async Task Role(ITelegramBotClient botClient, Update update)
-        {
-            if (update.Message.Text.StartsWith("/role"))
-            {
-                if (IsAdmin(update))
-                {
-                    if (update.Message.Text.StartsWith("/role admin"))
-                        await SetAdmin(botClient, update);
-                    else if (update.Message.Text.StartsWith("/role teacher"))
-                        await SetTeacher(botClient, update);
-                    else if (update.Message.Text.StartsWith("/role student"))
-                        await SetStudent(botClient, update);
-                    else
-                        await botClient.SendText(update, "Не хватает аргументов.");
-                }
-                else
-                    await botClient.SendText(update, "У вас нет разрешения!");
-            }
-            else
-                throw new ArgumentException();
-        }
-        private static async Task SetAdmin(ITelegramBotClient botClient, Update update)
-        {
-            if (IsAdmin(update))
-            {
-                var username = update.Message.Text.Substring("/role admin".Trim().Replace("@", "").Length);
-                var admin = GetUserByUsername(update.Message.From.Username);
-                if (admin == null)
-                    throw new ArgumentNullException();
-                else
-                {
-                    GetUserByUsername(username).Role = UserConfig.UserRole.Administrator;
-                    await botClient.SendText(update, $"@{username} стал(а) администратором(ой).");
-                }
-            }
-        }
-        private static async Task SetTeacher(ITelegramBotClient botClient, Update update)
-        {
-            if (IsAdmin(update))
-            {
-                if (update.Message.Text == "/role teacher" || (update.Message.Text == "/role teacher "))
-                    await botClient.SendText(update, "Не хватает аргументов.");
-                else
-                {
-                    var username = update.Message.Text.Substring("/role teacher ".Replace("@", "").Length);
-                    var user = GetUserByUsername(username);
-                    var admin = GetUserByUsername(update.Message.From.Username);
-                    if (admin == null)
-                        throw new ArgumentNullException();
-                    else
-                    {
-                        if (user == null)
-                            throw new ArgumentNullException("user");
-                        user.Role = UserConfig.UserRole.Teacher;
-                        await botClient.SendText(update, $"@{username} стал(а) учителем.");
-                    }
-                }
-            }
-        }
-        private static async Task SetStudent(ITelegramBotClient botClient, Update update)
-        {
-            if (IsAdmin(update))
-            {
-                var username = update.Message.Text.Substring("/role student".Trim().Replace("@", "").Length);
-                var user = GetUserByUsername(username);
-                if (user == null)
-                    throw new ArgumentNullException();
-                else
-                {
-                    GetUserByUsername(username).Role = UserConfig.UserRole.Student;
-                    await botClient.SendText(update, $"@{username} стал(а) учеником(ей).");
-                }
-            }
-        }
-        #endregion
         #region Score Control
         private static async Task Score(ITelegramBotClient botClient, Update update)
         {
-            if (string.IsNullOrWhiteSpace(update.Message.Text))
+            if (IsAdmin(update))
             {
-                throw new ArgumentNullException("update");
-            }
-            if (update.Message.Text.StartsWith("/score right"))
-                await RightScore(botClient, update);
-            else if (update.Message.Text.StartsWith("/score wrong"))
-                await WrongScore(botClient, update);
-            else if (update.Message.Text.StartsWith("/score skip"))
-                await SkipScore(botClient, update);
-            else
-            {
-                await botClient.SendText(update, "Не хватает аргументов.");
-                return;
-            } 
-        }
-        private static async Task RightScore(ITelegramBotClient botClient, Update update)
-        {
-            await RightScore(botClient, update, update.Message.Text);
-        }
-        private static async Task RightScore(ITelegramBotClient botClient, Update update, string args)
-        {
-            var argsarray = args.Split(' ');
-            if (argsarray.Length < 4)
-            {
-                await botClient.SendText(update, "Не хватает аргументов.");
-                return;
-            }
-            if (string.IsNullOrWhiteSpace(argsarray[2]))
-                await botClient.SendText(update, $"{argsarray[2]} не найден.");
-            else if (string.IsNullOrWhiteSpace(argsarray[3]))
-                await botClient.SendText(update, "Количество баллов не может быть пустым");
-            else
-            {
-                var username = argsarray[2];
-                var score = 0;
-                try
+                var parts = update.Message.Text.Split(' ');
+                if (parts.Length < 3)
                 {
-                    score = Convert.ToInt32(argsarray[3]);
+                    await botClient.SendText(update, "Не хватает аргументов");
                 }
-                catch (FormatException)
+                else if (parts.Length > 3)
                 {
-                    await botClient.SendText(update, "Введено неверное число!");
-                }
-                await RightScore(botClient, update, username, score);
-            }
-        }
-        private static async Task RightScore(ITelegramBotClient botClient, Update update, string username, int score)
-        {
-            if (IsAdmin(update.Message.From.Username))
-            {
-                var user = GetUserByUsername(username);
-                if (user == null)
-                    await botClient.SendText(update, $"@{username} не найден.");
-                else
-                {
-                    if (score < 0)
-                    {
-                        user.Statistics.RightAnswers += score;
-                        await botClient.SendText(update, $"{score.ToString().Substring(1)} баллов (правильных) было удалено у ученика {username}.");
-                    }
-                    else
-                    {
-                        user.Statistics.RightAnswers += score;
-                        await botClient.SendText(update, $"{score} баллов (правильных) было добавлено ученику {username}");
-                    }
-                }
-
-            }
-            else
-                await botClient.SendText(update, "У тебя нет разрешения!");
-        }
-        private static async Task WrongScore(ITelegramBotClient botClient, Update update)
-        {
-            await WrongScore(botClient, update, update.Message.Text);
-        }
-        private static async Task WrongScore(ITelegramBotClient botClient, Update update, string args)
-        {
-            var argsarray = args.Split(' ');
-            if (argsarray.Length < 4)
-            {
-                await botClient.SendText(update, "Не хватает аргументов.");
-                return;
-            }
-            if (string.IsNullOrWhiteSpace(argsarray[2]))
-                await botClient.SendText(update, $"{argsarray[2]} не найден.");
-            else if (string.IsNullOrWhiteSpace(argsarray[3]))
-                await botClient.SendText(update, "Количество баллов не может быть пустым");
-            else
-            {
-                var username = argsarray[2];
-                var score = Convert.ToInt32(argsarray[3]);
-                await WrongScore(botClient, update, username, score);
-            }
-        }
-        private static async Task WrongScore(ITelegramBotClient botClient, Update update, string username, int score)
-        {
-            if (IsAdmin(update.Message.From.Username))
-            {
-                var user = GetUserByUsername(username);
-                if (user == null)
-                {
-                    await botClient.SendText(update, $"@{username} не найден.");
-                    return;
+                    await botClient.SendText(update, "Слишком много аргументов");
                 }
                 else
                 {
-                    if (score < 0)
+                    var user = GetUserByUsername(parts[1]);
+                    if (user == null)
                     {
-                        user.Statistics.WrongAnswers += score;
-                        await botClient.SendText(update, $"{score.ToString().Substring(1)} баллов (неправильных) было удалено у ученика {username}.");
+                        await botClient.SendText(update, $"@{parts[1].Replace("@", "")} не найден");
+                        return;
                     }
-                    else
+                    if (parts[2] == null)
                     {
-                        user.Statistics.WrongAnswers += score;
-                        await botClient.SendText(update, $"{score} баллов (неправильных) было добавлено ученику {username}");
+                        await botClient.SendText(update, "Значение Score не может быть null");
+                        return;
                     }
+                    if (user.Statistics.Score - parts[2].ToDouble() < 0)
+                    {
+                        await botClient.SendText(update, "Операция не может быть выполена - баллы пользователя будут меньше нуля.");
+                        return;
+                    }
+                    user.Statistics.Score += (double)parts[2].ToDouble();
+                    await botClient.SendText(update, "Операция успешно выполнена");
                 }
-
             }
             else
-                await botClient.SendText(update, "У тебя нет разрешения!");
-        }
-        private static async Task SkipScore(ITelegramBotClient botClient, Update update)
-        {
-            await SkipScore(botClient, update, update.Message.Text);
-        }
-        private static async Task SkipScore(ITelegramBotClient botClient, Update update, string args)
-        {
-            var argsarray = args.Split(' ');
-            if (argsarray.Length < 4)
             {
-                await botClient.SendText(update, "Не хватает аргументов.");
-                return;
+                await botClient.SendText(update, "У вас нет разрешения");
             }
-            if (string.IsNullOrWhiteSpace(argsarray[2]))
-                await botClient.SendText(update, $"{argsarray[2]} не найден.");
-            else if (string.IsNullOrWhiteSpace(argsarray[3]))
-                await botClient.SendText(update, "Количество баллов не может быть пустым");
-            else
-            {
-                var username = argsarray[2];
-                var score = Convert.ToInt32(argsarray[3]);
-                await SkipScore(botClient, update, username, score);
-            }
-        }
-        private static async Task SkipScore(ITelegramBotClient botClient, Update update, string username, int score)
-        {
-            if (IsAdmin(update.Message.From.Username))
-            {
-                var user = GetUserByUsername(username);
-                if (user == null)
-                {
-                    await botClient.SendText(update, $"@{username} не найден.");
-                    return;
-                }
-                else
-                {
-                    if (score < 0)
-                    {
-                        user.Statistics.SkipQuestions += score;
-                        await botClient.SendText(update, $"{score.ToString().Substring(1)} баллов было удалено у ученика {username}.");
-                    }
-                    else
-                    {
-                        user.Statistics.SkipQuestions += score;
-                        await botClient.SendText(update, $"{score} баллов (пропущенных) было добавлено ученику {username}");
-                    }
-                }
-
-            }
-            else
-                await botClient.SendText(update, "У тебя нет разрешения!");
         }
         #endregion
     }
