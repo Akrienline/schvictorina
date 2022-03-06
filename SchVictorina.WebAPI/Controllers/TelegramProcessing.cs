@@ -45,44 +45,42 @@ namespace SchVictorina.WebAPI.Controllers
                         {
                             await GenerateButtonsAndSend(botClient, update, ButtonConfig.RootButton);
                         }
-                        if (update.Message.Text.StartsWith("/score"))
+                        else if (update.Message.Text.StartsWith("/score"))
                         {
                             await Score(botClient, update);
                         }
-                        if (update.Message.Text.StartsWith("/makewaip"))
+                        else if (update.Message.Text.StartsWith("/makewaip"))
                         {
                             if (IsAdmin(update))
                                 await MakeWaip(botClient, update);
                             else
                                 await botClient.SendText(update, "У вас нет разрешения!");
                         }
-                        if (update.Message.Text.StartsWith("/user"))
+                        else if (update.Message.Text.StartsWith("/user"))
                         {
                             await UserController(botClient, update);
                         }
-                        if (update.Message.Text.StartsWith("/score"))
+                        else
                         {
-                            await Score(botClient, update);
-                        }
-
-                        var button = ButtonConfig.GetButton(update.Message.Text.TrimStart('/'));
-                        if (button is GroupButton groupButton)
-                        {
-                            await GenerateButtonsAndSend(botClient, update, groupButton);
-                            return;
-                        }
-                        else if (button is EngineButton engineButton)
-                        {
-                            await SendQuestion(botClient, update, user, engineButton);
-                            return;
-                        }
-                        else if (button is FunctionButton functionButton)
-                        {
-                            var result = functionButton.Class?.Invoke();
-                            if (result != null)
-                                await botClient.SendTextAndImage(update, result.Text, result.ImagePath);
-                            await GenerateButtonsAndSend(botClient, update, ButtonConfig.RootButton);
-                            return;
+                            var button = ButtonConfig.GetButton(update.Message.Text.TrimStart('/'));
+                            if (button is GroupButton groupButton)
+                            {
+                                await GenerateButtonsAndSend(botClient, update, groupButton);
+                                return;
+                            }
+                            else if (button is EngineButton engineButton)
+                            {
+                                await SendQuestion(botClient, update, user, engineButton);
+                                return;
+                            }
+                            else if (button is FunctionButton functionButton)
+                            {
+                                var result = functionButton.Class?.Invoke();
+                                if (result != null)
+                                    await botClient.SendTextAndImage(update, result.Text, result.ImagePath);
+                                await GenerateButtonsAndSend(botClient, update, ButtonConfig.RootButton);
+                                return;
+                            }
                         }
                     }
                     else
@@ -90,8 +88,9 @@ namespace SchVictorina.WebAPI.Controllers
                 }
                 else if (update.Type == UpdateType.CallbackQuery)
                 {
-                    //if (update.CallbackQuery.Data.StartsWith("usercontrol-"))
-                    //    await UserController(botClient, update);
+
+                    if (update.CallbackQuery.Data.StartsWith("usercontrol-"))
+                        await UserController(botClient, update);
                     var callbackValues = update.CallbackQuery?.Data.Split('|');
                     if (callbackValues.Any())
                     {
@@ -142,9 +141,9 @@ namespace SchVictorina.WebAPI.Controllers
                                     {
                                         UserConfig.Instance.Log(user, UserConfig.EventType.RightAnswer, -engineButton.WrongScore);
                                         if (user.Statistics.WrongInSequence % 5 == 0)
-                                            await botClient.SendTextAndImage(update, "Не расстраивайся, держи конфетку", "Images/gift_sequence_10.jpg");
-                                        if (user.Statistics.RightInSequence % 5 > 0)
-                                            await botClient.SendTextAndImage(update, "Не расстраивайся, держи конфетку", "Images/gift_sequence_10.jpg");
+                                            await botClient.SendTextAndImage(update, "Не расстраивайся, держи конфетку", "Images/gift_break.jpg");
+                                        else if (user.Statistics.RightInSequence % 5 > 0)
+                                            await botClient.SendTextAndImage(update, "Не расстраивайся, держи конфетку", "Images/gift_break.jpg");
                                         user.Statistics.RightInSequence = 0;
                                     }
                                 }
@@ -301,9 +300,9 @@ namespace SchVictorina.WebAPI.Controllers
         public static bool IsAdmin(Update update)
         {
             if (update.Type == UpdateType.Message)
-                return IsAdmin(update.Message.From.Username);
+                return IsAdmin(update.GetUser());
             else if (update.Type == UpdateType.CallbackQuery)
-                return IsAdmin(update.CallbackQuery.Message.From.Username);
+                return IsAdmin(update.GetUser());
             else
                 return false;
         }
@@ -349,28 +348,33 @@ namespace SchVictorina.WebAPI.Controllers
             {
                 if (update.CallbackQuery.Data.StartsWith("usercontrol-student-"))
                 {
-                    var userInfo = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-student-".Trim().Length));
-                    userInfo.Role = UserConfig.UserRole.Student;
+                    var user = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-student-".Trim().Length));
+                    user.Role = UserConfig.UserRole.Student;
+                    await botClient.SendText(update, $"{user.Info.UserName} стал учеником");
                 }
                 if (update.CallbackQuery.Data.StartsWith("usercontrol-teacher-"))
                 {
-                    var userInfo = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-teacher-".Trim().Length));
-                    userInfo.Role = UserConfig.UserRole.Teacher;
+                    var user = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-teacher-".Trim().Length));
+                    user.Role = UserConfig.UserRole.Teacher;
+                    await botClient.SendText(update, $"{user.Info.UserName} стал учитилем");
                 }
                 if (update.CallbackQuery.Data.StartsWith("usercontrol-admin-"))
                 {
-                    var userInfo = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-admin-".Trim().Length));
-                    userInfo.Role = UserConfig.UserRole.Administrator;
+                    var user = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-admin-".Trim().Length));
+                    user.Role = UserConfig.UserRole.Administrator;
+                    await botClient.SendText(update, $"{user.Info.UserName} стал администратором");
                 }
                 if (update.CallbackQuery.Data.StartsWith("usercontrol-hide-"))
                 {
-                    var userInfo = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-hide-".Trim().Length));
-                    userInfo.IsHiden = true;
+                    var user = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-hide-".Trim().Length));
+                    user.IsHiden = true;
+                    await botClient.SendText(update, $"{user.Info.UserName} был удалён из списка лидеров");
                 }
                 if (update.CallbackQuery.Data.StartsWith("usercontrol-show-"))
                 {
-                    var userInfo = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-show-".Trim().Length));
-                    userInfo.IsHiden = false;
+                    var user = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-show-".Trim().Length));
+                    user.IsHiden = false;
+                    await botClient.SendText(update, $"{user.Info.UserName} был добавлен в список лидеров");
                 }
             }
             else if (update.Type == UpdateType.Message)
@@ -396,7 +400,7 @@ namespace SchVictorina.WebAPI.Controllers
                     buttons.Add(InlineKeyboardButton.WithCallbackData("Удалить из списка лидеров", $"usercontrol-hide-{username}"));
                     preKeyboard.Add(buttons.ToList());
                     var keyboard = new InlineKeyboardMarkup(preKeyboard);
-                    await botClient.SendText(update, $"Ученик {userInfo.Info.LastName} {userInfo.Info.FirstName} - @{userInfo.Info.UserName}: \nДата поселднего посещения: {userInfo.Statistics.LastVisitDate:dd'.'mm'.'yyyy' 'HH':'mm':'ss}, показан в списке лидеров: {userInfo.IsHiden.ToString(CultureInfo.InvariantCulture)}\nПравильных ответов: {userInfo.Statistics.RightAnswers}, правильных ответов подряд: {userInfo.Statistics.RightInSequence}, неправильных ответов: {userInfo.Statistics.WrongAnswers}, пропущеных вопросов: {userInfo.Statistics.SkipQuestions}, всего вопросов: {userInfo.Statistics.RightAnswers + userInfo.Statistics.WrongAnswers + userInfo.Statistics.SkipQuestions}", keyboard);
+                    await botClient.SendText(update, $"Ученик {userInfo.Info.LastName} {userInfo.Info.FirstName} - @{userInfo.Info.UserName}: \nДата поселднего посещения: {userInfo.Statistics.LastVisitDate:dd'.'mm'.'yyyy' 'HH':'mm':'ss}, скрыт в списке лидеров: {userInfo.IsHiden.ToLocalString()}\nПравильных ответов: {userInfo.Statistics.RightAnswers}, правильных ответов подряд: {userInfo.Statistics.RightInSequence}, неправильных ответов: {userInfo.Statistics.WrongAnswers}, пропущеных вопросов: {userInfo.Statistics.SkipQuestions}, всего вопросов: {userInfo.Statistics.RightAnswers + userInfo.Statistics.WrongAnswers + userInfo.Statistics.SkipQuestions}", keyboard);
                 }
             }
         }
