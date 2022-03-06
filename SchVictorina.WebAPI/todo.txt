@@ -1,8 +1,4 @@
-score double + leaders order + score commands
-
-озёра
-
-горы  https://spravochnick.ru/geografiya/osnovnye_gornye_hrebty_i_gornye_sistemy_mira/
+двойной запрос
 
 после ответа на вопрос показывать справочную информацию с картинкой
 
