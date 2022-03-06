@@ -56,6 +56,14 @@ namespace SchVictorina.WebAPI.Utilities
         {
             await botClient.SendTextMessageAsync(update.GetChatId(), message, replyMarkup: inlineKeyboardMarkup, cancellationToken: CancellationToken.None);
         }
+        public static async Task SendMarkdownText(this ITelegramBotClient botClient, Update update, string text, InlineKeyboardMarkup inlineKeyboardMarkup = null)
+        {
+            await botClient.SendTextMessageAsync(update.GetChatId(), text, ParseMode.Markdown, replyMarkup: inlineKeyboardMarkup);
+        }
+        public static async Task SendHTMLCode(this ITelegramBotClient botClient, Update update, string text, InlineKeyboardMarkup inlineKeyboardMarkup = null)
+        {
+            await botClient.SendTextMessageAsync(update.GetChatId(), text, ParseMode.Html, replyMarkup: inlineKeyboardMarkup);
+        }
         public static async Task SendImage(this ITelegramBotClient botClient, Update update, string filePath)
         {
             await botClient.SendPhotoAsync(update.GetChatId(), new InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes(filePath))), cancellationToken: CancellationToken.None);
@@ -63,7 +71,9 @@ namespace SchVictorina.WebAPI.Utilities
         public static async Task SendTextAndImage(this ITelegramBotClient botClient, Update update, string message, string filePath)
         {
             if (string.IsNullOrEmpty(filePath))
+            {
                 await botClient.SendText(update, message);
+            }
             else
             {
                 if (filePath.Contains("*"))
@@ -72,6 +82,32 @@ namespace SchVictorina.WebAPI.Utilities
             }
             //await SendText(botClient, update, message);
             //await SendImage(botClient, update, filePath);
+        }
+        public static async Task SendTextAndImageAsHTML(this ITelegramBotClient botClient, Update update, string message, string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                await botClient.SendHTMLCode(update, message);
+            }
+            else
+            {
+                if (filePath.Contains("*"))
+                    filePath = Directory.GetFiles(Path.GetDirectoryName(filePath), Path.GetFileName(filePath)).OrderByRandom().First();
+                await botClient.SendPhotoAsync(update.GetChatId(), new InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes(filePath))), message, ParseMode.Html, cancellationToken: CancellationToken.None);
+            }
+        }
+        public static async Task SendTextAndImageAsMarkdown(this ITelegramBotClient botClient, Update update, string message, string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                await botClient.SendMarkdownText(update, message);
+            }
+            else
+            {
+                if (filePath.Contains("*"))
+                    filePath = Directory.GetFiles(Path.GetDirectoryName(filePath), Path.GetFileName(filePath)).OrderByRandom().First();
+                await botClient.SendPhotoAsync(update.GetChatId(), new InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes(filePath))), message, ParseMode.Markdown, cancellationToken: CancellationToken.None);
+            }
         }
     }
 }

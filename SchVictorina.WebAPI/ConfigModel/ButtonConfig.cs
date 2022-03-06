@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
+using Telegram.Bot.Types.Enums;
 
 namespace SchVictorina.WebAPI.Utilities
 {
@@ -327,6 +328,7 @@ namespace SchVictorina.WebAPI.Utilities
         {
             public string Text;
             public string ImagePath;
+            public ParseMode? ParseMode;
         }
     }
 

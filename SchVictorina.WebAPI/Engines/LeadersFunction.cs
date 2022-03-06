@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Text;
+using Telegram.Bot.Types.Enums;
 
 namespace SchVictorina.WebAPI.Engines
 {
@@ -35,10 +36,11 @@ namespace SchVictorina.WebAPI.Engines
             {
                 result.AppendLine($"{leader.Position}. {leader.Name}: {leader.Score} баллов");
             }
-            
+
             return new FunctionButton.Result
             {
-                Text = result.ToString()
+                Text = result.ToString(),
+                ParseMode = ParseMode.Markdown
             };
         }
     }

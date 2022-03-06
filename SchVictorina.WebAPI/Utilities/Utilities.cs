@@ -18,6 +18,20 @@ namespace SchVictorina.WebAPI.Utilities
                 return false;
         } 
     }
+    public static class HTMLUtilities
+    {
+        public static string GetBoldColoredText(string color, string text)
+        {
+            var builder = new StringBuilder();
+            builder.Append("<span style=");
+            builder.Append('"');
+            builder.Append($"color:{color};font-weight:700");
+            builder.Append('"');
+            builder.Append($">{text}</span>");
+            
+            return builder.ToString();
+        }
+    }
     public static class XmlUtilities
     {
         public static T FromXml<T>(this string xml)
