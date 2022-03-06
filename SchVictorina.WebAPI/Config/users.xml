@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<users xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <user hiden="false" role="Student">
-    <info source="Telegram" userid="1864373905" username="alekami649" firstname="Алексей" lastname="Моисеев" />
-    <statistics lastVisitDate="2022-03-02T22:25:48.1369624+07:00" rightInSequence="0" wrongInSequence="0" totalQuestions="0" score="0" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
-  </user>
-</users>
