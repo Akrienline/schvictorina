@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SchVictorina.WebAPI.Controllers;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -242,9 +243,9 @@ namespace SchVictorina.WebAPI.Utilities
             [XmlText]
             public string Value { get; set; }
         }
-        [XmlAttribute("rightScore")]
+        [XmlAttribute("rightscore")]
         public double RightScore { get; set; }
-        [XmlAttribute("wrongScore")]
+        [XmlAttribute("wrongscore")]
         public double WrongScore { get; set; }
         [XmlAttribute("classid")]
         public string ClassID { get; set; }
@@ -293,6 +294,10 @@ namespace SchVictorina.WebAPI.Utilities
                                         property.SetValue(_class, value);
 
                                 }
+                            }
+                            else
+                            {
+                                throw new Exception($"Couldn't set parameter '{parameter.Key}' with value '{parameter.Value[0]}' on class '{ClassID}'");
                             }
                         }
                     }

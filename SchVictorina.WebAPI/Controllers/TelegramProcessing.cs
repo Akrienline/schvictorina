@@ -137,12 +137,13 @@ namespace SchVictorina.WebAPI.Controllers
                                             await botClient.SendTextAndImage(update, "Сто правильных ответов, молодец.", "Images/gift_rights_100.jpg");
                                         user.Statistics.WrongInSequence = 0;
                                     }
-                                    if (!isRight)
+                                    else
                                     {
-                                        UserConfig.Instance.Log(user, UserConfig.EventType.RightAnswer, -engineButton.WrongScore);
-                                        if (user.Statistics.WrongInSequence % 5 == 0)
+                                        var rightInSequence = user.Statistics.RightInSequence;
+                                        UserConfig.Instance.Log(user, UserConfig.EventType.WrongAnswer, -engineButton.WrongScore);
+                                        if (user.Statistics.WrongInSequence == 3)
                                             await botClient.SendTextAndImage(update, "Не расстраивайся, держи конфетку", "Images/gift_break.jpg");
-                                        else if (user.Statistics.RightInSequence % 5 > 0)
+                                        if (rightInSequence >= 3)
                                             await botClient.SendTextAndImage(update, "Не расстраивайся, держи конфетку", "Images/gift_break.jpg");
                                         user.Statistics.RightInSequence = 0;
                                     }
@@ -170,6 +171,7 @@ namespace SchVictorina.WebAPI.Controllers
             catch (Exception ex)
             {
                 await GlobalConfig.Instance?.Logging?.Errors?.Log(botClient, update, ex.ToString());
+                await GenerateButtonsAndSend(botClient, update, ButtonConfig.RootButton); 
             }
         }
         private static async Task SendQuestion(ITelegramBotClient botClient, Update update, UserConfig.User user, EngineButton engineButton)
@@ -267,7 +269,7 @@ namespace SchVictorina.WebAPI.Controllers
                 LastName = user.LastName
             };
         }
-        private static async Task Log(this GlobalConfig.LoggingSettings.BaseLog log, ITelegramBotClient botClient, Update update, string message)
+        public static async Task Log(this GlobalConfig.LoggingSettings.BaseLog log, ITelegramBotClient botClient, Update update, string message)
         {
             if (log == null || !log.Enabled)
                 return;
@@ -281,7 +283,7 @@ namespace SchVictorina.WebAPI.Controllers
             try
             {
                 if (log.SendToUser)
-                    await botClient.SendText(update, "Произошла внутряняя ошибка!");
+                    await botClient.SendText(update, "Произошла внутренняя ошибка!");
             }
             catch { }
         }
@@ -374,13 +376,13 @@ namespace SchVictorina.WebAPI.Controllers
                 if (update.CallbackQuery.Data.StartsWith("usercontrol-hide-"))
                 {
                     var user = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-hide-".Trim().Length));
-                    user.IsHiden = true;
+                    user.IsHidden = true;
                     await botClient.SendText(update, $"{user.Info.UserName} был удалён из списка лидеров");
                 }
                 if (update.CallbackQuery.Data.StartsWith("usercontrol-show-"))
                 {
                     var user = GetUserByUsername(update.CallbackQuery.Data.Substring("usercontrol-show-".Trim().Length));
-                    user.IsHiden = false;
+                    user.IsHidden = false;
                     await botClient.SendText(update, $"{user.Info.UserName} был добавлен в список лидеров");
                 }
             }
@@ -407,7 +409,17 @@ namespace SchVictorina.WebAPI.Controllers
                     buttons.Add(InlineKeyboardButton.WithCallbackData("Удалить из списка лидеров", $"usercontrol-hide-{username}"));
                     preKeyboard.Add(buttons.ToList());
                     var keyboard = new InlineKeyboardMarkup(preKeyboard);
-                    await botClient.SendText(update, $"Ученик {userInfo.Info.LastName} {userInfo.Info.FirstName} - @{userInfo.Info.UserName}: \nДата поселднего посещения: {userInfo.Statistics.LastVisitDate:dd'.'mm'.'yyyy' 'HH':'mm':'ss}, скрыт в списке лидеров: {userInfo.IsHiden.ToLocalString()}\nПравильных ответов: {userInfo.Statistics.RightAnswers}, правильных ответов подряд: {userInfo.Statistics.RightInSequence}, неправильных ответов: {userInfo.Statistics.WrongAnswers}, пропущеных вопросов: {userInfo.Statistics.SkipQuestions}, всего вопросов: {userInfo.Statistics.RightAnswers + userInfo.Statistics.WrongAnswers + userInfo.Statistics.SkipQuestions}", keyboard);
+                    await botClient.SendText(update,
+                        @$"Ученик {userInfo.Info.LastName} {userInfo.Info.FirstName} (@{userInfo.Info.UserName}):
+Дата последнего посещения: {userInfo.Statistics.LastVisitDate:dd'.'mm'.'yyyy' 'HH':'mm':'ss}
+Cкрыт ли в списке лидеров: {(userInfo.IsHidden ? "да" : "нет")}
+Баллов: {userInfo.Statistics.Score}
+Правильных ответов: {userInfo.Statistics.RightAnswers}
+Правильных ответов подряд: {userInfo.Statistics.RightInSequence}
+Неправильных ответов: {userInfo.Statistics.WrongAnswers}
+Пропущеных вопросов: {userInfo.Statistics.SkipQuestions}
+Всего вопросов: {userInfo.Statistics.RightAnswers + userInfo.Statistics.WrongAnswers + userInfo.Statistics.SkipQuestions}"
+, keyboard);
                 }
             }
         }
@@ -439,7 +451,7 @@ namespace SchVictorina.WebAPI.Controllers
                         await botClient.SendText(update, "Значение Score не может быть null");
                         return;
                     }
-                    if (parts[2].ToDouble() / 2 < 0)
+                    if (parts[2].ToDouble() < 0)
                     {
                         if (user.Statistics.Score - parts[2].ToDouble() < 0)
                         {
@@ -447,7 +459,7 @@ namespace SchVictorina.WebAPI.Controllers
                             return;
                         }
                     }
-                    user.Statistics.Score += (double)parts[2].ToDouble() / 2;
+                    user.Statistics.Score += (double)parts[2].ToDouble();
                     await botClient.SendText(update, "Операция успешно выполнена");
                 }
             }

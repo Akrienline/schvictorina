@@ -85,9 +85,6 @@ namespace SchVictorina.WebAPI.Utilities
         {
             hasChanges = true;
 
-            if (user.Statistics.Score - score <= 0)
-                score = 0;
-
             user.Statistics.LastVisitDate = DateTime.Now;
 
             if (eventType == EventType.SendQuestion)
@@ -104,13 +101,18 @@ namespace SchVictorina.WebAPI.Utilities
                 user.Statistics.RightInSequence += 1;
                 user.Statistics.WrongInSequence = 0;
             }
-            if (eventType == EventType.WrongAnswer)
+            else if (eventType == EventType.WrongAnswer)
             {
                 user.Statistics.WrongInSequence += 1;
-            }
-            else if (eventType == EventType.SkipQuestion || eventType == EventType.WrongAnswer)
                 user.Statistics.RightInSequence = 0;
-            user.Statistics.Score += (double)score;
+            }
+            else if (eventType == EventType.SkipQuestion)
+            {
+                user.Statistics.RightInSequence = 0;
+            }
+
+            if (score.HasValue && score.Value != 0)
+                user.Statistics.Score += score.Value;
         }
 
         public enum EventType
@@ -129,8 +131,8 @@ namespace SchVictorina.WebAPI.Utilities
 
             [XmlElement("statistics")]
             public StatisticsInfo Statistics { get; set; }
-            [XmlAttribute("hiden")]
-            public bool IsHiden { get; set; } = false;
+            [XmlAttribute("hidden")]
+            public bool IsHidden { get; set; } = false;
             [XmlAttribute("role")]
             public UserRole Role { get; set; } = UserRole.Student;
             public class UserInfo

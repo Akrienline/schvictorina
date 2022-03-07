@@ -15,21 +15,24 @@ namespace SchVictorina.WebAPI.Engines
             var leaderboard = UserConfig.Instance.Users.OrderByDescending(users => users.Statistics.Score)
                                                        .Where(user => !string.IsNullOrWhiteSpace(user.Info.FirstName))
                                                        .Where(user => !string.IsNullOrWhiteSpace(user.Info.UserName))
-                                                       .Where(user => !user.IsHiden)
+                                                       .Where(user => !user.IsHidden)
                                                        .Where(user => user.Statistics.Score > 0)
                                                        .Take(MaxUsers)
                                                        .Select((user, i) => new
                                                        {
                                                            Position = i + 1,
                                                            Name = $"{user.Info.FirstName} (@{user.Info.UserName})",
-                                                           Score = user.Statistics.Score.ToInt().ToString(),
+                                                           Score = user.Statistics.Score.ToString(),
                                                        })
                                                        .ToArray();
             if (leaderboard.IsNullOrEmpty())
+            {
                 return new FunctionButton.Result()
                 {
                     Text = "К сожелению пока здесь нет никого..."
                 };
+            }
+
             var result = new StringBuilder();
             result.AppendLine("Десятка лучших:");
             foreach (var leader in leaderboard)

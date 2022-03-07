@@ -55,13 +55,6 @@ namespace SchVictorina.WebAPI.Utilities
     }
     public static class ConvertUtilities
     {
-        public static string ToLocalString(this bool b)
-        {
-            if (b)
-                return "да";
-            else
-                return "нет";
-        }
         public static object ParseTo(this string str, Type toType)
         {
             return Convert.ChangeType(str, toType, CultureInfo.InvariantCulture);
