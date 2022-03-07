@@ -40,13 +40,13 @@ jobs:
         host: ${{ secrets.FTP_SERVER }}
         user: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        localDir: "/home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/publish/Config"
-        remoteDir: "bot/Config"
+        localDir: "/home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/publish/Config/*"
+        remoteDir: "bot/Config/*"
     - name: Upload the lastest images
       uses: sebastianpopp/ftp-action@v2.0.0
       with:
         host: ${{ secrets.FTP_SERVER }}
         user: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        localDir: "/home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/publish/Config"
+        localDir: "/home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/publish/Images"
         remoteDir: "bot/Images"
