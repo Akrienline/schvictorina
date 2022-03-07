@@ -49,7 +49,7 @@ namespace SchVictorina.WebAPI.Engines
                 var value = answerRow[columnName];
                 if (value.ToDouble().HasValue)
                     value = value.ToDouble().Value.ToString("N0", new CultureInfo("ru-RU"));
-                question = question.Replace("{" + columnName + "}", value);
+                question = question.Replace("{" + columnName + "}", "<b>" + value + "</b>");
             }
 
             var wrongCandidates = dataRows.Where(candidate => candidate != answerRow).ToArray();

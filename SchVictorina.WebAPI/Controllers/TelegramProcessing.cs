@@ -181,9 +181,9 @@ namespace SchVictorina.WebAPI.Controllers
             var keyboard = new InlineKeyboardMarkup(GenerateInlineKeyboardButtons(question, engineButton).SplitLongLines());
             
             if (question.WrongAnswers != null)
-                await botClient.SendText(update, question?.Question ?? "К сожелению не удалось найти вопрос!", keyboard);
+                await botClient.SendHTMLCode(update, question?.Question ?? "К сожелению не удалось найти вопрос!", keyboard);
             else
-                await botClient.SendText(update, question?.Question + "\nВариантов ответа нет." ?? "К сожелению не удалось найти вопрос!");
+                await botClient.SendHTMLCode(update, question?.Question + "\nВариантов ответа нет." ?? "К сожелению не удалось найти вопрос!");
         }
         internal class MainUpdateHandler : IUpdateHandler
         {
