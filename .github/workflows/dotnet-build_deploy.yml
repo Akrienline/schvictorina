@@ -46,4 +46,4 @@ jobs:
         # Disable SSL certificate verification
         disable_ssl_certificate_verification: true
         # Optional raw string of flags for lftp eg. --no-empty-dirs
-        other_flags: -p, --no-perms
+        other_flags: -p --no-perms
