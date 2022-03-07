@@ -1,9 +1,7 @@
 ﻿using SchVictorina.WebAPI.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,7 +9,6 @@ using Telegram.Bot;
 using Telegram.Bot.Extensions.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.Payments;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace SchVictorina.WebAPI.Controllers
@@ -88,7 +85,6 @@ namespace SchVictorina.WebAPI.Controllers
                 }
                 else if (update.Type == UpdateType.CallbackQuery)
                 {
-
                     if (update.CallbackQuery.Data.StartsWith("usercontrol-"))
                         await UserController(botClient, update);
                     var callbackValues = update.CallbackQuery?.Data.Split('|');
@@ -112,13 +108,37 @@ namespace SchVictorina.WebAPI.Controllers
                                 {
                                     UserConfig.Instance.Log(user, UserConfig.EventType.SkipQuestion);
                                 }
-                                else if (callbackValues.Length == 4 && callbackValues[1] == "a") //answer
+                                else if (callbackValues.Length > 2 && callbackValues[1] == "a") //answer
                                 {
-                                    var isRight = (callbackValues[2] == callbackValues[3]) || (callbackValues[2] != "c" && callbackValues[3] == "c");
+                                    bool isRight;
+                                    if (callbackValues.Length == 5 && callbackValues[2] == "t")
+                                    {
+                                        isRight = (callbackValues[3] == callbackValues[4]) || (callbackValues[3] != "c" && callbackValues[4] == "c");
+                                        await botClient.SendText(update, isRight
+                                            ? $"Правильно 👍. Ответ: {callbackValues[3]}"
+                                            : $"Неправильно 👎. Верный ответ: {callbackValues[3]}{(callbackValues[4] == "w" ? "" : ", а не " + callbackValues[4])}");
+                                    }
+                                    else if (callbackValues.Length >= 4 && callbackValues[2] == "id")
+                                    {
+                                        var answerInfo = engineButton.Class.ParseAnswerId(string.Join("|", callbackValues.Skip(3)));
+                                        if (answerInfo == null)
+                                            throw new ArgumentOutOfRangeException();
 
+                                        isRight = answerInfo.RightAnswer == answerInfo.SelectedAnswer;
+                                        await botClient.SendText(update, isRight
+                                            ? $"Правильно 👍. Ответ: {answerInfo.RightAnswer}"
+                                            : $"Неправильно 👎. Верный ответ: {answerInfo.RightAnswer}, а не {answerInfo.SelectedAnswer}");
 
-                                    //UserConfig.Instance.Log(user, isRight ? UserConfig.EventType.RightAnswer : UserConfig.EventType.WrongAnswer);
-                                    await botClient.SendText(update, isRight ? $"Правильно 👍. Ответ: {callbackValues[2]}" : $"Неправильно 👎. Верный ответ: {callbackValues[2]}{(callbackValues[3] == "w" ? "" : ", а не " + callbackValues[3])}");
+                                        if (!isRight)
+                                        {
+                                            if (!string.IsNullOrEmpty(answerInfo.Description) || !string.IsNullOrEmpty(answerInfo.DescriptionImagePath))
+                                                await botClient.SendTextAndImage(update, answerInfo.Description, answerInfo.DescriptionImagePath);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        throw new ArgumentOutOfRangeException();
+                                    }
 
                                     try
                                     {
@@ -142,9 +162,9 @@ namespace SchVictorina.WebAPI.Controllers
                                         var rightInSequence = user.Statistics.RightInSequence;
                                         UserConfig.Instance.Log(user, UserConfig.EventType.WrongAnswer, -engineButton.WrongScore);
                                         if (user.Statistics.WrongInSequence == 3)
-                                            await botClient.SendTextAndImage(update, "Не расстраивайся, держи конфетку", "Images/gift_break.jpg");
+                                            await botClient.SendTextAndImage(update, "Три неправильных ответа подряд, соберись!", "Images/gift_too_many_wrongs.jpg");
                                         if (rightInSequence >= 3)
-                                            await botClient.SendTextAndImage(update, "Не расстраивайся, держи конфетку", "Images/gift_break.jpg");
+                                            await botClient.SendTextAndImage(update, "Не расстраивайся, держи конфетку", "Images/gift_break_right_sequence.jpg");
                                         user.Statistics.RightInSequence = 0;
                                     }
                                 }
@@ -198,6 +218,10 @@ namespace SchVictorina.WebAPI.Controllers
         }
         private static IEnumerable<IEnumerable<InlineKeyboardButton>> GenerateInlineKeyboardButtons(QuestionInfo question, EngineButton button)
         {
+            if (question.WrongAnswers == null || !question.WrongAnswers.Any() || question.RightAnswer == null)
+            {
+            }
+            
             if (question.WrongAnswers != null && question.WrongAnswers.Any())
             {
                 yield return question.WrongAnswers
@@ -205,20 +229,24 @@ namespace SchVictorina.WebAPI.Controllers
                                      .OrderByRandom()
                                      .Select(option =>
                                      {
-                                         var data = $"{button.ID}|a|{question.RightAnswer}|{option}";
-                                         if (Encoding.UTF8.GetByteCount(data) > 64) // telegram limit
+                                         if (!string.IsNullOrEmpty(option.ID))
                                          {
-                                             data = $"{button.ID}|a|{question.RightAnswer}|{(option == question.RightAnswer ? "c" : "w")}";
-                                             if (Encoding.UTF8.GetByteCount(data) > 64)
-                                                 data = $"{button.ID}|a|{question.RightAnswer.ToString().Substring(0, (64 - $"{button.ID}|a|".Length - "|w".Length) / 2)}|{(option == question.RightAnswer ? "c" : "w")}";
+                                             return InlineKeyboardButton.WithCallbackData(option.Text, $"{button.ID}|a|id|{option.ID}");
                                          }
-                                         return InlineKeyboardButton.WithCallbackData(option?.ToString() ?? "", data);
+                                         else
+                                         {
+                                             var data = $"{button.ID}|a|t|{question.RightAnswer.Text}|{option.Text}";
+                                             if (Encoding.UTF8.GetByteCount(data) > 64) // telegram limit
+                                             {
+                                                 data = $"{button.ID}|a|t|{question.RightAnswer.Text}|{(option == question.RightAnswer ? "c" : "w")}";
+                                                 if (Encoding.UTF8.GetByteCount(data) > 64)
+                                                     data = $"{button.ID}|a|t|{question.RightAnswer.Text.Substring(0, (64 - $"{button.ID}|a|t|".Length - "|w".Length) / 2)}|{(option == question.RightAnswer ? "c" : "w")}";
+                                             }
+                                             return InlineKeyboardButton.WithCallbackData(option.Text, data);
+                                         }
                                      });
             }
-            else
-            {
-
-            }
+            
             yield return new[]
             {
                 InlineKeyboardButton.WithCallbackData("Пропустить", $"{button.ID}|skip"),

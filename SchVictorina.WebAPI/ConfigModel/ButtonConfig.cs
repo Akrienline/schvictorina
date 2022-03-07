@@ -22,10 +22,10 @@ namespace SchVictorina.WebAPI.Utilities
 
         static ButtonConfig()
         {
-            _buttonsWatcher = new FileSystemWatcher("Config", "buttons_*.xml") { IncludeSubdirectories = true };
+            _buttonsWatcher = new FileSystemWatcher("Config/buttons", "*.xml") { IncludeSubdirectories = true };
             _buttonsWatcher.SimpleWatchFiles(() => ClearCache());
 
-            _excelWatcher = new FileSystemWatcher("Config", "*.xlsx") { IncludeSubdirectories = true };
+            _excelWatcher = new FileSystemWatcher("Config/excels", "*.xlsx") { IncludeSubdirectories = true };
             _excelWatcher.SimpleWatchFiles(() => ClearCache());
         }
 

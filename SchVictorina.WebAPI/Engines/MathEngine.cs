@@ -59,8 +59,8 @@ namespace SchVictorina.WebAPI.Engines
             return new QuestionInfo
             {
                 Question = @$"Сколько будет {Environment.NewLine}{fullExpression}",
-                RightAnswer = answer,
-                WrongAnswers = tolerances.Select(tolerance => answer + tolerance).Cast<object>().ToArray()
+                RightAnswer =  new AnswerOption(answer.ToString()),
+                WrongAnswers = tolerances.Select(tolerance => answer + tolerance).Select(x => new AnswerOption(x.ToString())).ToArray()
             };
         }
         public string GetExpression(int answer, int depth)

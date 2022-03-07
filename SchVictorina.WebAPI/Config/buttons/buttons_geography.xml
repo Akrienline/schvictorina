@@ -2,10 +2,10 @@
 <buttons priority="5" classid="SchVictorina.WebAPI.Engines.DictionaryEngine">
 	<group label="География">
 		<engine label="Всё подряд" id="geography" rightscore="5" wrongscore="3" >
-			<parameter id="FilePath">Config/countries.xlsx</parameter>
-			<parameter id="FilePath">Config/rivers.xlsx</parameter>
-			<parameter id="FilePath">Config/mountains.xlsx</parameter>
-			<parameter id="FilePath">Config/lakes.xlsx</parameter>
+			<parameter id="FilePath">Config/excels/countries.xlsx</parameter>
+			<parameter id="FilePath">Config/excels/rivers.xlsx</parameter>
+			<parameter id="FilePath">Config/excels/mountains.xlsx</parameter>
+			<parameter id="FilePath">Config/excels/lakes.xlsx</parameter>
 			<parameter id="Filter">Население > 10 000 000</parameter>
 			<parameter id="Filter">Длина > 3000</parameter>
 			<parameter id="Filter">Высота > 1</parameter>
@@ -13,19 +13,19 @@
 		</engine>
 		<split />
 		<engine label="Страны" rightscore="2" wrongscore="1.9">
-			<parameter id="FilePath">Config\countries.xlsx</parameter>
+			<parameter id="FilePath">Config/excels/countries.xlsx</parameter>
 			<parameter id="Filter">Население > 10 000 000</parameter>
 		</engine>
 		<engine label="Реки" rightscore="2" wrongscore="1.9">
-			<parameter id="FilePath">Config\rivers.xlsx</parameter>
+			<parameter id="FilePath">Config/excels/rivers.xlsx</parameter>
 			<parameter id="Filter">Длина > 3000</parameter>
 		</engine>
 		<engine label="Горы" rightscore="2" wrongscore="1.9">
-			<parameter id="FilePath">Config\mountains.xlsx</parameter>
+			<parameter id="FilePath">Config/excels/mountains.xlsx</parameter>
 			<parameter id="Filter">Высота > 1</parameter>
 		</engine>
 		<engine label="Озёра" rightscore="2" wrongscore="1.9">
-			<parameter id="FilePath">Config\lakes.xlsx</parameter>
+			<parameter id="FilePath">Config/excels/lakes.xlsx</parameter>
 			<parameter id="Filter">Площадь > 1</parameter>
 		</engine>
 	</group>

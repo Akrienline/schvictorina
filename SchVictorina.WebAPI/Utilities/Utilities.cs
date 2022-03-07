@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 
 namespace SchVictorina.WebAPI.Utilities
 {
@@ -73,6 +74,27 @@ namespace SchVictorina.WebAPI.Utilities
             if (double.TryParse(text, NumberStyles.Any, CultureInfo.InvariantCulture, out var result))
                 return result;
             return null;
+        }
+
+        public static Guid GenerateGuid(this string text)
+        {
+            using (var md5 = MD5.Create())
+            {
+                var hash = md5.ComputeHash(Encoding.Default.GetBytes(text));
+                return new Guid(hash);
+            }
+        }
+
+        public static int IndexOf<T>(this IEnumerable<T> items, T findingItem)
+        {
+            var index = -1;
+            foreach (var item in items)
+            {
+                ++index;
+                if (object.Equals(item, findingItem))
+                    return index;
+            }
+            return index;
         }
 
         public static IEnumerable<IEnumerable<T>> SplitByCount<T>(this IEnumerable<T> items, int countLimit)

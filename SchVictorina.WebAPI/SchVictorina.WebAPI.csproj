@@ -20,34 +20,49 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Config\buttons_english.xml">
+    <None Update="Config\buttons\buttons_english.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Config\buttons_functions.xml">
+    <None Update="Config\buttons\buttons_functions.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Config\buttons_geography.xml">
+    <None Update="Config\buttons\buttons_geography.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Config\buttons_math.xml">
+    <None Update="Config\buttons\buttons_math.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Config\countries.xlsx">
+    <None Update="Config\excels\countries.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Config\lakes.xlsx">
+    <None Update="Config\excels\lakes.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Config\mountains.xlsx">
+    <None Update="Config\excels\lakes\Байкал.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Config\rivers.xlsx">
+    <None Update="Config\excels\lakes\Каспийское море.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\excels\lakes\Ладожское.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\excels\lakes\Мичиган.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\excels\lakes\Онежское.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\excels\lakes\Титикака.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\excels\mountains.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\excels\rivers.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Config\users.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Config\user_roles.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Config\settings.xml">
@@ -59,7 +74,10 @@
     <None Update="Images\gift_back.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Images\gift_break.jpg">
+    <None Update="Images\gift_break_right_sequence.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\gift_too_many_wrongs.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Images\gift_rights_100.jpg">
@@ -80,6 +98,10 @@
     <None Update="Images\gift_signup.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Config\excels\lakes\" />
   </ItemGroup>
 
 
