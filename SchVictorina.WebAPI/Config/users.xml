@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <users xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <user hidden="false" role="Administrator">
+  <user hidden="false" role="Student">
     <info source="Telegram" userid="1864373905" username="alekami649" firstname="Алексей" lastname="Моисеев" />
-    <statistics lastVisitDate="2022-03-07T17:09:01.6799464+07:00" rightInSequence="0" wrongInSequence="2" totalQuestions="41" score="3.1999999999999993" rightAnswers="24" wrongAnswers="6" skipQuestions="0" />
+    <statistics lastVisitDate="2022-03-07T18:22:34.8443187+07:00" rightInSequence="0" wrongInSequence="2" totalQuestions="41" score="3.1999999999999993" rightAnswers="24" wrongAnswers="6" skipQuestions="0" />
   </user>
   <user hidden="false" role="Student">
     <info source="Telegram" userid="1118251133" username="kimsite" firstname="Boris" />

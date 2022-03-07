@@ -328,9 +328,15 @@ namespace SchVictorina.WebAPI.Controllers
         #region User Control
         private static async Task UserController(ITelegramBotClient botClient, Update update)
         {
+            string[] parts;
             if (update.Type == UpdateType.Message)
             {
-                if (IsAdmin(update))
+                parts = update.Message.Text.Split(" ");
+                if (parts.Length == 1)
+                {
+                    await UserControl(botClient, update, update.Message.From.Username);
+                }    
+                else if (IsAdmin(update))
                 {
                     await UserControl(botClient, update, update.Message.Text.Substring("/user".Replace("@", "").Trim().Length));
                 }
@@ -341,7 +347,12 @@ namespace SchVictorina.WebAPI.Controllers
             }
             else if (update.Type == UpdateType.CallbackQuery)
             {
-                if (IsAdmin(update))
+                parts = update.CallbackQuery.Data.Split(" ");
+                if (parts.Length < 1)
+                {
+                    await UserControl(botClient, update, update.CallbackQuery.From.Username);
+                }
+                else if (IsAdmin(update))
                 {
                     await UserControl(botClient, update, "");
                 }
@@ -396,21 +407,23 @@ namespace SchVictorina.WebAPI.Controllers
                 }
                 else
                 {
-                    var preKeyboard = new List<List<InlineKeyboardButton>>();
-                    var buttons = new List<InlineKeyboardButton>
+                    if (IsAdmin(update))
                     {
-                        InlineKeyboardButton.WithCallbackData("Сделать учеником", $"usercontrol-student-{username}"),
-                        InlineKeyboardButton.WithCallbackData("Сделать учителем", $"usercontrol-teacher-{username}"),
-                        InlineKeyboardButton.WithCallbackData("Сделать администратором", $"usercontrol-admin-{username}")
-                    };
-                    preKeyboard.Add(buttons.ToList());
-                    buttons.Clear();
-                    buttons.Add(InlineKeyboardButton.WithCallbackData("Добавить в список лидеров", $"usercontrol-show-{username}"));
-                    buttons.Add(InlineKeyboardButton.WithCallbackData("Удалить из списка лидеров", $"usercontrol-hide-{username}"));
-                    preKeyboard.Add(buttons.ToList());
-                    var keyboard = new InlineKeyboardMarkup(preKeyboard);
-                    await botClient.SendText(update,
-                        @$"Ученик {userInfo.Info.LastName} {userInfo.Info.FirstName} (@{userInfo.Info.UserName}):
+                        var preKeyboard = new List<List<InlineKeyboardButton>>();
+                        var buttons = new List<InlineKeyboardButton>
+                        {
+                            InlineKeyboardButton.WithCallbackData("Сделать учеником", $"usercontrol-student-{username}"),
+                            InlineKeyboardButton.WithCallbackData("Сделать учителем", $"usercontrol-teacher-{username}"),
+                            InlineKeyboardButton.WithCallbackData("Сделать администратором", $"usercontrol-admin-{username}")
+                        };
+                        preKeyboard.Add(buttons.ToList());
+                        buttons.Clear();
+                        buttons.Add(InlineKeyboardButton.WithCallbackData("Добавить в список лидеров", $"usercontrol-show-{username}"));
+                        buttons.Add(InlineKeyboardButton.WithCallbackData("Удалить из списка лидеров", $"usercontrol-hide-{username}"));
+                        preKeyboard.Add(buttons.ToList());
+                        var keyboard = new InlineKeyboardMarkup(preKeyboard);
+                        await botClient.SendText(update,
+                          @$"Ученик {userInfo.Info.LastName} {userInfo.Info.FirstName} (@{userInfo.Info.UserName}):
 Дата последнего посещения: {userInfo.Statistics.LastVisitDate:dd'.'mm'.'yyyy' 'HH':'mm':'ss}
 Cкрыт ли в списке лидеров: {(userInfo.IsHidden ? "да" : "нет")}
 Баллов: {userInfo.Statistics.Score}
@@ -419,7 +432,22 @@ Cкрыт ли в списке лидеров: {(userInfo.IsHidden ? "да" : "�
 Неправильных ответов: {userInfo.Statistics.WrongAnswers}
 Пропущеных вопросов: {userInfo.Statistics.SkipQuestions}
 Всего вопросов: {userInfo.Statistics.RightAnswers + userInfo.Statistics.WrongAnswers + userInfo.Statistics.SkipQuestions}"
-, keyboard);
+                        , keyboard);
+                    }
+                    else
+                    {
+                        await botClient.SendText(update,
+                          @$"Ученик {userInfo.Info.LastName} {userInfo.Info.FirstName} (@{userInfo.Info.UserName}):
+Дата последнего посещения: {userInfo.Statistics.LastVisitDate:dd'.'mm'.'yyyy' 'HH':'mm':'ss}
+Cкрыт ли в списке лидеров: {(userInfo.IsHidden ? "да" : "нет")}
+Баллов: {userInfo.Statistics.Score}
+Правильных ответов: {userInfo.Statistics.RightAnswers}
+Правильных ответов подряд: {userInfo.Statistics.RightInSequence}
+Неправильных ответов: {userInfo.Statistics.WrongAnswers}
+Пропущеных вопросов: {userInfo.Statistics.SkipQuestions}
+Всего вопросов: {userInfo.Statistics.RightAnswers + userInfo.Statistics.WrongAnswers + userInfo.Statistics.SkipQuestions}"
+                          );
+                    }
                 }
             }
         }
