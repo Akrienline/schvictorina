@@ -40,7 +40,7 @@ jobs:
         # The remote folder
         dist_target_dir: bot
         # Delete files not present in the local folder on the remote folder
-        delete: true
+        delete: false
         # Download only newer files
         only_newer: false
         # Disable SSL certificate verification
