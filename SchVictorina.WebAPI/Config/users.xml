@@ -2,7 +2,7 @@
 <users xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <user hidden="false" role="Student">
     <info source="Telegram" userid="1864373905" username="alekami649" firstname="Алексей" lastname="Моисеев" />
-    <statistics lastVisitDate="2022-03-07T23:57:53.2494287+07:00" rightInSequence="0" wrongInSequence="1" totalQuestions="119" score="-14.499999999999996" rightAnswers="47" wrongAnswers="38" skipQuestions="4" />
+    <statistics lastVisitDate="2022-03-09T20:59:00.858354+07:00" rightInSequence="0" wrongInSequence="3" totalQuestions="123" score="96.19999999999999" rightAnswers="47" wrongAnswers="40" skipQuestions="4" />
   </user>
   <user hidden="false" role="Student">
     <info source="Telegram" userid="1118251133" username="kimsite" firstname="Boris" />

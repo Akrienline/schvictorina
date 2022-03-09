@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using SchVictorina.WebAPI.Utilities;
 
@@ -94,8 +95,8 @@ namespace SchVictorina.WebAPI.Engines
             if (!string.IsNullOrEmpty(question.Description))
                 answerInfo.Description = correctAnswerRow[question.Description];
 
-            var imagePath = $"Config/excels/{System.IO.Path.GetFileNameWithoutExtension(document.FilePath)}/{correctAnswerRow[question.Answer]}.jpg";
-            if (System.IO.File.Exists(imagePath))
+            var imagePath = $"Config/excels/{System.IO.Path.GetFileNameWithoutExtension(document.FilePath)}/{correctAnswerRow[question.Answer]}.jpeg";
+            if (File.Exists(imagePath))
                 answerInfo.DescriptionImagePath = imagePath;
 
             return answerInfo;
