@@ -12,6 +12,7 @@ namespace SchVictorina.WebAPI.Engines
 
         public FunctionButton.Result Invoke()
         {
+            var format = string.Format("0:0.0", "");
             var leaderboard = UserConfig.Instance.Users.OrderByDescending(users => users.Statistics.Score)
                                                        .Where(user => !string.IsNullOrWhiteSpace(user.Info.FirstName))
                                                        .Where(user => !string.IsNullOrWhiteSpace(user.Info.UserName))
@@ -22,7 +23,7 @@ namespace SchVictorina.WebAPI.Engines
                                                        {
                                                            Position = i + 1,
                                                            Name = $"{user.Info.FirstName} (@{user.Info.UserName})",
-                                                           Score = user.Statistics.Score.ToString(),
+                                                           Score = user.Statistics.Score,
                                                        })
                                                        .ToArray();
             if (leaderboard.IsNullOrEmpty())
@@ -37,7 +38,7 @@ namespace SchVictorina.WebAPI.Engines
             result.AppendLine("Десятка лучших:");
             foreach (var leader in leaderboard)
             {
-                result.AppendLine($"{leader.Position}. {leader.Name}: {leader.Score} баллов");
+                result.AppendLine($"{leader.Position}. {leader.Name}: {leader.Score.ToString("N1")} баллов");
             }
 
             return new FunctionButton.Result
