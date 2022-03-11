@@ -95,7 +95,7 @@ namespace SchVictorina.WebAPI.Engines
             if (!string.IsNullOrEmpty(question.Description))
                 answerInfo.Description = correctAnswerRow[question.Description];
 
-            var imagePath = $"Config/excels/{System.IO.Path.GetFileNameWithoutExtension(document.FilePath)}/{correctAnswerRow[question.Answer]}.jpeg";
+            var imagePath = $"Config/excels/{Path.GetFileNameWithoutExtension(document.FilePath)}/{correctAnswerRow[question.Answer]}.jpeg";
             if (File.Exists(imagePath))
                 answerInfo.DescriptionImagePath = imagePath;
 
