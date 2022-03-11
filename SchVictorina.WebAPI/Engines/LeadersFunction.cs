@@ -1,5 +1,6 @@
 ﻿using SchVictorina.WebAPI.Utilities;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Telegram.Bot.Types.Enums;
@@ -12,6 +13,7 @@ namespace SchVictorina.WebAPI.Engines
 
         public FunctionButton.Result Invoke()
         {
+            var culture = new CultureInfo("ru-RU");
             var format = string.Format("0:0.0", "");
             var leaderboard = UserConfig.Instance.Users.OrderByDescending(users => users.Statistics.Score)
                                                        .Where(user => !string.IsNullOrWhiteSpace(user.Info.FirstName))
@@ -38,7 +40,7 @@ namespace SchVictorina.WebAPI.Engines
             result.AppendLine("Десятка лучших:");
             foreach (var leader in leaderboard)
             {
-                result.AppendLine($"{leader.Position}. {leader.Name}: {leader.Score.ToString("N1")} баллов");
+                result.AppendLine($"{leader.Position}. {leader.Name}: {leader.Score.ToString("N1", culture)} баллов");
             }
 
             return new FunctionButton.Result
