@@ -164,7 +164,7 @@ namespace SchVictorina.WebAPI.Controllers
                                         if (user.Statistics.WrongInSequence == 3)
                                             await botClient.SendTextAndImage(update, "Три неправильных ответа подряд, соберись!", "Images/gift_too_many_wrongs.jpg");
                                         if (rightInSequence >= 3)
-                                            await botClient.SendTextAndImage(update, "А ведь ты, так хорошо шёл...", "Images/gift_rightbreak.jpg");
+                                            await botClient.SendTextAndImage(update, "А ведь ты так хорошо шёл...", "Images/gift_rightbreak.jpg");
                                         user.Statistics.RightInSequence = 0;
                                     }
                                 }
