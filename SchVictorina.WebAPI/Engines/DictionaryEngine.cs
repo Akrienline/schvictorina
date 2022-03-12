@@ -64,6 +64,13 @@ namespace SchVictorina.WebAPI.Engines
                                        .Take(WrongAnswerCount)
                                        .ToArray();
 
+
+            if (wrongAnswers.Length < WrongAnswerCount)
+                wrongAnswers = document.DataRows.Take(WrongAnswerCount - wrongAnswers.Length)
+                                                .Distinct()
+                                                .Select(row => row[questionRow.Answer])
+                                                .ToArray();
+
             return new QuestionInfo
             {
                 Question = question,
