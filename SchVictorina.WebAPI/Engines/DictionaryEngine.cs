@@ -75,7 +75,7 @@ namespace SchVictorina.WebAPI.Engines
             {
                 Question = question,
                 RightAnswer = new AnswerOption($"d{documentIndex}_q{questionRowIndex}_c{document.DataRows.IndexOf(answerRow)}_s{document.DataRows.IndexOf(answerRow)}", answerRow[questionRow.Answer]),
-                WrongAnswers = wrongAnswers.Select(x => new AnswerOption($"d{documentIndex}_q{questionRowIndex}_c{document.DataRows.IndexOf(answerRow)}_s{document.DataRows.IndexOf(dataRows.First(y => y[questionRow.Answer] == x))}", x)).ToArray()
+                WrongAnswers = wrongAnswers.Select(x => new AnswerOption($"d{documentIndex}_q{questionRowIndex}_c{document.DataRows.IndexOf(answerRow)}_s{document.DataRows.IndexOf(dataRows.First(y => object.Equals(y[questionRow.Answer], x)))}", x)).ToArray()
             };
         }
 
