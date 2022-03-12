@@ -37,6 +37,12 @@ namespace SchVictorina.WebAPI.Controllers
                 SetMyCommands();
             };
             SetMyCommands();
+#if DEBUG
+
+#else
+            botClient.SendTextMessageAsync("kimsite", "бот обновился!");
+            botClient.SendTextMessageAsync("alekami649", "бот обновился!");
+#endif
         }
 
         private static async void SetMyCommands()
