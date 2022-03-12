@@ -183,6 +183,7 @@ namespace SchVictorina.WebAPI.Controllers
                                     else if (result.ParseMode == ParseMode.Markdown || result.ParseMode == ParseMode.MarkdownV2)
                                         await botClient.SendTextAndImageAsMarkdown(update, result.Text, result.ImagePath);
                                 }
+                                await GenerateButtonsAndSend(botClient, update, ButtonConfig.RootButton);
                             }
                         }
                     }
