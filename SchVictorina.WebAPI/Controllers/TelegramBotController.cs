@@ -40,8 +40,8 @@ namespace SchVictorina.WebAPI.Controllers
 #if DEBUG
 
 #else
-            botClient.SendTextMessageAsync("kimsite", "бот обновился!");
-            botClient.SendTextMessageAsync("alekami649", "бот обновился!");
+            botClient.SendTextMessageAsync("@kimsite", "бот обновился!");
+            botClient.SendTextMessageAsync("@alekami649", "бот обновился!");
 #endif
         }
 
