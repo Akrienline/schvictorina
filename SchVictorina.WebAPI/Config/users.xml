@@ -1,11 +1,19 @@
 <?xml version="1.0"?>
 <users xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <user hidden="false" role="Student">
-    <info source="Telegram" userid="1864373905" username="alekami649" firstname="Алексей" lastname="Моисеев" />
-    <statistics lastVisitDate="2022-03-12T20:26:55.5236313+07:00" rightInSequence="0" wrongInSequence="2" totalQuestions="137" score="90.69999999999996" rightAnswers="49" wrongAnswers="45" skipQuestions="4" />
+    <info source="Telegram" userid="1864373905" username="alekami649" firstname="снеговик" lastname="абоба" />
+    <statistics lastVisitDate="2022-03-13T22:18:24.8569637+07:00" rightInSequence="0" wrongInSequence="3" totalQuestions="176" score="68.59999999999991" rightAnswers="57" wrongAnswers="66" skipQuestions="5" />
   </user>
   <user hidden="false" role="Student">
     <info source="Telegram" userid="1118251133" username="kimsite" firstname="Boris" />
-    <statistics lastVisitDate="2022-03-07T15:18:54.3222+07:00" rightInSequence="0" wrongInSequence="0" totalQuestions="0" score="0" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
+    <statistics lastVisitDate="2022-03-13T22:40:17.6995538+07:00" rightInSequence="0" wrongInSequence="4" totalQuestions="73" score="55.89999999999989" rightAnswers="22" wrongAnswers="30" skipQuestions="3" />
+  </user>
+  <user hidden="false" role="Student">
+    <info source="Telegram" userid="1411972802" username="asddgv" firstname="галина" lastname="обухова" />
+    <statistics lastVisitDate="2022-03-13T21:38:01.932385+07:00" rightInSequence="0" wrongInSequence="0" totalQuestions="1" score="0" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
+  </user>
+  <user hidden="false" role="Student">
+    <info source="Telegram" userid="0" />
+    <statistics lastVisitDate="2022-03-13T21:47:44.7070956+07:00" rightInSequence="0" wrongInSequence="0" totalQuestions="0" score="0" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
   </user>
 </users>

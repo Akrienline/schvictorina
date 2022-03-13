@@ -4,7 +4,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <_PublishTargetUrl>C:\projects\schvictorina\src\alekami649\schvictorina\SchVictorina.WebAPI\bin\Release\netcoreapp3.1\publish\</_PublishTargetUrl>
-    <History>True|2022-01-25T08:54:49.6031118Z;True|2022-01-21T20:16:50.2320414+07:00;True|2022-01-21T07:40:34.9425204+07:00;True|2022-01-20T20:14:45.2621962+07:00;True|2022-01-20T20:12:58.0596697+07:00;True|2022-01-20T20:11:03.3856814+07:00;True|2022-01-20T20:05:07.7616289+07:00;True|2022-01-20T19:59:03.3375280+07:00;True|2022-01-20T19:43:04.4655368+07:00;True|2022-01-20T19:12:05.7615181+07:00;True|2022-01-20T18:53:34.9712077+07:00;True|2022-01-20T17:25:03.7112276+07:00;</History>
+    <_PublishTargetUrl>C:\projects\schvictorina\schvictorina\SchVictorina.WebAPI\bin\Release\netcoreapp3.1\publish\</_PublishTargetUrl>
+    <History>True|2022-03-13T09:48:37.2173193Z;True|2022-01-25T15:54:49.6031118+07:00;True|2022-01-21T20:16:50.2320414+07:00;True|2022-01-21T07:40:34.9425204+07:00;True|2022-01-20T20:14:45.2621962+07:00;True|2022-01-20T20:12:58.0596697+07:00;True|2022-01-20T20:11:03.3856814+07:00;True|2022-01-20T20:05:07.7616289+07:00;True|2022-01-20T19:59:03.3375280+07:00;True|2022-01-20T19:43:04.4655368+07:00;True|2022-01-20T19:12:05.7615181+07:00;True|2022-01-20T18:53:34.9712077+07:00;True|2022-01-20T17:25:03.7112276+07:00;</History>
   </PropertyGroup>
 </Project>

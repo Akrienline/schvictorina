@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
+using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InputFiles;
@@ -20,8 +22,10 @@ namespace SchVictorina.WebAPI.Utilities
                 return update.CallbackQuery?.Message?.Chat.Id;
             else if (update.Type == UpdateType.Message)
                 return update.Message?.Chat.Id;
+            else if (update.Type == UpdateType.MyChatMember)
+                return update.MyChatMember.Chat.Id;
             else
-                return new ChatId("");
+                return new ChatId("@ae");
         }
 
         public static User GetUser(this Update update)
@@ -54,31 +58,57 @@ namespace SchVictorina.WebAPI.Utilities
         }
         public static async Task SendText(this ITelegramBotClient botClient, Update update, string message, InlineKeyboardMarkup inlineKeyboardMarkup = null)
         {
-            await botClient.SendTextMessageAsync(update.GetChatId(), message, replyMarkup: inlineKeyboardMarkup, cancellationToken: CancellationToken.None);
+            try
+            {
+                await botClient.SendTextMessageAsync(update.GetChatId(), message, replyMarkup: inlineKeyboardMarkup, cancellationToken: CancellationToken.None);
+            }
+            catch (ApiRequestException ex) { ex.ToString(); }
         }
         public static async Task SendMarkdownText(this ITelegramBotClient botClient, Update update, string text, InlineKeyboardMarkup inlineKeyboardMarkup = null)
         {
-            await botClient.SendTextMessageAsync(update.GetChatId(), text, ParseMode.Markdown, replyMarkup: inlineKeyboardMarkup);
+            try
+            {
+                await botClient.SendTextMessageAsync(update.GetChatId(), text, ParseMode.Markdown, replyMarkup: inlineKeyboardMarkup);
+            }
+            catch (ApiRequestException ex) { ex.ToString(); }
         }
         public static async Task SendHTMLCode(this ITelegramBotClient botClient, Update update, string text, InlineKeyboardMarkup inlineKeyboardMarkup = null)
         {
-            await botClient.SendTextMessageAsync(update.GetChatId(), text, ParseMode.Html, replyMarkup: inlineKeyboardMarkup);
+            try
+            {
+                await botClient.SendTextMessageAsync(update.GetChatId(), text, ParseMode.Html, replyMarkup: inlineKeyboardMarkup);
+            }
+            catch (ApiRequestException ex) { ex.ToString(); }
         }
         public static async Task SendImage(this ITelegramBotClient botClient, Update update, string filePath)
         {
-            await botClient.SendPhotoAsync(update.GetChatId(), new InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes(filePath))), cancellationToken: CancellationToken.None);
+            try
+            {
+                await botClient.SendPhotoAsync(update.GetChatId(), new InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes(filePath))), cancellationToken: CancellationToken.None);
+            }
+            catch (ApiRequestException ex) { ex.ToString(); }
         }
+
+        [DebuggerHidden]
         public static async Task SendTextAndImage(this ITelegramBotClient botClient, Update update, string message, string filePath)
         {
             if (string.IsNullOrEmpty(filePath))
             {
-                await botClient.SendText(update, message);
+                try
+                {
+                    await botClient.SendText(update, message);
+                }
+                catch { }
             }
             else
             {
                 if (filePath.Contains("*"))
                     filePath = Directory.GetFiles(Path.GetDirectoryName(filePath), Path.GetFileName(filePath)).OrderByRandom().First();
-                await botClient.SendPhotoAsync(update.GetChatId(), new InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes(filePath))), message, cancellationToken: CancellationToken.None);
+                try
+                {
+                    await botClient.SendPhotoAsync(update.GetChatId(), new InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes(filePath))), message, cancellationToken: CancellationToken.None);
+                }
+                catch (ApiRequestException) { }
             }
             //await SendText(botClient, update, message);
             //await SendImage(botClient, update, filePath);
@@ -93,7 +123,11 @@ namespace SchVictorina.WebAPI.Utilities
             {
                 if (filePath.Contains("*"))
                     filePath = Directory.GetFiles(Path.GetDirectoryName(filePath), Path.GetFileName(filePath)).OrderByRandom().First();
-                await botClient.SendPhotoAsync(update.GetChatId(), new InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes(filePath))), message, ParseMode.Html, cancellationToken: CancellationToken.None);
+                try
+                {
+                    await botClient.SendPhotoAsync(update.GetChatId(), new InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes(filePath))), message, ParseMode.Html, cancellationToken: CancellationToken.None);
+                }
+                catch (ApiRequestException ex) { ex.ToString(); }
             }
         }
         public static async Task SendTextAndImageAsMarkdown(this ITelegramBotClient botClient, Update update, string message, string filePath)

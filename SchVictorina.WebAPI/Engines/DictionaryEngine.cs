@@ -64,18 +64,28 @@ namespace SchVictorina.WebAPI.Engines
                                        .Take(WrongAnswerCount)
                                        .ToArray();
 
-
             if (wrongAnswers.Length < WrongAnswerCount)
-                wrongAnswers = document.DataRows.Take(WrongAnswerCount - wrongAnswers.Length)
-                                                .Distinct()
-                                                .Select(row => row[questionRow.Answer])
-                                                .ToArray();
+                wrongAnswers = wrongAnswers.Concat(
+                                                document.DataRows
+                                                        .Select(row => (string)row[questionRow.Answer])
+                                                        .Distinct()
+                                                        .Except(wrongAnswers)
+                                                        .OrderByRandom()
+                                                        .Take(WrongAnswerCount - wrongAnswers.Length)
+                                           ).ToArray();
 
             return new QuestionInfo
             {
                 Question = question,
                 RightAnswer = new AnswerOption($"d{documentIndex}_q{questionRowIndex}_c{document.DataRows.IndexOf(answerRow)}_s{document.DataRows.IndexOf(answerRow)}", answerRow[questionRow.Answer]),
-                WrongAnswers = wrongAnswers.Select(x => new AnswerOption($"d{documentIndex}_q{questionRowIndex}_c{document.DataRows.IndexOf(answerRow)}_s{document.DataRows.IndexOf(dataRows.First(y => object.Equals(y[questionRow.Answer], x)))}", x)).ToArray()
+                WrongAnswers = wrongAnswers.Select(x =>
+                {
+                    var prefixId = $"d{documentIndex}_q{questionRowIndex}_c{document.DataRows.IndexOf(answerRow)}";
+                    var dataRow = dataRows.FirstOrDefault(y => object.Equals(y[questionRow.Answer], x));
+                    return dataRow != null
+                            ? new AnswerOption($"{prefixId}_s{document.DataRows.IndexOf(dataRow)}", x)
+                            : new AnswerOption(prefixId, x);
+                }).ToArray()
             };
         }
 
@@ -85,26 +95,32 @@ namespace SchVictorina.WebAPI.Engines
                 return null;
 
             var parts = id.Split('_');
-            if (parts.Length != 4)
+            if (parts.Length < 3)
                 return null;
 
             var document = documents[parts[0].Trim('d').ToInt()];
             var question = document.Questions[parts[1].Trim('q').ToInt()];
             var correctAnswerRow = document.DataRows[parts[2].Trim('c').ToInt()];
-            var selectedAnswerRow = document.DataRows[parts[3].Trim('s').ToInt()];
+            var selectedAnswerRow = parts.Length == 4 ? document.DataRows[parts[3].Trim('s').ToInt()] : null;
             
             var answerInfo = new AnswerInfo
             {
                 RightAnswer = correctAnswerRow[question.Answer],
-                SelectedAnswer = selectedAnswerRow[question.Answer],
+                SelectedAnswer = selectedAnswerRow != null ? selectedAnswerRow[question.Answer] : null,
             };
 
             if (!string.IsNullOrEmpty(question.Description))
                 answerInfo.Description = correctAnswerRow[question.Description];
 
-            var imagePath = $"Config/excels/{Path.GetFileNameWithoutExtension(document.FilePath)}/{correctAnswerRow[question.Answer]}.jpeg";
-            if (File.Exists(imagePath))
-                answerInfo.DescriptionImagePath = imagePath;
+            var imagePath = $"Config/excels/{Path.GetFileNameWithoutExtension(document.FilePath)}/{correctAnswerRow[question.Image]}";
+            foreach (var ext in new[] { ".jpeg", ".jpg", ".png" })
+            {
+                if (File.Exists(imagePath + ext))
+                {
+                    answerInfo.DescriptionImagePath = imagePath + ext;
+                    break;
+                }
+            }
 
             return answerInfo;
         }
@@ -137,7 +153,8 @@ namespace SchVictorina.WebAPI.Engines
                 OrderBy = x.Values[questionSheet.GetColumnIndex("orderBy")],
                 OrderByDescending = x.Values[questionSheet.GetColumnIndex("orderByDesc")],
                 Answer = x.Values[questionSheet.GetColumnIndex("answer")],
-                Description = x.Values[questionSheet.GetColumnIndex("description")]
+                Description = x.Values[questionSheet.GetColumnIndex("description")],
+                Image = x.Values[questionSheet.GetColumnIndex("image")]
             }).ToArray();
 
             return doc;
@@ -151,6 +168,7 @@ namespace SchVictorina.WebAPI.Engines
             public string OrderByDescending { get; set; }
             public string Answer { get; set; }
             public string Description { get; set; }
+            public string Image { get; set; }
         }
     }
 

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
+using Telegram.Bot.Exceptions;
 using Telegram.Bot.Extensions.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -127,7 +128,9 @@ namespace SchVictorina.WebAPI.Controllers
                                         isRight = answerInfo.RightAnswer == answerInfo.SelectedAnswer;
                                         await botClient.SendText(update, isRight
                                             ? $"Правильно 👍. Ответ: {answerInfo.RightAnswer}"
-                                            : $"Неправильно 👎. Верный ответ: {answerInfo.RightAnswer}, а не {answerInfo.SelectedAnswer}");
+                                            : answerInfo.SelectedAnswer != null
+                                                ? $"Неправильно 👎. Верный ответ: {answerInfo.RightAnswer}, а не {answerInfo.SelectedAnswer}"
+                                                : $"Неправильно 👎. Верный ответ: {answerInfo.RightAnswer}");
 
                                         if (!isRight)
                                         {
@@ -314,7 +317,7 @@ namespace SchVictorina.WebAPI.Controllers
                 if (log.SendToUser)
                     await botClient.SendText(update, "Произошла внутренняя ошибка!");
             }
-            catch { }
+            catch(ApiRequestException ex) { ex.ToString(); }
         }
         public static UserConfig.User GetUserByUsername(string username)
         {
