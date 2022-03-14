@@ -2,7 +2,7 @@
 <users xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <user hidden="false" role="Administrator">
     <info source="Telegram" userid="1864373905" username="alekami649" firstname="Алексей" lastname="Инкогнито" />
-    <statistics lastVisitDate="2022-03-14T22:19:59.3107248+07:00" rightInSequence="1" wrongInSequence="0" totalQuestions="155" score="488.1000000000002" rightAnswers="492" wrongAnswers="-56" skipQuestions="3" />
+    <statistics lastVisitDate="2022-03-14T22:31:53.0545648+07:00" rightInSequence="1" wrongInSequence="0" totalQuestions="155" score="488.1000000000002" rightAnswers="492" wrongAnswers="-56" skipQuestions="3" />
   </user>
   <user hidden="false" role="Administrator">
     <info source="Telegram" userid="1118251133" username="kimsite" firstname="Boris" />
@@ -52,7 +52,7 @@
     <info source="Telegram" userid="865323901" username="relb34" firstname="Виктор" />
     <statistics lastVisitDate="2022-03-14T21:35:17.5451564+07:00" rightInSequence="6" wrongInSequence="0" totalQuestions="16" score="17.6" rightAnswers="13" wrongAnswers="1" skipQuestions="0" />
   </user>
-  <user hidden="true" role="Student">
+  <user hidden="false" role="Student">
     <info source="Telegram" userid="213425670" username="keks_pexx" firstname="Константин" lastname="Пешков" />
     <statistics lastVisitDate="2022-03-14T21:43:20.6291427+07:00" rightInSequence="10" wrongInSequence="0" totalQuestions="11" score="20" rightAnswers="10" wrongAnswers="0" skipQuestions="0" />
   </user>

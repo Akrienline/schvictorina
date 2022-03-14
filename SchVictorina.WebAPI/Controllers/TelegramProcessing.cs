@@ -178,15 +178,9 @@ namespace SchVictorina.WebAPI.Controllers
                             {
                                 var result = functionButton.Class?.Invoke();
                                 if (result != null)
-                                {
-                                    if (result.ParseMode == null)
-                                        await botClient.SendTextAndImage(update, result.Text, result.ImagePath);
-                                    else if (result.ParseMode == ParseMode.Html)
-                                        await botClient.SendTextAndImageAsHTML(update, result.Text, result.ImagePath);
-                                    else if (result.ParseMode == ParseMode.Markdown || result.ParseMode == ParseMode.MarkdownV2)
-                                        await botClient.SendTextAndImageAsMarkdown(update, result.Text, result.ImagePath);
-                                }
+                                    await botClient.SendTextAndImage(update, result.Text, result.ImagePath);
                                 await GenerateButtonsAndSend(botClient, update, ButtonConfig.RootButton);
+                                return;
                             }
                         }
                     }
