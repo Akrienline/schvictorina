@@ -77,7 +77,7 @@ namespace SchVictorina.WebAPI.Controllers
                                 if (result != null)
                                     await botClient.SendTextAndImage(update, result.Text, result.ImagePath);
                                 await GenerateButtonsAndSend(botClient, update, ButtonConfig.RootButton);
-                                return;
+                                return; 
                             }
                         }
                     }
