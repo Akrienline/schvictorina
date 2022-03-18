@@ -1,6 +1,7 @@
 ﻿using SchVictorina.WebAPI.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -39,6 +40,22 @@ namespace SchVictorina.WebAPI.Controllers
                     }
                     if (update.Message.Text.StartsWith("/"))
                     {
+                        if (update.Message.Text == "/bitmaptest")
+                        {
+                            var i1 = Image.FromFile("Images/gift_back.jpg");
+                            var i2 = Image.FromFile("Images/gift_sequence_20.jpg");
+                            var i3 = Image.FromFile("Images/gift_sequence_20.jpg");
+                            var b = new Bitmap(1920, 1080);
+
+                            using Graphics g = Graphics.FromImage(b);
+                            g.DrawImage(i1, 0, 0, 1920, 1080);
+                            g.DrawImage(i2, 750, 0, 1920, 1080);
+                            g.DrawImage(i3, 1500, 0, 1920, 1080);
+
+                            b.Save("bitmaptest.png");
+
+                            await botClient.SendTextAndImage(update, "aa", "bitmaptest.png");
+                        }
                         if (update.Message.Text == "/start")
                         {
                             await GenerateButtonsAndSend(botClient, update, ButtonConfig.RootButton);
@@ -281,6 +298,7 @@ namespace SchVictorina.WebAPI.Controllers
             {
                 uiButtons.Add(new[] { InlineKeyboardButton.WithCallbackData("Наверх!", groupButton.Parent.ID) });
             }
+
 
             return botClient.SendText(update, "Выбери тему задания:", new InlineKeyboardMarkup(uiButtons.SplitLongLines()));
         }
