@@ -26,29 +26,23 @@ jobs:
       run: rm /home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/publish/Config/settings.xml
     - name: Remove users.xml
       run: rm /home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/publish/Config/users.xml
-    - name: FTP deploy
-      uses: kevinpainchaud/simple-ftp-deploy-action@v1.2.1
+    - name: ftp-action
+      # You may pin to the exact commit or the version.
+      # uses: sebastianpopp/ftp-action@eb75c5cb29d23ee4a729720a27dfb66403cb0f6d
+      uses: sebastianpopp/ftp-action@v2.0.0
       with:
         # FTP host
-        ftp_host: ${{ secrets.FTP_SERVER }}
-        # FTP username
-        ftp_username: ${{ secrets.FTP_USERNAME }}
-        # FTP password
-        ftp_password: ${{ secrets.FTP_PASSWORD }}
-        # The local folder to copy
-        local_source_dir: /home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/publish/
-        # The remote folder
-        dist_target_dir: bot
-        # Delete files not present in the local folder on the remote folder
-        delete: false
-        # Download only newer files
-        only_newer: false
-        # Ignore file(s) and/or directorie(s)
-        exclude: Config/*, Images/*
-        # Disable SSL certificate verification
-        disable_ssl_certificate_verification: true
-        # Optional raw string of flags for lftp eg. --no-empty-dirs
-        other_flags: -p --no-perms
+       host: ${{ secrets.FTP_SERVER }}
+       # FTP user
+       user: ${{ secrets.FTP_USERNAME }}
+    # FTP password
+       password: ${{ secrets.FTP_PASSWORD }}
+    # Force SSL encryption
+       forceSsl: false
+    # Local directory
+       localDir: /home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/publish/
+    # Remote directory
+       remoteDir: bot
         
   upload-content:
     
