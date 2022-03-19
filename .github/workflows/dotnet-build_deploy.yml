@@ -44,7 +44,7 @@ jobs:
         # Download only newer files
         only_newer: false
         # Ignore file(s) and/or directorie(s)
-        exclude: Config, Images
+        exclude: Config/*, Images/*
         # Disable SSL certificate verification
         disable_ssl_certificate_verification: true
         # Optional raw string of flags for lftp eg. --no-empty-dirs
