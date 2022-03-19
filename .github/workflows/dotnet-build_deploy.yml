@@ -65,7 +65,7 @@ jobs:
         # FTP password
         ftp_password: ${{ secrets.FTP_PASSWORD }}
         # The local folder to copy
-        local_source_dir: /home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/publish/Images
+        local_source_dir: /home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/Images
         # The remote folder
         dist_target_dir: bot/Images
         # Delete files not present in the local folder on the remote folder
@@ -86,7 +86,7 @@ jobs:
         # FTP password
         ftp_password: ${{ secrets.FTP_PASSWORD }}
         # The local folder to copy
-        local_source_dir: /home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/publish/Config/buttons
+        local_source_dir: /home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/Config/buttons
         # The remote folder
         dist_target_dir: bot/Config/buttons
         # Delete files not present in the local folder on the remote folder
@@ -107,7 +107,7 @@ jobs:
         # FTP password
         ftp_password: ${{ secrets.FTP_PASSWORD }}
         # The local folder to copy
-        local_source_dir: /home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/publish/Config/excels
+        local_source_dir: /home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/Config/excels
         # The remote folder
         dist_target_dir: bot/Config/excels
         # Delete files not present in the local folder on the remote folder
