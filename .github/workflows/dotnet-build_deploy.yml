@@ -52,7 +52,7 @@ jobs:
         
   upload-content:
     
-    runs-on: ubuntu-lastest
+    runs-on: ubuntu-latest
     
     steps:
     - name: Copy images
