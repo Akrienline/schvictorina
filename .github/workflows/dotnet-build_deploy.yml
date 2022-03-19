@@ -55,6 +55,9 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+    - name: check ls-la
+      run: ls -la
+    
     - name: Copy images
       uses: kevinpainchaud/simple-ftp-deploy-action@v1.2.1
       with:
@@ -117,4 +120,4 @@ jobs:
         # Disable SSL certificate verification
         disable_ssl_certificate_verification: true
         # Optional raw string of flags for lftp eg. --no-empty-dirs
-        other_flags: -p --no-perms
+        other_flags: -p --no-perms --no-empty-dirs
