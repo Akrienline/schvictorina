@@ -3,6 +3,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
 namespace SchVictorina.WebAPI.Engines
@@ -11,7 +12,7 @@ namespace SchVictorina.WebAPI.Engines
     {
         public int MaxUsers { get; set; }
 
-        public FunctionButton.Result Invoke()
+        public FunctionButton.Result Invoke(Update update)
         {
             var culture = new CultureInfo("ru-RU");
             var format = string.Format("0:0.0", "");

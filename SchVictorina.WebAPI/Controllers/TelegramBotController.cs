@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using SchVictorina.WebAPI.Utilities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot;
@@ -47,12 +48,17 @@ namespace SchVictorina.WebAPI.Controllers
 
         private static async void SetMyCommands()
         {
-            await botClient.DeleteMyCommandsAsync();
-            await botClient.SetMyCommandsAsync(ButtonConfig.AllButtons.Where(x => x.Value.ID != x.Value.AutoID).Select(x => new BotCommand
+            var themeCommand = new BotCommand() { Command = "/themes", Description = "Список доступных тем на сегодня" };
+            var infoCommand = new BotCommand { Command = "/user", Description = "Информация о себе" };
+
+            var buttonsCommands = ButtonConfig.AllButtons.Where(x => x.Value.ID != x.Value.AutoID).Select(x => new BotCommand
             {
                 Command = x.Value.ID,
                 Description = x.Value.LabelWithParents
-            }));
+            });
+
+            await botClient.DeleteMyCommandsAsync();
+            await botClient.SetMyCommandsAsync(buttonsCommands.Prepend(infoCommand).Prepend(themeCommand));
         }
 
         [HttpGet]

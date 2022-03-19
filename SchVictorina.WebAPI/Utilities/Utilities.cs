@@ -97,6 +97,16 @@ namespace SchVictorina.WebAPI.Utilities
             return index;
         }
 
+        public static string To1CString(this double d)
+        {
+            return d.ToString("N1");
+        }
+
+        public static string To1CString(this float f)
+        {
+            return f.ToString("N1");
+        }
+
         public static IEnumerable<IEnumerable<T>> SplitByCount<T>(this IEnumerable<T> items, int countLimit)
         {
             return items.SplitByLimit(countLimit, x => 1);

@@ -22,6 +22,13 @@ namespace SchVictorina.WebAPI.Utilities
             Teacher = 1,
             Administrator = 2
         }
+        public enum UserStatus
+        {
+            AFK = 0,
+            Selecting = 1,
+            Solving = 2,
+            Supporting = 3
+        }
         static UserConfig()
         {
             timer = new Timer(delegate
@@ -135,6 +142,8 @@ namespace SchVictorina.WebAPI.Utilities
             public bool IsHidden { get; set; } = false;
             [XmlAttribute("role")]
             public UserRole Role { get; set; } = UserRole.Student;
+            [XmlAttribute("status")]
+            public UserStatus Status { get; set; } = UserStatus.AFK;
             public class UserInfo
             {
                 [XmlAttribute("source")]

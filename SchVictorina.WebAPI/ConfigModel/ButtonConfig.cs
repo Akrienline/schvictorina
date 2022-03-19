@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
 namespace SchVictorina.WebAPI.Utilities
@@ -59,7 +60,7 @@ namespace SchVictorina.WebAPI.Utilities
                                         {
                                             try
                                             {
-                                                return File.ReadAllText(xmlPath).FromXml<ButtonRoot>();
+                                                return System.IO.File.ReadAllText(xmlPath).FromXml<ButtonRoot>();
                                             }
                                             catch { return null; }
                                         })
@@ -324,7 +325,7 @@ namespace SchVictorina.WebAPI.Utilities
 
     public interface IFunction
     {
-        FunctionButton.Result Invoke();
+        FunctionButton.Result Invoke(Update update);
     }
 
     public sealed class FunctionButton : ClassableButton<IFunction>

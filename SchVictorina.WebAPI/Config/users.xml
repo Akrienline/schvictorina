@@ -1,66 +1,66 @@
 <?xml version="1.0"?>
 <users xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <user hidden="false" role="Administrator">
+  <user hidden="false" role="Administrator" status="Selecting">
     <info source="Telegram" userid="1864373905" username="alekami649" firstname="Алексей" lastname="Инкогнито" />
-    <statistics lastVisitDate="2022-03-19T00:03:38.9921385+07:00" rightInSequence="1" wrongInSequence="0" totalQuestions="157" score="488.1000000000002" rightAnswers="492" wrongAnswers="-56" skipQuestions="3" />
+    <statistics lastVisitDate="2022-03-19T22:13:09.8408336+07:00" rightInSequence="1" wrongInSequence="0" totalQuestions="162" score="486.0000000000002" rightAnswers="493" wrongAnswers="-54" skipQuestions="4" />
   </user>
-  <user hidden="false" role="Administrator">
+  <user hidden="false" role="Administrator" status="AFK">
     <info source="Telegram" userid="1118251133" username="kimsite" firstname="Boris" />
     <statistics lastVisitDate="2022-03-14T21:55:47.3631387+07:00" rightInSequence="0" wrongInSequence="0" totalQuestions="222" score="398.5000000000004" rightAnswers="286" wrongAnswers="63" skipQuestions="11" />
   </user>
-  <user hidden="false" role="Student">
+  <user hidden="false" role="Student" status="AFK">
     <info source="Telegram" userid="650111973" username="patuulya1" firstname="Патюля" />
     <statistics lastVisitDate="2022-02-07T09:53:33.2070566+07:00" rightInSequence="0" wrongInSequence="0" totalQuestions="1" score="0" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
   </user>
-  <user hidden="false" role="Student">
+  <user hidden="false" role="Student" status="AFK">
     <info source="Telegram" userid="343211890" username="Gromgard" firstname="Oleg" />
     <statistics lastVisitDate="2022-03-10T19:02:32.3337754+07:00" rightInSequence="0" wrongInSequence="0" totalQuestions="1" score="0" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
   </user>
-  <user hidden="false" role="Student">
+  <user hidden="false" role="Student" status="AFK">
     <info source="Telegram" userid="0" />
     <statistics lastVisitDate="2022-03-19T00:01:44.1575139+07:00" rightInSequence="0" wrongInSequence="0" totalQuestions="0" score="0" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
   </user>
-  <user hidden="false" role="Student">
+  <user hidden="false" role="Student" status="AFK">
     <info source="Telegram" userid="1026047980" username="MasterVitte" firstname="Artem" lastname="Vitte" />
     <statistics lastVisitDate="2022-03-10T19:02:59.0896065+07:00" rightInSequence="0" wrongInSequence="0" totalQuestions="0" score="0" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
   </user>
-  <user hidden="false" role="Student">
+  <user hidden="false" role="Student" status="AFK">
     <info source="Telegram" userid="519113744" username="popenchik96" firstname="Дима Ульянов" />
     <statistics lastVisitDate="2022-02-07T16:59:15.3541402+07:00" rightInSequence="0" wrongInSequence="0" totalQuestions="0" score="1" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
   </user>
-  <user hidden="false" role="Student">
+  <user hidden="false" role="Student" status="AFK">
     <info source="Telegram" userid="260795540" username="lourence" firstname="Ilya" lastname="Korneev" />
     <statistics lastVisitDate="2022-03-10T19:14:57.9109899+07:00" rightInSequence="0" wrongInSequence="0" totalQuestions="0" score="56" rightAnswers="56" wrongAnswers="0" skipQuestions="0" />
   </user>
-  <user hidden="false" role="Student">
+  <user hidden="false" role="Student" status="AFK">
     <info source="Telegram" userid="1502901024" username="Kirillagu67" firstname="Kirill" />
     <statistics lastVisitDate="2022-02-23T01:05:15.4011005+07:00" rightInSequence="2" wrongInSequence="0" totalQuestions="171" score="247" rightAnswers="247" wrongAnswers="15" skipQuestions="0" />
   </user>
-  <user hidden="false" role="Student">
+  <user hidden="false" role="Student" status="AFK">
     <info source="Telegram" userid="5277274862" username="pelmen228Y" firstname="Пельмень" lastname="ЫыЫыЫыЫ" />
     <statistics lastVisitDate="2022-02-23T09:07:46.2510699+07:00" rightInSequence="1" wrongInSequence="0" totalQuestions="4" score="35" rightAnswers="35" wrongAnswers="2" skipQuestions="0" />
   </user>
-  <user hidden="false" role="Student">
+  <user hidden="false" role="Student" status="AFK">
     <info source="Telegram" userid="1323385400" username="irihokmi" firstname="IAM" />
     <statistics lastVisitDate="2022-03-14T00:26:38.7906752+07:00" rightInSequence="0" wrongInSequence="1" totalQuestions="95" score="223.59999999999997" rightAnswers="178" wrongAnswers="9" skipQuestions="1" />
   </user>
-  <user hidden="false" role="Student">
+  <user hidden="false" role="Student" status="AFK">
     <info source="Telegram" userid="855479506" username="eugenemoiseev" firstname="Eugene" lastname="Moiseev" />
     <statistics lastVisitDate="2022-03-14T21:32:12.3501806+07:00" rightInSequence="15" wrongInSequence="0" totalQuestions="41" score="52" rightAnswers="32" wrongAnswers="7" skipQuestions="0" />
   </user>
-  <user hidden="false" role="Student">
+  <user hidden="false" role="Student" status="AFK">
     <info source="Telegram" userid="865323901" username="relb34" firstname="Виктор" />
     <statistics lastVisitDate="2022-03-14T21:35:17.5451564+07:00" rightInSequence="6" wrongInSequence="0" totalQuestions="16" score="17.6" rightAnswers="13" wrongAnswers="1" skipQuestions="0" />
   </user>
-  <user hidden="false" role="Student">
+  <user hidden="false" role="Student" status="AFK">
     <info source="Telegram" userid="213425670" username="keks_pexx" firstname="Константин" lastname="Пешков" />
     <statistics lastVisitDate="2022-03-14T21:43:20.6291427+07:00" rightInSequence="10" wrongInSequence="0" totalQuestions="11" score="20" rightAnswers="10" wrongAnswers="0" skipQuestions="0" />
   </user>
-  <user hidden="false" role="Student">
+  <user hidden="false" role="Student" status="AFK">
     <info source="Telegram" userid="1755969349" username="Artyom9172" firstname="Артём" />
     <statistics lastVisitDate="2022-03-19T00:01:24.4009439+07:00" rightInSequence="0" wrongInSequence="0" totalQuestions="0" score="0" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
   </user>
-  <user hidden="false" role="Student">
+  <user hidden="false" role="Student" status="AFK">
     <info source="Telegram" userid="272757876" username="mbrin" firstname="S" lastname="B" />
     <statistics lastVisitDate="2022-03-19T00:01:29.0517181+07:00" rightInSequence="0" wrongInSequence="0" totalQuestions="1" score="0" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
   </user>

@@ -31,8 +31,17 @@ namespace SchVictorina.WebAPI.Controllers
 
                 UserConfig.Instance.Log(user, UserConfig.EventType.Request);
 
+                if (user.Status == UserConfig.UserStatus.Supporting)
+                {
+                    System.IO.File.AppendAllText("supports.txt", $"{update.Message.From.Username} - {update.Message.Text}", Encoding.UTF8);
+                    await botClient.SendText(update, "Спасибо за поддержку проекта");
+                    user.Status = UserConfig.UserStatus.AFK;
+                }
+
                 if (update.Type == UpdateType.Message)
                 {
+                    
+
                     if (update.Message.Chat.Type == ChatType.Group || update.Message.Chat.Type == ChatType.Channel || update.Message.Chat.Type == ChatType.Supergroup)
                     {
                         if (update.Message.Text != "/theme")
@@ -90,7 +99,7 @@ namespace SchVictorina.WebAPI.Controllers
                             }
                             else if (button is FunctionButton functionButton)
                             {
-                                var result = functionButton.Class?.Invoke();
+                                var result = functionButton.Class?.Invoke(update);
                                 if (result != null)
                                     await botClient.SendTextAndImage(update, result.Text, result.ImagePath);
                                 await GenerateButtonsAndSend(botClient, update, ButtonConfig.RootButton);
@@ -133,8 +142,8 @@ namespace SchVictorina.WebAPI.Controllers
                                     {
                                         isRight = (callbackValues[3] == callbackValues[4]) || (callbackValues[3] != "c" && callbackValues[4] == "c");
                                         await botClient.SendText(update, isRight
-                                            ? $"Правильно 👍. Ответ: {callbackValues[3]}"
-                                            : $"Неправильно 👎. Верный ответ: {callbackValues[3]}{(callbackValues[4] == "w" ? "" : ", а не " + callbackValues[4])}");
+                                            ? $"Правильно 👍. Ответ: {callbackValues[3]}. Сейчас у вас {user.Statistics.Score.To1CString()} баллов"
+                                            : $"Неправильно 👎. Верный ответ: {callbackValues[3]}{(callbackValues[4] == "w" ? "" : ", а не " + callbackValues[4])}. Сейчас у вас {user.Statistics.Score.To1CString()} баллов, поскольку вы потеряли {engineButton.WrongScore.To1CString()} баллов.");
                                     }
                                     else if (callbackValues.Length >= 4 && callbackValues[2] == "id")
                                     {
@@ -193,7 +202,7 @@ namespace SchVictorina.WebAPI.Controllers
                             }
                             else if (button is FunctionButton functionButton)
                             {
-                                var result = functionButton.Class?.Invoke();
+                                var result = functionButton.Class?.Invoke(update);
                                 if (result != null)
                                     await botClient.SendTextAndImage(update, result.Text, result.ImagePath);
                                 await GenerateButtonsAndSend(botClient, update, ButtonConfig.RootButton);
@@ -214,9 +223,11 @@ namespace SchVictorina.WebAPI.Controllers
             UserConfig.Instance.Log(user, UserConfig.EventType.SendQuestion);
             var question = engineButton.Class.GenerateQuestion();
             var keyboard = new InlineKeyboardMarkup(GenerateInlineKeyboardButtons(question, engineButton).SplitLongLines());
-            
+
+            user.Status = UserConfig.UserStatus.Solving;
+
             if (question.WrongAnswers != null)
-                await botClient.SendHTMLCode(update, question?.Question ?? "К сожелению не удалось найти вопрос!", keyboard);
+                await botClient.SendHTMLCode(update, question?.Question + $"{Environment.NewLine}Если вы ответите правильно - получите {engineButton.RightScore} {Environment.NewLine}Если же не правильно - вы потеряете {engineButton.WrongScore}" ?? "К сожелению не удалось найти вопрос!", keyboard);
             else
                 await botClient.SendHTMLCode(update, question?.Question + "\nВариантов ответа нет." ?? "К сожелению не удалось найти вопрос!");
         }
@@ -235,6 +246,7 @@ namespace SchVictorina.WebAPI.Controllers
         {
             if (question.WrongAnswers == null || !question.WrongAnswers.Any() || question.RightAnswer == null)
             {
+                yield return (IEnumerable<InlineKeyboardButton>)InlineKeyboardButton.WithCallbackData("Произошла ошибка, не удалось найти варианты ответа.");
             }
             
             if (question.WrongAnswers != null && question.WrongAnswers.Any())
@@ -275,6 +287,10 @@ namespace SchVictorina.WebAPI.Controllers
             {
                 var uiLineButtons = new List<InlineKeyboardButton>();
 
+                var user = UserConfig.Instance.GetUser(GetUserInfo(update.GetUser()));
+
+                user.Status = UserConfig.UserStatus.Selecting;
+
                 foreach (var child in groupButton.Children.Where(child => child.IsValidWithAscender))
                 {
                     if (child is SplitButton)
@@ -302,7 +318,7 @@ namespace SchVictorina.WebAPI.Controllers
 
             return botClient.SendText(update, "Выбери тему задания:", new InlineKeyboardMarkup(uiButtons.SplitLongLines()));
         }
-        private static UserConfig.User.UserInfo GetUserInfo(User user)
+        internal static UserConfig.User.UserInfo GetUserInfo(User user)
         {
             return new UserConfig.User.UserInfo
             {

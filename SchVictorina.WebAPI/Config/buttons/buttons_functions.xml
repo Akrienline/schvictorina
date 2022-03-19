@@ -3,4 +3,8 @@
 	<function label="Таблица лидеров" id="leaderboard" classid="SchVictorina.WebAPI.Engines.LeadersFunction">
 		<parameter id="MaxUsers">10</parameter>
 	</function>
+
+	<function label="Написать автору" id="support" classid="SchVictorina.WebAPI.Engines.SupportFucntion">
+		
+	</function>
 </buttons>
