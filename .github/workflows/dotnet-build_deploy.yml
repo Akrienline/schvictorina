@@ -43,6 +43,77 @@ jobs:
         delete: false
         # Download only newer files
         only_newer: false
+        # Ignore file(s) and/or directorie(s)
+        exclude: Config, Images
+        # Disable SSL certificate verification
+        disable_ssl_certificate_verification: true
+        # Optional raw string of flags for lftp eg. --no-empty-dirs
+        other_flags: -p --no-perms
+        
+  upload-content:
+    
+    runs-on: ubuntu-lastest
+    
+    steps:
+    - name: Copy images
+      uses: kevinpainchaud/simple-ftp-deploy-action@v1.2.1
+      with:
+        # FTP host
+        ftp_host: ${{ secrets.FTP_SERVER }}
+        # FTP username
+        ftp_username: ${{ secrets.FTP_USERNAME }}
+        # FTP password
+        ftp_password: ${{ secrets.FTP_PASSWORD }}
+        # The local folder to copy
+        local_source_dir: /home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/publish/Images
+        # The remote folder
+        dist_target_dir: bot/Images
+        # Delete files not present in the local folder on the remote folder
+        delete: false
+        # Download only newer files
+        only_newer: true
+        # Disable SSL certificate verification
+        disable_ssl_certificate_verification: true
+        # Optional raw string of flags for lftp eg. --no-empty-dirs
+        other_flags: -p --no-perms
+    - name: Copy buttons
+      uses: kevinpainchaud/simple-ftp-deploy-action@v1.2.1
+      with:
+        # FTP host
+        ftp_host: ${{ secrets.FTP_SERVER }}
+        # FTP username
+        ftp_username: ${{ secrets.FTP_USERNAME }}
+        # FTP password
+        ftp_password: ${{ secrets.FTP_PASSWORD }}
+        # The local folder to copy
+        local_source_dir: /home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/publish/Config/buttons
+        # The remote folder
+        dist_target_dir: bot/Config/buttons
+        # Delete files not present in the local folder on the remote folder
+        delete: false
+        # Download only newer files
+        only_newer: true
+        # Disable SSL certificate verification
+        disable_ssl_certificate_verification: true
+        # Optional raw string of flags for lftp eg. --no-empty-dirs
+        other_flags: -p --no-perms
+    - name: Copy excels
+      uses: kevinpainchaud/simple-ftp-deploy-action@v1.2.1
+      with:
+        # FTP host
+        ftp_host: ${{ secrets.FTP_SERVER }}
+        # FTP username
+        ftp_username: ${{ secrets.FTP_USERNAME }}
+        # FTP password
+        ftp_password: ${{ secrets.FTP_PASSWORD }}
+        # The local folder to copy
+        local_source_dir: /home/runner/work/schvictorina/schvictorina/SchVictorina.WebAPI/publish/Config/excels
+        # The remote folder
+        dist_target_dir: bot/Config/excels
+        # Delete files not present in the local folder on the remote folder
+        delete: false
+        # Download only newer files
+        only_newer: true
         # Disable SSL certificate verification
         disable_ssl_certificate_verification: true
         # Optional raw string of flags for lftp eg. --no-empty-dirs
