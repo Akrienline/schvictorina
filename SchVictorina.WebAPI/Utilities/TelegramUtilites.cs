@@ -72,7 +72,7 @@ namespace SchVictorina.WebAPI.Utilities
             }
             catch (ApiRequestException ex) { ex.ToString(); }
         }
-        public static async Task SendHTMLCode(this ITelegramBotClient botClient, Update update, string text, InlineKeyboardMarkup inlineKeyboardMarkup = null)
+        public static async Task SendHtml(this ITelegramBotClient botClient, Update update, string text, InlineKeyboardMarkup inlineKeyboardMarkup = null)
         {
             try
             {
@@ -113,11 +113,16 @@ namespace SchVictorina.WebAPI.Utilities
             //await SendText(botClient, update, message);
             //await SendImage(botClient, update, filePath);
         }
-        public static async Task SendTextAndImageAsHTML(this ITelegramBotClient botClient, Update update, string message, string filePath)
+        [DebuggerHidden]
+        public static async Task SendTextAndImage(this ITelegramBotClient botClient, Update update, string message, string filePath, InlineKeyboardMarkup keyboard)
         {
             if (string.IsNullOrEmpty(filePath))
             {
-                await botClient.SendHTMLCode(update, message);
+                try
+                {
+                    await botClient.SendText(update, message, keyboard);
+                }
+                catch { }
             }
             else
             {
@@ -125,7 +130,26 @@ namespace SchVictorina.WebAPI.Utilities
                     filePath = Directory.GetFiles(Path.GetDirectoryName(filePath), Path.GetFileName(filePath)).OrderByRandom().First();
                 try
                 {
-                    await botClient.SendPhotoAsync(update.GetChatId(), new InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes(filePath))), message, ParseMode.Html, cancellationToken: CancellationToken.None);
+                    await botClient.SendPhotoAsync(update.GetChatId(), new InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes(filePath))), message, cancellationToken: CancellationToken.None, replyMarkup: keyboard);
+                }
+                catch (ApiRequestException) { }
+            }
+            //await SendText(botClient, update, message);
+            //await SendImage(botClient, update, filePath);
+        }
+        public static async Task SendHtmlAndImage(this ITelegramBotClient botClient, Update update, string message, string filePath, InlineKeyboardMarkup keyboard = null)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                await botClient.SendHtml(update, message, keyboard);
+            }
+            else
+            {
+                if (filePath.Contains("*"))
+                    filePath = Directory.GetFiles(Path.GetDirectoryName(filePath), Path.GetFileName(filePath)).OrderByRandom().First();
+                try
+                {
+                    await botClient.SendPhotoAsync(update.GetChatId(), new InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes(filePath))), message, ParseMode.Html, cancellationToken: CancellationToken.None, replyMarkup: keyboard);
                 }
                 catch (ApiRequestException ex) { ex.ToString(); }
             }

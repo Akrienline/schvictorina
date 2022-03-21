@@ -77,6 +77,7 @@ namespace SchVictorina.WebAPI.Engines
             return new QuestionInfo
             {
                 Question = question,
+                QuestionImagePath = !string.IsNullOrEmpty(questionRow.QuesitonImage) ? GetImagePath(document.FilePath, answerRow[questionRow.QuesitonImage]) : null,
                 RightAnswer = new AnswerOption($"d{documentIndex}_q{questionRowIndex}_c{document.DataRows.IndexOf(answerRow)}_s{document.DataRows.IndexOf(answerRow)}", answerRow[questionRow.Answer]),
                 WrongAnswers = wrongAnswers.Select(x =>
                 {
@@ -111,18 +112,24 @@ namespace SchVictorina.WebAPI.Engines
 
             if (!string.IsNullOrEmpty(question.Description))
                 answerInfo.Description = correctAnswerRow[question.Description];
+            
+            if (question.DescriptionImage != null && string.IsNullOrEmpty(question.QuesitonImage))
+                answerInfo.DescriptionImagePath = GetImagePath(document.FilePath, correctAnswerRow[question.DescriptionImage]);
 
-            var imagePath = $"Config/excels/{Path.GetFileNameWithoutExtension(document.FilePath)}/{correctAnswerRow[question.Image]}";
+            return answerInfo;
+        }
+
+        private static string GetImagePath(string docFileName, string name)
+        {
+            if (string.IsNullOrEmpty(name))
+                return null;
+            var imagePath = $"Config/excels/{Path.GetFileNameWithoutExtension(docFileName)}/{name}";
             foreach (var ext in new[] { ".jpeg", ".jpg", ".png" })
             {
                 if (File.Exists(imagePath + ext))
-                {
-                    answerInfo.DescriptionImagePath = imagePath + ext;
-                    break;
-                }
+                    return imagePath + ext;
             }
-
-            return answerInfo;
+            return null;
         }
     }
     public class DictionaryDocument
@@ -154,7 +161,8 @@ namespace SchVictorina.WebAPI.Engines
                 OrderByDescending = x.Values[questionSheet.GetColumnIndex("orderByDesc")],
                 Answer = x.Values[questionSheet.GetColumnIndex("answer")],
                 Description = x.Values[questionSheet.GetColumnIndex("description")],
-                Image = x.Values[questionSheet.GetColumnIndex("image")]
+                DescriptionImage = x.Values[questionSheet.GetColumnIndex("descriptionImage")],
+                QuesitonImage = x.Values[questionSheet.GetColumnIndex("questionImage")]
             }).ToArray();
 
             return doc;
@@ -168,7 +176,8 @@ namespace SchVictorina.WebAPI.Engines
             public string OrderByDescending { get; set; }
             public string Answer { get; set; }
             public string Description { get; set; }
-            public string Image { get; set; }
+            public string DescriptionImage { get; set; }
+            public string QuesitonImage { get; set; }
         }
     }
 

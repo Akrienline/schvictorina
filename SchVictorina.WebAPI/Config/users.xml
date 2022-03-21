@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <users xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <user hidden="false" role="Administrator" status="Selecting">
+  <user hidden="false" role="Administrator" status="Solving">
     <info source="Telegram" userid="1864373905" username="alekami649" firstname="Алексей" lastname="Инкогнито" />
-    <statistics lastVisitDate="2022-03-19T22:13:09.8408336+07:00" rightInSequence="1" wrongInSequence="0" totalQuestions="162" score="486.0000000000002" rightAnswers="493" wrongAnswers="-54" skipQuestions="4" />
+    <statistics lastVisitDate="2022-03-21T21:45:48.3207321+07:00" rightInSequence="6" wrongInSequence="0" totalQuestions="258" score="499.50000000000057" rightAnswers="514" wrongAnswers="-39" skipQuestions="44" />
   </user>
   <user hidden="false" role="Administrator" status="AFK">
     <info source="Telegram" userid="1118251133" username="kimsite" firstname="Boris" />
@@ -63,5 +63,13 @@
   <user hidden="false" role="Student" status="AFK">
     <info source="Telegram" userid="272757876" username="mbrin" firstname="S" lastname="B" />
     <statistics lastVisitDate="2022-03-19T00:01:29.0517181+07:00" rightInSequence="0" wrongInSequence="0" totalQuestions="1" score="0" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
+  </user>
+  <user hidden="false" role="Student" status="Solving">
+    <info source="Telegram" userid="1642467147" username="Gulzhan210607" firstname="Гуля" lastname="Гуля" />
+    <statistics lastVisitDate="2022-03-21T09:59:15.8235324+07:00" rightInSequence="0" wrongInSequence="0" totalQuestions="1" score="0" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
+  </user>
+  <user hidden="false" role="Student" status="Selecting">
+    <info source="Telegram" userid="731818671" username="xolotlll" firstname="Xolotl" />
+    <statistics lastVisitDate="2022-03-21T09:59:17.099937+07:00" rightInSequence="0" wrongInSequence="0" totalQuestions="0" score="0" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
   </user>
 </users>

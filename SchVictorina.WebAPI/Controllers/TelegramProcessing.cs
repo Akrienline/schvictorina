@@ -31,13 +31,6 @@ namespace SchVictorina.WebAPI.Controllers
 
                 UserConfig.Instance.Log(user, UserConfig.EventType.Request);
 
-                if (user.Status == UserConfig.UserStatus.Supporting)
-                {
-                    System.IO.File.AppendAllText("supports.txt", $"{update.Message.From.Username} - {update.Message.Text}", Encoding.UTF8);
-                    await botClient.SendText(update, "Спасибо за поддержку проекта");
-                    user.Status = UserConfig.UserStatus.AFK;
-                }
-
                 if (update.Type == UpdateType.Message)
                 {
                     
@@ -227,9 +220,13 @@ namespace SchVictorina.WebAPI.Controllers
             user.Status = UserConfig.UserStatus.Solving;
 
             if (question.WrongAnswers != null)
-                await botClient.SendHTMLCode(update, question?.Question + $"{Environment.NewLine}Если вы ответите правильно - получите {engineButton.RightScore} {Environment.NewLine}Если же не правильно - вы потеряете {engineButton.WrongScore}" ?? "К сожелению не удалось найти вопрос!", keyboard);
+            {
+                await botClient.SendHtmlAndImage(update, question?.Question + $"{Environment.NewLine}Если вы ответите правильно, получите {engineButton.RightScore} {Environment.NewLine}Если же не правильно, вы потеряете {engineButton.WrongScore}" ?? "К сожалению не удалось найти вопрос!", question.QuestionImagePath, keyboard);
+            }
             else
-                await botClient.SendHTMLCode(update, question?.Question + "\nВариантов ответа нет." ?? "К сожелению не удалось найти вопрос!");
+            {
+                await botClient.SendHtml(update, question?.Question + "\nВариантов ответа нет." ?? "К сожалению не удалось найти вопрос!");
+            }
         }
         internal class MainUpdateHandler : IUpdateHandler
         {

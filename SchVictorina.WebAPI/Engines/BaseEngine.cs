@@ -7,6 +7,7 @@ namespace SchVictorina.WebAPI
     public class QuestionInfo
     {
         public string Question { get; set; }
+        public string QuestionImagePath { get; set; }
         public AnswerOption RightAnswer { get; set; }
         public AnswerOption[] WrongAnswers { get; set; }
     }
