@@ -53,7 +53,7 @@ namespace SchVictorina.WebAPI.Engines
                 var value = answerRow[columnName];
                 if (value.ToDouble().HasValue)
                     value = value.ToDouble().Value.ToString("N0", new CultureInfo("ru-RU"));
-                question = question.Replace("{" + columnName + "}", "<b>" + value + "</b>");
+                    question = question.Replace("{" + columnName + "}", "<b>" + value + "</b>");
             }
 
             var wrongCandidates = dataRows.Where(candidate => candidate != answerRow).ToArray();
@@ -89,7 +89,7 @@ namespace SchVictorina.WebAPI.Engines
                 }).ToArray()
             };
         }
-
+        
         public override AnswerInfo ParseAnswerId(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -150,7 +150,7 @@ namespace SchVictorina.WebAPI.Engines
             doc.DataRows = dataSheet.Rows.Select(
                     x => dataSheet.Columns.Zip(x.Values, (key, value) => new { Key = key.Name, Value = value })
                                           .ToDictionary(x => x.Key, x => x.Value)
-                ).ToArray();
+                ).Where(x => x.Any(y => !string.IsNullOrEmpty(y.Value))).ToArray();
 
             doc.Questions = questionSheet.Rows.Select(x => new QuestionInfo
             {
@@ -163,7 +163,7 @@ namespace SchVictorina.WebAPI.Engines
                 Description = x.Values[questionSheet.GetColumnIndex("description")],
                 DescriptionImage = x.Values[questionSheet.GetColumnIndex("descriptionImage")],
                 QuesitonImage = x.Values[questionSheet.GetColumnIndex("questionImage")]
-            }).ToArray();
+            }).Where(x => !string.IsNullOrEmpty(x.Question)).ToArray();
 
             return doc;
         }
