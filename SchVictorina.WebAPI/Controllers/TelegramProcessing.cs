@@ -62,6 +62,10 @@ namespace SchVictorina.WebAPI.Controllers
                         {
                             await GenerateButtonsAndSend(botClient, update, ButtonConfig.RootButton);
                         }
+                        if (update.Message.Text == "/themes")
+                        {
+                            await GenerateButtonsAndSend(botClient, update, ButtonConfig.RootButton);
+                        }
                         else if (update.Message.Text.StartsWith("/score"))
                         {
                             await Score(botClient, update);

@@ -51,7 +51,7 @@ namespace SchVictorina.WebAPI.Controllers
             var themeCommand = new BotCommand() { Command = "/themes", Description = "Список доступных тем на сегодня" };
             var infoCommand = new BotCommand { Command = "/user", Description = "Информация о себе" };
 
-            var buttonsCommands = ButtonConfig.AllButtons.Where(x => x.Value.ID != x.Value.AutoID).Select(x => new BotCommand
+            var buttonsCommands = ButtonConfig.AllButtons.Where(x => x.Value.ID != x.Value.AutoID).Where(x => x.Value.IsValidWithAscender).Select(x => new BotCommand
             {
                 Command = x.Value.ID,
                 Description = x.Value.LabelWithParents
