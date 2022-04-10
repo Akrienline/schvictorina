@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Discord;
+using Discord.WebSocket;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SchVictorina.WebAPI.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using System.Timers;
 using Telegram.Bot;
 using Telegram.Bot.Extensions.Polling;
 using Telegram.Bot.Types;
@@ -15,6 +19,7 @@ namespace SchVictorina.WebAPI.Controllers
     [Route("[controller]/[action]")]
     public class TelegramBotController : ControllerBase
     {
+        static DiscordSocketClient socketClient;
         static TelegramBotClient botClient;
         static DefaultUpdateReceiver updateReceiver;
 
@@ -24,6 +29,17 @@ namespace SchVictorina.WebAPI.Controllers
 
         static TelegramBotController()
         {
+            var timer = new Timer();
+            timer.Interval = 1000000000;
+            timer.Elapsed += Timer_Elapsed;
+
+            socketClient = new DiscordSocketClient();
+            socketClient.LoginAsync(TokenType.Bot, GlobalConfig.Instance.DiscordBot.Token, true);
+            socketClient.MessageReceived += DiscordProcessing.ProcessEvent;
+            socketClient.ButtonExecuted += DiscordProcessing.ProcessButtonExecute;
+            socketClient.SlashCommandExecuted += DiscordProcessing.ProcessSlashExecute;
+            socketClient.Ready += ProcessCommands;
+            socketClient.StartAsync();
             //TelegramProcessing.GetUserByUsername("alekami649").Role = UserConfig.UserRole.Administrator;
             var settings = GlobalConfig.Instance;
             botClient = new TelegramBotClient(settings.TelegramBot.Token);
@@ -38,12 +54,16 @@ namespace SchVictorina.WebAPI.Controllers
                 SetMyCommands();
             };
             SetMyCommands();
-#if DEBUG
+        }
 
-#else
-            botClient.SendTextMessageAsync("@kimsite", "бот обновился!");
-            botClient.SendTextMessageAsync("@alekami649", "бот обновился!");
-#endif
+        private static void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            TestServer();
+        }
+
+        private static async Task ProcessCommands()
+        {
+            await DiscordProcessing.ProcessCommands(socketClient);
         }
 
         private static async void SetMyCommands()
@@ -65,6 +85,11 @@ namespace SchVictorina.WebAPI.Controllers
         public string Start() 
         {
             return "Started";
+        }
+        private static void TestServer()
+        {
+            var webClient = new WebClient();
+            webClient.DownloadString("https://schvictorina2.somee.com/bot/telegrambot/start");
         }
 
         [HttpGet]

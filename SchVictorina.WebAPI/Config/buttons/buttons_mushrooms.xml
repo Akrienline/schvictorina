@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <buttons priority="10" classid="SchVictorina.WebAPI.Engines.DictionaryEngine">
-	<engine label="" rightscore="" wrongscore="">
+	<engine label="Грибы" rightscore="3" wrongscore="2.5">
 		<parameter id="FilePath">Config/excels/mushrooms.xlsx</parameter>
 		<parameter id="Filter">Описание ~ а</parameter>
 	</engine>

@@ -2,7 +2,7 @@
 <users xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <user hidden="false" role="Administrator" status="Selecting">
     <info source="Telegram" userid="1864373905" username="alekami649" firstname="Алексей" lastname="Инкогнито" />
-    <statistics lastVisitDate="2022-03-22T08:19:11.2118003+07:00" rightInSequence="1" wrongInSequence="0" totalQuestions="276" score="511.80000000000064" rightAnswers="521" wrongAnswers="-34" skipQuestions="44" />
+    <statistics lastVisitDate="2022-04-10T21:58:33.2167853+07:00" rightInSequence="9" wrongInSequence="0" totalQuestions="344" score="645.800000000001" rightAnswers="567" wrongAnswers="-25" skipQuestions="44" />
   </user>
   <user hidden="false" role="Administrator" status="AFK">
     <info source="Telegram" userid="1118251133" username="kimsite" firstname="Boris" />
@@ -71,5 +71,13 @@
   <user hidden="false" role="Student" status="Selecting">
     <info source="Telegram" userid="731818671" username="xolotlll" firstname="Xolotl" />
     <statistics lastVisitDate="2022-03-21T09:59:17.099937+07:00" rightInSequence="0" wrongInSequence="0" totalQuestions="0" score="0" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
+  </user>
+  <user hidden="false" role="Student" status="AFK">
+    <info source="Discord" userid="950748120147439646" username="alekami6493274" firstname="" lastname="" />
+    <statistics lastVisitDate="2022-03-28T19:19:57.4676182+07:00" rightInSequence="0" wrongInSequence="0" totalQuestions="0" score="0" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
+  </user>
+  <user hidden="false" role="Student" status="AFK">
+    <info source="Discord" userid="957948981458108428" username="SchVictorina Debug8590" firstname="" lastname="" />
+    <statistics lastVisitDate="2022-04-03T13:35:06.2873175+07:00" rightInSequence="0" wrongInSequence="0" totalQuestions="0" score="0" rightAnswers="0" wrongAnswers="0" skipQuestions="0" />
   </user>
 </users>

@@ -65,7 +65,7 @@ namespace SchVictorina.WebAPI.Utilities
                         case CellValues.SharedString:
                         {
                             if (int.TryParse(cell.CellValue?.Text, out int index))
-                                value = sharedStringsTable.Elements<SharedStringItem>().ElementAt(index).Text.Text;
+                                value = sharedStringsTable.Elements<SharedStringItem>().ElementAt(index).InnerText ?? null;
                             break;
                         }
                         case CellValues.InlineString:
@@ -116,9 +116,3 @@ namespace SchVictorina.WebAPI.Utilities
         }
     }
 }
-
-//Workbook
-//--Sheets[sheetIndex]
-//----Name
-//----ColumnNames[columnIndex]
-//----Rows[rowIndex][columnIndex]

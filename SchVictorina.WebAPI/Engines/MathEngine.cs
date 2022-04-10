@@ -18,33 +18,33 @@ namespace SchVictorina.WebAPI.Engines
 
         public override QuestionInfo GenerateQuestion()
         {
-            var value1 = 0;
-            var value2 = 0;
-            var answer = 0;
+            var value1 = 0; //первое число
+            var value2 = 0; //второе число
+            var answer = 0; //ответ
             var tolerances = ConvertUtilities.SequenceElements(WrongAnswerCount, new[] { 0 }, previous => RandomUtilities.GetRandomInt((MaxAnswerValue - MinAnswerValue) / 10, previous)).ToArray();
 
             var @operator = RandomUtilities.GetRandomChar(Operators);
             if (@operator == '+')
             {
-                value1 = RandomUtilities.GetRandomInt(MinAnswerValue, MaxAnswerValue / 2);
+                value1 = RandomUtilities.GetRandomInt(MinAnswerValue, MaxAnswerValue / 2); //генерируем два числа
                 value2 = RandomUtilities.GetRandomInt(MinAnswerValue, MaxAnswerValue / 2);
                 answer = value1 + value2;
             }
             else if (@operator == '-')
             {
-                value1 = RandomUtilities.GetRandomInt(MinAnswerValue, MaxAnswerValue);
+                value1 = RandomUtilities.GetRandomInt(MinAnswerValue, MaxAnswerValue); //генерация двух чисел
                 value2 = RandomUtilities.GetRandomInt(MinAnswerValue, MaxAnswerValue);
-                if (!AllowNegative && value1 < value2)
+                if (!AllowNegative && value1 < value2) // если негативные числа запрещены, то меняем местами
                     ConvertUtilities.Switch(ref value1, ref value2);
                 answer = value1 - value2;
             }
             else if (@operator == '*')
             {
-                value1 = RandomUtilities.GetRandomInt(Convert.ToInt32(Math.Sqrt(MinAnswerValue)), Convert.ToInt32(Math.Sqrt(MaxAnswerValue)));
+                value1 = RandomUtilities.GetRandomInt(Convert.ToInt32(Math.Sqrt(MinAnswerValue)), Convert.ToInt32(Math.Sqrt(MaxAnswerValue))); //генерируем два числа, и в квадратный корень
                 value2 = RandomUtilities.GetRandomInt(Convert.ToInt32(Math.Sqrt(MinAnswerValue)), Convert.ToInt32(Math.Sqrt(MaxAnswerValue)));
                 answer = value1 * value2;
             }
-            else if (@operator == '/')
+            else if (@operator == '/') //деление через умножение
             {
                 value2 = 1 + RandomUtilities.GetRandomInt(MinAnswerValue, MaxAnswerValue) / 10;
                 value1 = value2 * RandomUtilities.GetRandomPositiveInt(10);

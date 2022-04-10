@@ -1,4 +1,6 @@
-﻿using SchVictorina.WebAPI.Controllers;
+﻿using Discord;
+using Discord.WebSocket;
+using SchVictorina.WebAPI.Controllers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -325,7 +327,7 @@ namespace SchVictorina.WebAPI.Utilities
 
     public interface IFunction
     {
-        FunctionButton.Result Invoke(Update update);
+        FunctionButton.Result Invoke(Update update = null, SocketMessage message = null, IDiscordInteraction interaction = null);
     }
 
     public sealed class FunctionButton : ClassableButton<IFunction>

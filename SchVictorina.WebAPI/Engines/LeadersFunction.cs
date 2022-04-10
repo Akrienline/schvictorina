@@ -1,4 +1,6 @@
-﻿using SchVictorina.WebAPI.Utilities;
+﻿using Discord;
+using Discord.WebSocket;
+using SchVictorina.WebAPI.Utilities;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -12,20 +14,29 @@ namespace SchVictorina.WebAPI.Engines
     {
         public int MaxUsers { get; set; }
 
-        public FunctionButton.Result Invoke(Update update)
+        public FunctionButton.Result Invoke(Update update, SocketMessage message, IDiscordInteraction interaction)
         {
             var culture = new CultureInfo("ru-RU");
             var format = string.Format("0:0.0", "");
+
+            var source = UserSourceType.Telegram;
+            if (update != null)
+                source = UserSourceType.Telegram;
+            else
+                source = UserSourceType.Discord;
+
             var leaderboard = UserConfig.Instance.Users.OrderByDescending(users => users.Statistics.Score)
                                                        .Where(user => !string.IsNullOrWhiteSpace(user.Info.FirstName))
                                                        .Where(user => !string.IsNullOrWhiteSpace(user.Info.UserName))
                                                        .Where(user => !user.IsHidden)
                                                        .Where(user => user.Statistics.Score > 0)
+                                                       .Where(user => user.Info.Source == source)
                                                        .Take(MaxUsers)
                                                        .Select((user, i) => new
                                                        {
                                                            Position = i + 1,
                                                            Name = $"{user.Info.FirstName} (@{user.Info.UserName})",
+                                                           Source = user.Info.Source,
                                                            Score = user.Statistics.Score.ToString("N1", culture),
                                                        })
                                                        .ToArray();
@@ -36,7 +47,6 @@ namespace SchVictorina.WebAPI.Engines
                     Text = "К сожелению пока здесь нет никого..."
                 };
             }
-
             var result = new StringBuilder();
             result.AppendLine("Десятка лучших:");
             foreach (var leader in leaderboard)

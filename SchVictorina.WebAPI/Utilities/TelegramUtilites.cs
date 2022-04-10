@@ -64,11 +64,21 @@ namespace SchVictorina.WebAPI.Utilities
             }
             catch (ApiRequestException ex) { ex.ToString(); }
         }
-        public static async Task SendMarkdownText(this ITelegramBotClient botClient, Update update, string text, InlineKeyboardMarkup inlineKeyboardMarkup = null)
+        public static async Task SendMarkdown(this ITelegramBotClient botClient, Update update, string text, InlineKeyboardMarkup inlineKeyboardMarkup = null)
         {
             try
             {
                 await botClient.SendTextMessageAsync(update.GetChatId(), text, ParseMode.Markdown, replyMarkup: inlineKeyboardMarkup);
+            }
+            catch (ApiRequestException ex) { ex.ToString(); }
+        }
+        public static async Task SendMarkdownAndImage(this ITelegramBotClient botClient, Update update, string text, string path, InlineKeyboardMarkup inlineKeyboardMarkup = null)
+        {
+            if (string.IsNullOrEmpty(path))
+                await botClient.SendMarkdown(update, text, inlineKeyboardMarkup);
+            try
+            {
+                await botClient.SendPhotoAsync(update.GetChatId(), path, text, ParseMode.Markdown, replyMarkup: inlineKeyboardMarkup);
             }
             catch (ApiRequestException ex) { ex.ToString(); }
         }
@@ -158,7 +168,7 @@ namespace SchVictorina.WebAPI.Utilities
         {
             if (string.IsNullOrEmpty(filePath))
             {
-                await botClient.SendMarkdownText(update, message);
+                await botClient.SendMarkdown(update, message);
             }
             else
             {

@@ -96,7 +96,7 @@ namespace SchVictorina.WebAPI.Controllers
                             }
                             else if (button is FunctionButton functionButton)
                             {
-                                var result = functionButton.Class?.Invoke(update);
+                                var result = functionButton.Class?.Invoke(update, null);
                                 if (result != null)
                                     await botClient.SendTextAndImage(update, result.Text, result.ImagePath);
                                 await GenerateButtonsAndSend(botClient, update, ButtonConfig.RootButton);
@@ -199,7 +199,7 @@ namespace SchVictorina.WebAPI.Controllers
                             }
                             else if (button is FunctionButton functionButton)
                             {
-                                var result = functionButton.Class?.Invoke(update);
+                                var result = functionButton.Class?.Invoke(update, null);
                                 if (result != null)
                                     await botClient.SendTextAndImage(update, result.Text, result.ImagePath);
                                 await GenerateButtonsAndSend(botClient, update, ButtonConfig.RootButton);
@@ -225,7 +225,7 @@ namespace SchVictorina.WebAPI.Controllers
 
             if (question.WrongAnswers != null)
             {
-                await botClient.SendHtmlAndImage(update, question?.Question + $"{Environment.NewLine}Если вы ответите правильно, получите {engineButton.RightScore} {Environment.NewLine}Если же не правильно, вы потеряете {engineButton.WrongScore}" ?? "К сожалению не удалось найти вопрос!", question.QuestionImagePath, keyboard);
+                await botClient.SendMarkdownAndImage(update, question?.Question + $"{Environment.NewLine}Если вы ответите правильно, получите {engineButton.RightScore} баллов;{Environment.NewLine}Если же не правильно, потеряете {engineButton.WrongScore} баллов." ?? "К сожалению не удалось найти вопрос!", question.QuestionImagePath, keyboard);
             }
             else
             {
@@ -234,9 +234,9 @@ namespace SchVictorina.WebAPI.Controllers
         }
         internal class MainUpdateHandler : IUpdateHandler
         {
-            public Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
+            public async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
             {
-                throw new NotImplementedException();
+                await System.IO.File.AppendAllTextAsync(GlobalConfig.Instance.Logging.Errors.Path, exception.ToString());
             }
             public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
             {

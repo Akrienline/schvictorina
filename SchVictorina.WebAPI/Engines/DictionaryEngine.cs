@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using SchVictorina.WebAPI.Utilities;
 
 namespace SchVictorina.WebAPI.Engines
@@ -53,7 +54,7 @@ namespace SchVictorina.WebAPI.Engines
                 var value = answerRow[columnName];
                 if (value.ToDouble().HasValue)
                     value = value.ToDouble().Value.ToString("N0", new CultureInfo("ru-RU"));
-                    question = question.Replace("{" + columnName + "}", "<b>" + value + "</b>");
+                    question = question.Replace("{" + columnName + "}", "**" + value + "**");
             }
 
             var wrongCandidates = dataRows.Where(candidate => candidate != answerRow).ToArray();
@@ -67,7 +68,7 @@ namespace SchVictorina.WebAPI.Engines
             if (wrongAnswers.Length < WrongAnswerCount)
                 wrongAnswers = wrongAnswers.Concat(
                                                 document.DataRows
-                                                        .Select(row => (string)row[questionRow.Answer])
+                                                        .Select(row => row[questionRow.Answer])
                                                         .Distinct()
                                                         .Except(wrongAnswers)
                                                         .OrderByRandom()
