@@ -7,7 +7,7 @@
 		</webhook>
 	</telegrambot>
 	<discordbot>
-		<token>OTU3OTQ4OTgxNDU4MTA4NDI4.YkGNgw.vugjsF0VFJ7Ly4RMnMBT0uEKvWI</token>
+		<token>a nothing</token> <!--need a change-->
 	</discordbot>
 	<logging>
 		<errors enabled="true" sendToUser="true" maxSizeInKB="100">errors.log</errors>
