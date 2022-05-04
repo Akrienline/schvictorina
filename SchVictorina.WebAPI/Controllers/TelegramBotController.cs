@@ -19,9 +19,10 @@ namespace SchVictorina.WebAPI.Controllers
     [Route("[controller]/[action]")]
     public class TelegramBotController : ControllerBase
     {
-        static DiscordSocketClient socketClient;
-        static TelegramBotClient botClient;
-        static DefaultUpdateReceiver updateReceiver;
+        private static TelegramBotClient telegramBotClient;
+        private static DefaultUpdateReceiver telegramUpdateReceiver;
+
+        private static DiscordSocketClient discordSocketClient;
 
         public TelegramBotController(ILogger<TelegramBotController> logger)
         {
@@ -29,25 +30,36 @@ namespace SchVictorina.WebAPI.Controllers
 
         static TelegramBotController()
         {
-            var timer = new Timer();
-            timer.Interval = 1000000000;
-            timer.Elapsed += Timer_Elapsed;
+            //var timer = new Timer();
+            //timer.Interval = 1000000000;
+            //timer.Elapsed += Timer_Elapsed;
 
-            socketClient = new DiscordSocketClient();
-            socketClient.LoginAsync(TokenType.Bot, GlobalConfig.Instance.DiscordBot.Token, true);
-            socketClient.MessageReceived += DiscordProcessing.ProcessEvent;
-            socketClient.ButtonExecuted += DiscordProcessing.ProcessButtonExecute;
-            socketClient.SlashCommandExecuted += DiscordProcessing.ProcessSlashExecute;
-            socketClient.Ready += ProcessCommands;
-            socketClient.StartAsync();
             //TelegramProcessing.GetUserByUsername("alekami649").Role = UserConfig.UserRole.Administrator;
+
             var settings = GlobalConfig.Instance;
-            botClient = new TelegramBotClient(settings.TelegramBot.Token);
-            if ((settings.TelegramBot?.Webhook?.Enabled ?? false) == false)
+
+            try
             {
-                updateReceiver = new DefaultUpdateReceiver(botClient);
-                updateReceiver.ReceiveAsync(new TelegramProcessing.MainUpdateHandler());
+                telegramBotClient = new TelegramBotClient(settings.TelegramBot.Token);
+                if ((settings.TelegramBot?.Webhook?.Enabled ?? false) == false)
+                {
+                    telegramUpdateReceiver = new DefaultUpdateReceiver(telegramBotClient);
+                    telegramUpdateReceiver.ReceiveAsync(new TelegramProcessing.MainUpdateHandler());
+                }
             }
+            catch (Exception ex) { GlobalConfig.Instance?.Logging?.Errors?.Log(null, null, ex.ToString()); }
+
+            try
+            {
+                discordSocketClient = new DiscordSocketClient();
+                discordSocketClient.LoginAsync(TokenType.Bot, GlobalConfig.Instance.DiscordBot.Token, true);
+                discordSocketClient.MessageReceived += DiscordProcessing.ProcessEvent;
+                discordSocketClient.ButtonExecuted += DiscordProcessing.ProcessButtonExecute;
+                discordSocketClient.SlashCommandExecuted += DiscordProcessing.ProcessSlashExecute;
+                discordSocketClient.Ready += ProcessCommands;
+                discordSocketClient.StartAsync();
+            }
+            catch (Exception ex) { GlobalConfig.Instance?.Logging?.Errors?.Log(null, null, ex.ToString()); }
 
             ButtonConfig.ButtonListChanged += delegate
             {
@@ -56,14 +68,14 @@ namespace SchVictorina.WebAPI.Controllers
             SetMyCommands();
         }
 
-        private static void Timer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            TestServer();
-        }
+        //private static void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        //{
+        //    TestServer();
+        //}
 
         private static async Task ProcessCommands()
         {
-            await DiscordProcessing.ProcessCommands(socketClient);
+            await DiscordProcessing.ProcessCommands(discordSocketClient);
         }
 
         private static async void SetMyCommands()
@@ -77,8 +89,8 @@ namespace SchVictorina.WebAPI.Controllers
                 Description = x.Value.LabelWithParents
             });
 
-            await botClient.DeleteMyCommandsAsync();
-            await botClient.SetMyCommandsAsync(buttonsCommands.Prepend(infoCommand).Prepend(themeCommand));
+            await telegramBotClient.DeleteMyCommandsAsync();
+            await telegramBotClient.SetMyCommandsAsync(buttonsCommands.Prepend(infoCommand).Prepend(themeCommand));
         }
 
         [HttpGet]
@@ -129,7 +141,7 @@ namespace SchVictorina.WebAPI.Controllers
         [HttpPost]
         public async Task Post([FromBody] Update update)
         {
-            await TelegramProcessing.ProcessEvent(botClient, update);
+            await TelegramProcessing.ProcessEvent(telegramBotClient, update);
         }
     }
 }

@@ -343,8 +343,11 @@ namespace SchVictorina.WebAPI.Controllers
 
             try
             {
-                if (log.SendToUser)
-                    await botClient.SendText(update, "Произошла внутренняя ошибка!");
+                if (botClient != null && update != null)
+                {
+                    if (log.SendToUser)
+                        await botClient.SendText(update, "Произошла внутренняя ошибка!");
+                }
             }
             catch(ApiRequestException ex) { ex.ToString(); }
         }

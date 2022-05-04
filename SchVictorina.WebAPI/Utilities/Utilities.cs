@@ -222,7 +222,7 @@ namespace SchVictorina.WebAPI.Utilities
                     var lines = File.ReadAllLines(filePath);
                     File.WriteAllLines(filePath, lines.Skip(lines.Length / 2));
                 }
-                File.AppendAllText(filePath, logContent + Environment.NewLine + Environment.NewLine);
+                File.AppendAllText(filePath, Environment.NewLine + Environment.NewLine + logContent);
             }
         }
     }
