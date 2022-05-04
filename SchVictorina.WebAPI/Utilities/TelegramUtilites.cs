@@ -76,11 +76,14 @@ namespace SchVictorina.WebAPI.Utilities
         {
             if (string.IsNullOrEmpty(path))
                 await botClient.SendMarkdown(update, text, inlineKeyboardMarkup);
-            try
+            else
             {
-                await botClient.SendPhotoAsync(update.GetChatId(), path, text, ParseMode.Markdown, replyMarkup: inlineKeyboardMarkup);
+                try
+                {
+                    await botClient.SendPhotoAsync(update.GetChatId(), new InputOnlineFile(new MemoryStream(System.IO.File.ReadAllBytes(path))), text, ParseMode.Markdown, replyMarkup: inlineKeyboardMarkup);
+                }
+                catch (ApiRequestException ex) { ex.ToString(); }
             }
-            catch (ApiRequestException ex) { ex.ToString(); }
         }
         public static async Task SendHtml(this ITelegramBotClient botClient, Update update, string text, InlineKeyboardMarkup inlineKeyboardMarkup = null)
         {
