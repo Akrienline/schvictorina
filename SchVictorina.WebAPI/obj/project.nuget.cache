@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "3XwdRhYc2wdRVRuRDJqMR6xOijCiAgH0v2vA4gbAEZfG4lEhXYreUKZZDy3v1ud913QBdKoyIYlTmiz6apxuaQ==",
+  "dgSpecHash": "whNMjIKC6+bMN97PZojsQvn4VNe4yfMuayRv5FY7DjlPBT3BKlW784v3qRIB8Fzzg+N6LpnfWfcP3Rpf27WEsg==",
   "success": true,
-  "projectFilePath": "C:\\projects\\schvictorina\\schvictorina\\SchVictorina.WebAPI\\SchVictorina.WebAPI.csproj",
+  "projectFilePath": "C:\\Users\\aleka_tq8v4di\\dev\\schvictorina\\SchVictorina.WebAPI\\SchVictorina.WebAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\aleka_tq8v4di\\.nuget\\packages\\discord.net\\3.4.1\\discord.net.3.4.1.nupkg.sha512",
     "C:\\Users\\aleka_tq8v4di\\.nuget\\packages\\discord.net.commands\\3.4.1\\discord.net.commands.3.4.1.nupkg.sha512",

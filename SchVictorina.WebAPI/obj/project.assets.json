@@ -964,11 +964,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\projects\\schvictorina\\schvictorina\\SchVictorina.WebAPI\\SchVictorina.WebAPI.csproj",
+      "projectUniqueName": "C:\\Users\\aleka_tq8v4di\\dev\\schvictorina\\SchVictorina.WebAPI\\SchVictorina.WebAPI.csproj",
       "projectName": "SchVictorina.WebAPI",
-      "projectPath": "C:\\projects\\schvictorina\\schvictorina\\SchVictorina.WebAPI\\SchVictorina.WebAPI.csproj",
+      "projectPath": "C:\\Users\\aleka_tq8v4di\\dev\\schvictorina\\SchVictorina.WebAPI\\SchVictorina.WebAPI.csproj",
       "packagesPath": "C:\\Users\\aleka_tq8v4di\\.nuget\\packages\\",
-      "outputPath": "C:\\projects\\schvictorina\\schvictorina\\SchVictorina.WebAPI\\obj\\",
+      "outputPath": "C:\\Users\\aleka_tq8v4di\\dev\\schvictorina\\SchVictorina.WebAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -984,6 +984,7 @@
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "C:\\Users\\aleka_tq8v4di\\AppData\\Local\\Esri\\NuGet": {},
+        "C:\\Users\\aleka_tq8v4di\\AppData\\Roaming\\Cosmos User Kit\\packages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -1045,7 +1046,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }
